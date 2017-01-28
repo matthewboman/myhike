@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <h1>Create Hike</h1>
+    <form action="/api/hike" method="post">
+      <input type="text" name="name" placeholder="Name" />
+      <br />
+      <input type="text" name="location" placeholder="location" />
+      <br />
+      <input type="text" name="description" placeholder="description" />
+      <br />
+      <input type="text" name="plants" placeholder="plants" />
+      <br />
+      <input type="text" name="fungi" placeholder="fungi" />
+      <br />
+      <input type="text" name="animals" placeholder="animals" />
+      <br />
+      <input type="text" name="pictures" placeholder="urls" />
+      <br />
+      <input type="submit" value="Add Hike" />
+    </form>
+  </body>
+</html>
