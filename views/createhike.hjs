@@ -10,15 +10,15 @@
       <br />
       <input type="text" name="location" placeholder="location" />
       <br />
-      <input type="text" name="description" placeholder="description" />
+      <input type="text" name="review.description" placeholder="description" />
       <br />
-      <input type="text" name="plants" placeholder="plants" />
+      <input type="text" name="review.plants" placeholder="plants" />
       <br />
-      <input type="text" name="fungi" placeholder="fungi" />
+      <input type="text" name="review.fungi" placeholder="fungi" />
       <br />
-      <input type="text" name="animals" placeholder="animals" />
+      <input type="text" name="review.animals" placeholder="animals" />
       <br />
-      <input type="text" name="pictures" placeholder="urls" />
+      <input type="text" name="review.pictures" placeholder="urls" />
       <br />
       <input type="submit" value="Add Hike" />
     </form>
