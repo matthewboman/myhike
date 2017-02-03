@@ -1,25 +1,55 @@
 import React, { Component } from 'react'
+import { Resizable, ResizableBox } from 'react-resizable';
+import { connect } from 'react-redux'
 
-import { Map, Hikes } from '../containers'
-import Sidebar from './Sidebar'
-import styles from './styles'
+import { Map } from '../containers'
+import { Nav }from './'
+
 
 class Container extends Component {
-  render() {
-    const location = {
-      lat: 40.7575285,
-      lng: -73.9884469
+  constructor() {
+    super()
+    this.state = {
+      height: window.innerHeight-100,
+      leftWidth: (window.innerWidth/2),
+      rightWidth: (window.innerWidth/2),
     }
+  }
+
+  onResize(event, {element, size}){
+    this.setState({
+      leftWidth: size.width,
+      rightWidth: (window.innerWidth-size.width)
+    })
+    // console.log('Width of left component is ' + this.state.leftWidth + 'px')
+    // console.log('Width of right component is ' + this.state.rightWidth + 'px')
+  }
+
+  render() {
+    const mapContainer = <div style={{height: this.state.height, width: this.state.leftWidth}}></div>
+
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-4" style={{width:300, height:600}}>
-            <Map center={location}/>
-          </div>
-          <div className="col-md-8">
-            {this.props.children}
-          </div>
+      <div>
+
+        <div className="nav">
+          <Nav />
         </div>
+
+        <ResizableBox className="left"
+          width={this.state.leftWidth} height={this.state.height}
+          axis={'x'}
+          onResize={this.onResize.bind(this)}>
+          <Map
+            mapContainer={mapContainer}
+            />
+        </ResizableBox>
+
+        <ResizableBox className="right"
+          width={this.state.rightWidth} height={this.state.height}
+          axis={'x'}>
+          {this.props.children}
+        </ResizableBox>
+
       </div>
     )
   }

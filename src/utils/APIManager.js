@@ -2,9 +2,10 @@ import superagent from 'superagent'
 
 export default {
 
-  get: (url, params, callback) => {
+  // GET shit from DB
+  get: (endpoint, params, callback) => {
     superagent
-      .get(url)
+      .get(endpoint)
       .query(params)
       .set('Accept', 'application/json')
       .end((err, response) => {
@@ -13,41 +14,61 @@ export default {
           return
         }
 
-        const confirmation = response.body.confirmation
-        if (confirmation != 'success') {
-          callback({message: response.body.message}, null)
-          return
-        }
+  			const confirmation = response.body.confirmation
+  			if (confirmation != 'success'){
+  				callback({message: response.body.message}, null)
+  				return
+  			}
 
-        callback(null, response.body)
+  			callback(null, response.body)
       })
   },
 
-  post: (url, body, callback) => {
+  // POST shit to DB
+  post: (endpoint, params, callback) => {
+		superagent
+  		.post(endpoint)
+  		.send(params)
+  		.set('Accept', 'application/json')
+  		.end((err, response) => {
+  			if (err){
+  				callback(err, null)
+  				return
+  			}
+
+  			const confirmation = response.body.confirmation
+  			if (confirmation != 'success'){
+  				callback({message: response.body.message}, null)
+  				return
+  			}
+
+  			callback(null, response.body)
+  		})
+	},
+
+  // UPDATE shit in the database
+  put: (endpoint, params, callback) => {
     superagent
-      .post(url)
-      .send(body)
-      .set('Accept', 'application/json')
-      .end((err, response) => {
-        if (err) {
-          callback(err, null)
-          return
-        }
+  		.put(endpoint)
+  		.send(params)
+  		.set('Accept', 'application/json')
+  		.end((err, response) => {
+  			if (err){
+  				callback(err, null)
+  				return
+  			}
 
-        const confirmation = response.body.confirmation
-        if (confirmation != 'success') {
-          callback({message: response.body.message}, null)
-          return
-        }
+  			const confirmation = response.body.confirmation
+  			if (confirmation != 'success'){
+  				callback({message: response.body.message}, null)
+  				return
+  			}
 
-        callback(null, response.body)
-      })
+  			callback(null, response.body)
+  		})
   },
 
-  put: () => {
-
-  },
-
+  // DELETE that shit
   delete: () => {
 
   }

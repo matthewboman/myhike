@@ -1,5 +1,11 @@
-import Hike from './Hike'
+import Detail from './Detail'
+import Home from './Home'
+import RegisterForm from './RegisterForm'
 
 export {
-  Hike,
+
+  Detail,
+  Home,
+  RegisterForm,
+
 }

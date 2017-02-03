@@ -6,9 +6,9 @@ var HikeSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  location: {
-    type: Array,
-    default: []
+  position: {
+    type: Object,
+    default: {}
   },
   review: {
     user: {

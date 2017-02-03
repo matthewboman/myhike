@@ -5,20 +5,25 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var sessions = require('client-sessions')
+require('dotenv').config()
+
+// My routes
+var account = require('./routes/account');
+var api = require('./routes/api');
+var routes = require('./routes/index');
 
 // Set up database
-var dbUrl = 'mongodb://localhost/myhike';
-mongoose.connect(dbUrl, function(err, res) {
-  if(err) {
-    console.error('db connection failed ' + err);
-  } else {
-    console.log('db connected successfully ' + dbUrl)
+mongoose.connect(process.env.DB_URL, function(err, res){
+  if (err){
+    console.log('DB Connection failed:'+err)
+  }
+  else {
+    console.log('DB Connection Success')
   }
 })
 
-var routes = require('./routes/index');
-var api = require('./routes/api');
-
+// Start app
 var app = express();
 
 // view engine setup
@@ -31,10 +36,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(sessions({
+  cookieName: 'session',
+  secret: process.env.SESSION_SECRET,
+  duration: 24*60*60*1000,
+  activeDuration: 30*60*1000
+}))
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(__dirname + '/public'));
 
 app.use('/', routes);
 app.use('/api', api);
+app.use('/account', account)
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

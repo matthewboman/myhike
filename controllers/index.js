@@ -1,5 +1,9 @@
 var HikeController = require('./HikeController');
+var ProfileController = require('./ProfileController');
 
 module.exports = {
-  hike: HikeController
+
+  hike: HikeController,
+  profile: ProfileController
+
 }
