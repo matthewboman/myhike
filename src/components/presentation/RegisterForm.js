@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 
 class RegisterForm extends Component {
   constructor() {
@@ -24,6 +25,7 @@ class RegisterForm extends Component {
   register(event) {
     event.preventDefault()
     this.props.onRegister(this.state.visitor)
+    browserHistory.push(`/`)
   }
 
   render() {
@@ -33,7 +35,7 @@ class RegisterForm extends Component {
 				<input onChange={this.updateVisitor.bind(this)} className="form-control" type="text" id="username" placeholder="username" /><br />
 				<input onChange={this.updateVisitor.bind(this)} className="form-control" type="text" id="email" placeholder="Email" /><br />
 				<input onChange={this.updateVisitor.bind(this)} className="form-control" type="password" id="password" placeholder="Password" /><br />
-				<button onClick={this.register.bind(this)}>Join</button>
+				<button onClick={this.register.bind(this)} className="btn btn-info btn-block">Join</button>
 			</div>
     )
   }

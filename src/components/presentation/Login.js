@@ -30,9 +30,9 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <input onChange={this.updateVisitor.bind(this)} type="text" id="username" placeholder="username" />
-        <input onChange={this.updateVisitor.bind(this)} type="password" id="password" placeholder="Password" />
-        <button onClick={this.login.bind(this)}>Log in</button>
+        <input className="login-form" onChange={this.updateVisitor.bind(this)} type="text" id="username" placeholder="username" />
+        <input className="login-form" onChange={this.updateVisitor.bind(this)} type="password" id="password" placeholder="Password" />
+        <button className="btn-login" onClick={this.login.bind(this)}>Log in</button>
       </div>
     )
   }

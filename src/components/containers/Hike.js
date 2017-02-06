@@ -22,11 +22,23 @@ class Hike extends Component {
 
     return (
       <div className="sidebar">
-        <p>{currentHike.name}</p>
-        <p>{currentHike.review.description}</p>
-        <p>{currentHike.review.animals}</p>
-        <p>{currentHike.review.plants}</p>
-        <p>{currentHike.review.fungi}</p>
+        <h2>{currentHike.name}</h2>
+        <div className="hikeBlock">
+          <h4>Hike Review and Description</h4>
+          <p>{currentHike.review.description}</p>
+        </div>
+        <div className="hikeBlock">
+          <h4>Animals</h4>
+          <p>{currentHike.review.animals}</p>
+        </div>
+        <div className="hikeBlock">
+          <h4>Plants</h4>
+          <p>{currentHike.review.plants}</p>
+        </div>
+        <div className="hikeBlock">
+          <h4>Fungi</h4>
+          <p>{currentHike.review.fungi}</p>
+        </div>
       </div>
     )
   }

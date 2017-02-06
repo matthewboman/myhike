@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import actions from '../../actions'
 import { APIManager } from '../../utils'
-import { Login } from '../containers'
+import { Login } from '../presentation'
 
 class Navigation extends React.Component {
   constructor() {
@@ -51,7 +51,7 @@ class Navigation extends React.Component {
 
   render() {
     return (
-      <Navbar collapseOnSelect>
+      <Navbar collapseOnSelect className="navigation">
         <Navbar.Header>
           <Navbar.Brand>
             <Link to="/">My Hike</Link>
@@ -64,20 +64,17 @@ class Navigation extends React.Component {
             <LinkContainer to="/add-hike">
               <NavItem>Add a new Hike</NavItem>
             </LinkContainer>
-            <LinkContainer to="/hike">
-              <NavItem>Test hike</NavItem>
-            </LinkContainer>
           </Nav>
 
           <Nav pullRight>
             {
               (this.props.currentUser == null) ?
               <NavItem><Login onLogin={this.login.bind(this)} /></NavItem>
-               : <NavItem><button onClick={this.logout.bind(this)}>Log out {this.props.currentUser.username}</button></NavItem>
+               : <NavItem><button className="btn-login" onClick={this.logout.bind(this)}>Log out {this.props.currentUser.username}</button></NavItem>
              }
             {
               (this.props.currentUser == null) ?
-              <LinkContainer to="/register">
+              <LinkContainer to="/register" className="register">
                 <NavItem>Register</NavItem>
               </LinkContainer> : ''
             }

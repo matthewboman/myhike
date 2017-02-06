@@ -41,17 +41,43 @@ class Map extends Component {
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     )
+// =========================== Actual code ====================================
     // GET hikes from database
     /*
     This will have to be changed so it's only grabbing hikes within
     view window of user
     */
-    APIManager.get('/api/hike', null, (err, response) => {
-      if (err) {
-        return
+    // APIManager.get('/api/hike', null, (err, response) => {
+    //   if (err) {
+    //     return
+    //   }
+    //   this.props.hikesReceived(response.results)
+    // })
+// ========================== End actual code ================================
+
+// ========================== Dummy data for github demo =====================
+    this.props.hikesReceived(
+      [
+      {
+      "_id": "58988977ffa2d55508c709a2",
+      "__v": 0,
+      "review": {
+      "pictures": [],
+      "animals": "(unidentified) small black salamander, (unidentified) copper butterfly",
+      "fungi": "chanterelles",
+      "plants": "rhododendron, mountain ash, black and yellow birch, mountain angelica, blue berries, skunk goldenrod, yarrow, white snakeroot",
+      "description": "A short hike up to a grassy/health bald. It's always crowded during tourist season, and parking can be hard to find. There are a couple of trails--one that heads to a waterfall about 4 miles away.",
+      "user": "crash"
+      },
+      "position": {
+      "lat": 35.70407740396727,
+      "lng": -82.37317085266113
+      },
+      "name": "Craggy Gardens"
       }
-      this.props.hikesReceived(response.results)
-    })
+      ]
+    )
+// =========================== End dummy data ===================================
   }
 
   componentDidUpdate() {

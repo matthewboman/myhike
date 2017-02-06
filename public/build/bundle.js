@@ -64,7 +64,7 @@
 	
 	var _routes2 = _interopRequireDefault(_routes);
 	
-	var _stores = __webpack_require__(777);
+	var _stores = __webpack_require__(776);
 	
 	var _stores2 = _interopRequireDefault(_stores);
 	
@@ -28563,9 +28563,9 @@
 	
 	var _layout = __webpack_require__(515);
 	
-	var _presentation = __webpack_require__(285);
+	var _presentation = __webpack_require__(284);
 	
-	var _stores = __webpack_require__(777);
+	var _stores = __webpack_require__(776);
 	
 	var _stores2 = _interopRequireDefault(_stores);
 	
@@ -28589,7 +28589,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Register = exports.Map = exports.Login = exports.Hikes = exports.Hike = exports.CreateHike = undefined;
+	exports.Register = exports.Map = exports.Hike = exports.CreateHike = undefined;
 	
 	var _CreateHike = __webpack_require__(271);
 	
@@ -28598,14 +28598,6 @@
 	var _Hike = __webpack_require__(283);
 	
 	var _Hike2 = _interopRequireDefault(_Hike);
-	
-	var _Hikes = __webpack_require__(284);
-	
-	var _Hikes2 = _interopRequireDefault(_Hikes);
-	
-	var _Login = __webpack_require__(289);
-	
-	var _Login2 = _interopRequireDefault(_Login);
 	
 	var _Map = __webpack_require__(290);
 	
@@ -28619,8 +28611,6 @@
 	
 	exports.CreateHike = _CreateHike2.default;
 	exports.Hike = _Hike2.default;
-	exports.Hikes = _Hikes2.default;
-	exports.Login = _Login2.default;
 	exports.Map = _Map2.default;
 	exports.Register = _Register2.default;
 
@@ -30866,7 +30856,7 @@
 	
 	var _utils = __webpack_require__(274);
 	
-	var _presentation = __webpack_require__(285);
+	var _presentation = __webpack_require__(284);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -30906,29 +30896,65 @@
 	        'div',
 	        { className: 'sidebar' },
 	        _react2.default.createElement(
-	          'p',
+	          'h2',
 	          null,
 	          currentHike.name
 	        ),
 	        _react2.default.createElement(
-	          'p',
-	          null,
-	          currentHike.review.description
+	          'div',
+	          { className: 'hikeBlock' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Hike Review and Description'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            currentHike.review.description
+	          )
 	        ),
 	        _react2.default.createElement(
-	          'p',
-	          null,
-	          currentHike.review.animals
+	          'div',
+	          { className: 'hikeBlock' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Animals'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            currentHike.review.animals
+	          )
 	        ),
 	        _react2.default.createElement(
-	          'p',
-	          null,
-	          currentHike.review.plants
+	          'div',
+	          { className: 'hikeBlock' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Plants'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            currentHike.review.plants
+	          )
 	        ),
 	        _react2.default.createElement(
-	          'p',
-	          null,
-	          currentHike.review.fungi
+	          'div',
+	          { className: 'hikeBlock' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            'Fungi'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            currentHike.review.fungi
+	          )
 	        )
 	      );
 	    }
@@ -30954,109 +30980,19 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.RegisterForm = exports.Login = exports.Home = exports.Detail = undefined;
 	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(178);
-	
-	var _presentation = __webpack_require__(285);
-	
-	var _utils = __webpack_require__(274);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Hikes = function (_Component) {
-	  _inherits(Hikes, _Component);
-	
-	  function Hikes() {
-	    _classCallCheck(this, Hikes);
-	
-	    var _this = _possibleConstructorReturn(this, (Hikes.__proto__ || Object.getPrototypeOf(Hikes)).call(this));
-	
-	    _this.state = {
-	      list: []
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(Hikes, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-	
-	      _utils.APIManager.get('/api/hike', null, function (err, response) {
-	        if (err) {
-	          console.error('ERROR: ' + err.message);
-	          return;
-	        }
-	
-	        _this2.setState({
-	          list: response.results
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	
-	      var listItems = this.state.list.map(function (hike, i) {
-	        return _react2.default.createElement(
-	          'li',
-	          { key: i },
-	          _react2.default.createElement(_presentation.Hike, { index: i, currentHike: hike })
-	        );
-	      });
-	
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'h3',
-	          null,
-	          'List of hikes'
-	        ),
-	        _react2.default.createElement(
-	          'ul',
-	          null,
-	          listItems
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return Hikes;
-	}(_react.Component);
-	
-	exports.default = Hikes;
-
-/***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.RegisterForm = exports.Home = exports.Detail = undefined;
-	
-	var _Detail = __webpack_require__(286);
+	var _Detail = __webpack_require__(285);
 	
 	var _Detail2 = _interopRequireDefault(_Detail);
 	
-	var _Home = __webpack_require__(287);
+	var _Home = __webpack_require__(286);
 	
 	var _Home2 = _interopRequireDefault(_Home);
+	
+	var _Login = __webpack_require__(287);
+	
+	var _Login2 = _interopRequireDefault(_Login);
 	
 	var _RegisterForm = __webpack_require__(288);
 	
@@ -31066,10 +31002,11 @@
 	
 	exports.Detail = _Detail2.default;
 	exports.Home = _Home2.default;
+	exports.Login = _Login2.default;
 	exports.RegisterForm = _RegisterForm2.default;
 
 /***/ },
-/* 286 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31114,7 +31051,7 @@
 	exports.default = Detail;
 
 /***/ },
-/* 287 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31158,9 +31095,27 @@
 	          "Welcome"
 	        ),
 	        _react2.default.createElement(
-	          "p",
-	          null,
-	          "This will display some bullshit about the page"
+	          "div",
+	          { className: "hikeBlock" },
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "My Hike is sort of like a social network meets wikipedia meets public database. This site allows nature enthusiasts to share their favorite spots and foragers their best finds, as well as provide a public database of species dispersal to measure the effects of climate change on different ecosystems."
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "If you have hikes to share, you can register and start posting. If you're just here to look around, everything is public and free--just click on a marker to get a hike's details."
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "hikeBlock" },
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "My Hike is currently in development phase. Here are some things we could use help with: allowing user's to edit their own hikes but not others, enabling photo-sharing capability, making hikes searchable by description or wildlife."
+	          )
 	        )
 	      );
 	    }
@@ -31172,96 +31127,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 288 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var RegisterForm = function (_Component) {
-	  _inherits(RegisterForm, _Component);
-	
-	  function RegisterForm() {
-	    _classCallCheck(this, RegisterForm);
-	
-	    var _this = _possibleConstructorReturn(this, (RegisterForm.__proto__ || Object.getPrototypeOf(RegisterForm)).call(this));
-	
-	    _this.state = {
-	      visitor: {
-	        username: '',
-	        email: '',
-	        password: ''
-	      }
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(RegisterForm, [{
-	    key: 'updateVisitor',
-	    value: function updateVisitor(event) {
-	      var updated = Object.assign({}, this.state.visitor);
-	      updated[event.target.id] = event.target.value;
-	      console.log(updated);
-	      this.setState({
-	        visitor: updated
-	      });
-	    }
-	  }, {
-	    key: 'register',
-	    value: function register(event) {
-	      event.preventDefault();
-	      this.props.onRegister(this.state.visitor);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Sign Up'
-	        ),
-	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), className: 'form-control', type: 'text', id: 'username', placeholder: 'username' }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), className: 'form-control', type: 'text', id: 'email', placeholder: 'Email' }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), className: 'form-control', type: 'password', id: 'password', placeholder: 'Password' }),
-	        _react2.default.createElement('br', null),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.register.bind(this) },
-	          'Join'
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return RegisterForm;
-	}(_react.Component);
-	
-	exports.default = RegisterForm;
-
-/***/ },
-/* 289 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31325,11 +31191,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), type: 'text', id: 'username', placeholder: 'username' }),
-	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), type: 'password', id: 'password', placeholder: 'Password' }),
+	        _react2.default.createElement('input', { className: 'login-form', onChange: this.updateVisitor.bind(this), type: 'text', id: 'username', placeholder: 'username' }),
+	        _react2.default.createElement('input', { className: 'login-form', onChange: this.updateVisitor.bind(this), type: 'password', id: 'password', placeholder: 'Password' }),
 	        _react2.default.createElement(
 	          'button',
-	          { onClick: this.login.bind(this) },
+	          { className: 'btn-login', onClick: this.login.bind(this) },
 	          'Log in'
 	        )
 	      );
@@ -31342,6 +31208,99 @@
 	exports.default = Login;
 
 /***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(178);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var RegisterForm = function (_Component) {
+	  _inherits(RegisterForm, _Component);
+	
+	  function RegisterForm() {
+	    _classCallCheck(this, RegisterForm);
+	
+	    var _this = _possibleConstructorReturn(this, (RegisterForm.__proto__ || Object.getPrototypeOf(RegisterForm)).call(this));
+	
+	    _this.state = {
+	      visitor: {
+	        username: '',
+	        email: '',
+	        password: ''
+	      }
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(RegisterForm, [{
+	    key: 'updateVisitor',
+	    value: function updateVisitor(event) {
+	      var updated = Object.assign({}, this.state.visitor);
+	      updated[event.target.id] = event.target.value;
+	      console.log(updated);
+	      this.setState({
+	        visitor: updated
+	      });
+	    }
+	  }, {
+	    key: 'register',
+	    value: function register(event) {
+	      event.preventDefault();
+	      this.props.onRegister(this.state.visitor);
+	      _reactRouter.browserHistory.push('/');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Sign Up'
+	        ),
+	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), className: 'form-control', type: 'text', id: 'username', placeholder: 'username' }),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), className: 'form-control', type: 'text', id: 'email', placeholder: 'Email' }),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('input', { onChange: this.updateVisitor.bind(this), className: 'form-control', type: 'password', id: 'password', placeholder: 'Password' }),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'button',
+	          { onClick: this.register.bind(this), className: 'btn btn-info btn-block' },
+	          'Join'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return RegisterForm;
+	}(_react.Component);
+	
+	exports.default = RegisterForm;
+
+/***/ },
+/* 289 */,
 /* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31420,17 +31379,39 @@
 	        _this2.props.displayError("Error dectecting your location");
 	        console.error(JSON.stringify(error));
 	      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+	      // =========================== Actual code ====================================
 	      // GET hikes from database
 	      /*
 	      This will have to be changed so it's only grabbing hikes within
 	      view window of user
 	      */
-	      _utils.APIManager.get('/api/hike', null, function (err, response) {
-	        if (err) {
-	          return;
-	        }
-	        _this2.props.hikesReceived(response.results);
-	      });
+	      // APIManager.get('/api/hike', null, (err, response) => {
+	      //   if (err) {
+	      //     return
+	      //   }
+	      //   this.props.hikesReceived(response.results)
+	      // })
+	      // ========================== End actual code ================================
+	
+	      // ========================== Dummy data for github demo =====================
+	      this.props.hikesReceived([{
+	        "_id": "58988977ffa2d55508c709a2",
+	        "__v": 0,
+	        "review": {
+	          "pictures": [],
+	          "animals": "(unidentified) small black salamander, (unidentified) copper butterfly",
+	          "fungi": "chanterelles",
+	          "plants": "rhododendron, mountain ash, black and yellow birch, mountain angelica, blue berries, skunk goldenrod, yarrow, white snakeroot",
+	          "description": "A short hike up to a grassy/health bald. It's always crowded during tourist season, and parking can be hard to find. There are a couple of trails--one that heads to a waterfall about 4 miles away.",
+	          "user": "crash"
+	        },
+	        "position": {
+	          "lat": 35.70407740396727,
+	          "lng": -82.37317085266113
+	        },
+	        "name": "Craggy Gardens"
+	      }]);
+	      // =========================== End dummy data ===================================
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
@@ -57159,7 +57140,7 @@
 	
 	var _utils = __webpack_require__(274);
 	
-	var _presentation = __webpack_require__(285);
+	var _presentation = __webpack_require__(284);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -57258,7 +57239,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Sidebar = exports.Nav = exports.Container = undefined;
+	exports.Nav = exports.Container = undefined;
 	
 	var _Container = __webpack_require__(516);
 	
@@ -57268,15 +57249,10 @@
 	
 	var _Nav2 = _interopRequireDefault(_Nav);
 	
-	var _Sidebar = __webpack_require__(776);
-	
-	var _Sidebar2 = _interopRequireDefault(_Sidebar);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.Container = _Container2.default;
 	exports.Nav = _Nav2.default;
-	exports.Sidebar = _Sidebar2.default;
 
 /***/ },
 /* 516 */
@@ -57319,7 +57295,7 @@
 	    var _this = _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this));
 	
 	    _this.state = {
-	      height: window.innerHeight - 100,
+	      height: window.innerHeight - 70,
 	      leftWidth: window.innerWidth / 2,
 	      rightWidth: window.innerWidth / 2
 	    };
@@ -59485,7 +59461,7 @@
 	
 	var _utils = __webpack_require__(274);
 	
-	var _containers = __webpack_require__(270);
+	var _presentation = __webpack_require__(284);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -59553,7 +59529,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _reactBootstrap.Navbar,
-	        { collapseOnSelect: true },
+	        { collapseOnSelect: true, className: 'navigation' },
 	        _react2.default.createElement(
 	          _reactBootstrap.Navbar.Header,
 	          null,
@@ -59582,15 +59558,6 @@
 	                null,
 	                'Add a new Hike'
 	              )
-	            ),
-	            _react2.default.createElement(
-	              _reactRouterBootstrap.LinkContainer,
-	              { to: '/hike' },
-	              _react2.default.createElement(
-	                _reactBootstrap.NavItem,
-	                null,
-	                'Test hike'
-	              )
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -59599,20 +59566,20 @@
 	            this.props.currentUser == null ? _react2.default.createElement(
 	              _reactBootstrap.NavItem,
 	              null,
-	              _react2.default.createElement(_containers.Login, { onLogin: this.login.bind(this) })
+	              _react2.default.createElement(_presentation.Login, { onLogin: this.login.bind(this) })
 	            ) : _react2.default.createElement(
 	              _reactBootstrap.NavItem,
 	              null,
 	              _react2.default.createElement(
 	                'button',
-	                { onClick: this.logout.bind(this) },
+	                { className: 'btn-login', onClick: this.logout.bind(this) },
 	                'Log out ',
 	                this.props.currentUser.username
 	              )
 	            ),
 	            this.props.currentUser == null ? _react2.default.createElement(
 	              _reactRouterBootstrap.LinkContainer,
-	              { to: '/register' },
+	              { to: '/register', className: 'register' },
 	              _react2.default.createElement(
 	                _reactBootstrap.NavItem,
 	                null,
@@ -78557,55 +78524,6 @@
 /* 776 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Sidebar = function (_React$Component) {
-	  _inherits(Sidebar, _React$Component);
-	
-	  function Sidebar() {
-	    _classCallCheck(this, Sidebar);
-	
-	    return _possibleConstructorReturn(this, (Sidebar.__proto__ || Object.getPrototypeOf(Sidebar)).apply(this, arguments));
-	  }
-	
-	  _createClass(Sidebar, [{
-	    key: "render",
-	    value: function render() {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "sidebar" },
-	        "This is the sidebar"
-	      );
-	    }
-	  }]);
-	
-	  return Sidebar;
-	}(_react2.default.Component);
-	
-	exports.default = Sidebar;
-
-/***/ },
-/* 777 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -78614,11 +78532,11 @@
 	
 	var _redux = __webpack_require__(242);
 	
-	var _reduxThunk = __webpack_require__(778);
+	var _reduxThunk = __webpack_require__(777);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reducers = __webpack_require__(779);
+	var _reducers = __webpack_require__(778);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -78647,7 +78565,7 @@
 	};
 
 /***/ },
-/* 778 */
+/* 777 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -78675,7 +78593,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 779 */
+/* 778 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78685,11 +78603,11 @@
 	});
 	exports.hikeReducer = exports.accountReducer = undefined;
 	
-	var _accountReducer = __webpack_require__(780);
+	var _accountReducer = __webpack_require__(779);
 	
 	var _accountReducer2 = _interopRequireDefault(_accountReducer);
 	
-	var _hikeReducer = __webpack_require__(781);
+	var _hikeReducer = __webpack_require__(780);
 	
 	var _hikeReducer2 = _interopRequireDefault(_hikeReducer);
 	
@@ -78699,7 +78617,7 @@
 	exports.hikeReducer = _hikeReducer2.default;
 
 /***/ },
-/* 780 */
+/* 779 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -78740,7 +78658,7 @@
 	};
 
 /***/ },
-/* 781 */
+/* 780 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

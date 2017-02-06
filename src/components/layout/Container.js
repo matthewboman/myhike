@@ -10,7 +10,7 @@ class Container extends Component {
   constructor() {
     super()
     this.state = {
-      height: window.innerHeight-100,
+      height: window.innerHeight-70,
       leftWidth: (window.innerWidth/2),
       rightWidth: (window.innerWidth/2),
     }
