@@ -14,10 +14,8 @@ React-Native, or detecting screen to render a mobile- or desktop-friendly viewpo
 This is an ongoing project, so this is as much as a personal to-do list as it's a
 list of ways anyone interested can help:
 
-      - server-side routing with React and Redux
-      - photo uploading sharing
       - allowing users to edit own (but not others') hike reviews
-      - private options
+      - private options (users can see only their hike)
       - email verification and lost password re-submission
       - making descriptions/animals/plants/fungi searchable
       - adding markers via address, user's current location, etc.
