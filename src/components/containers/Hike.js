@@ -12,13 +12,23 @@ class Hike extends Component {
   }
 
   componentDidUpdate() {
-    // console.log('dealing with ' + JSON.stringify(this.props.currentHike))
+    console.log('dealing with ' + JSON.stringify(this.props.currentHike.review.pictures))
   }
 
   render() {
 
     if (this.props.currentHike == null || undefined) { return false }
     const currentHike = this.props.currentHike
+
+    if (this.props.currentHike.review.pictures == null || undefined) { return false }
+    const pixx = this.props.currentHike.review.pictures.map((picture, i) => {
+      return (
+        <li key={i} className="hike-image">
+          <img src={picture} className="image-preview"/>
+        </li>
+      )
+    })
+
 
     return (
       <div className="sidebar">
@@ -38,6 +48,11 @@ class Hike extends Component {
         <div className="hikeBlock">
           <h4>Fungi</h4>
           <p>{currentHike.review.fungi}</p>
+        </div>
+        <div className="hikeBlock">
+        <ul className="hike-images">
+          {pixx}
+        </ul>
         </div>
       </div>
     )

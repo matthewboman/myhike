@@ -10,9 +10,12 @@ class Container extends Component {
   constructor() {
     super()
     this.state = {
-      height: window.innerHeight-70,
-      leftWidth: (window.innerWidth/2),
-      rightWidth: (window.innerWidth/2),
+      // height: window.innerHeight-70,
+      // leftWidth: (window.innerWidth/2),
+      // rightWidth: (window.innerWidth/2),
+      height: (Math.max(document.documentElement.clientHeight, window.innerHeight || 0)-70),
+      leftWidth: (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)/2),
+      rightWidth: (Math.max(document.documentElement.clientWidth, window.innerWidth || 0)/2),
     }
   }
 

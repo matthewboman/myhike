@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import actions from '../../actions'
 import { APIManager } from '../../utils'
+import { Images } from '../presentation'
 
 class CreateHike extends Component {
   constructor() {
@@ -28,8 +29,8 @@ class CreateHike extends Component {
   }
 
   componentDidUpdate() {
-    // console.log('CreateHike updating location to ' + this.props.location)
-    // console.log('CreateHike updating username to ' + this.props.currentUser.username)
+    console.log('CreateHike updating location to ' + this.props.location)
+    console.log('CreateHike updating username to ' + this.props.currentUser.username)
   }
 
   updateHike(event) {
@@ -53,14 +54,30 @@ class CreateHike extends Component {
     })
   }
 
+  addImages(event) {
+    let updatedHike = Object.assign({}, this.state.hike)
+    let updatedReview = Object.assign({}, this.state.hike.review)
+    let updatedImages = Object.assign([], this.state.hike.review.pictures)
+    for (let value of event) {
+      updatedImages.push(value.secure_url)
+    }
+    updatedReview["pictures"] = updatedImages
+    updatedHike["review"] = updatedReview
+    this.setState({
+      hike: updatedHike
+    })
+  }
+
   submitHike(hike) {
-    // console.log('submitting ' + JSON.stringify(this.state.hike))
+    console.log('submitting ' + JSON.stringify(this.state.hike))
     APIManager.post('/api/hike', this.state.hike, (err, response) => {
       if (err) {
         console.error('ERROR: ' + err.message)
       }
     })
   }
+
+
 
   render() {
     const position = JSON.stringify(this.props.location) // for displaying GPS position in form
@@ -86,8 +103,7 @@ class CreateHike extends Component {
         <input onChange={this.updateHike.bind(this)} id="animals"
           className="form-control" type="text" placeholder="What animals" />
         <br />
-        <input onChange={this.updateHike.bind(this)} id="pictures"
-          className="form-control" type="text" placeholder="upload here" />
+        <Images onImageSubmit={this.addImages.bind(this)}/>
         <br />
         <button onClick={this.submitHike.bind(this)}
           className="btn btn-info btn-block">Add it</button>

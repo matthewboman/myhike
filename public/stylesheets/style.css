@@ -119,10 +119,58 @@ h1, h2, h3 {
   background-color: #515c41;
   border-color: #515c41;
 }
+
+
+
+/* Create Hike component*/
+.image-drop {
+  width: 150px;
+  height: 150px;
+  border-width: 2px;
+  border-color: rgb(102, 102, 102);
+  border-style: dashed;
+  border-radius: 5px;
+}
+
+.image-drop-text {
+  text-align: center;
+  vertical-align: middle;
+  line-height: 150px;
+}
+.hike-images .image-list-preview {
+  display: inline-flex;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+
+.parent {
+  position: relative;
+  display: inline-block;
+}
+.image-preview {
+  width: 150px;
+  height: 150px;
+}
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: black;
+  background-color: #fff;
+}
+
+
+/* Hike Component */
 .hikeBlock {
   padding-top: 6px;
   padding-bottom: 6px;
   /*text-align: center;*/
+}
+.hike-images .hike-image{
+  display: inline-flex;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 
