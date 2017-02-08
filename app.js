@@ -45,9 +45,9 @@ app.use(sessions({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public', express.static(__dirname + '/public'));
 
-app.use('/', routes);
 app.use('/api', api);
 app.use('/account', account)
+app.use('/', routes);
 
 
 // catch 404 and forward to error handler
