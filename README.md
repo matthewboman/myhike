@@ -14,23 +14,23 @@ React-Native, or detecting screen to render a mobile- or desktop-friendly viewpo
 This is an ongoing project, so this is as much as a personal to-do list as it's a
 list of ways anyone interested can help:
 
-      - Routing: React-Router handles most things and the server-side [index](https://github.com/crashspringfield/myhike/blob/master/routes/index.js)
+  - Routing: React-Router handles most things and the server-side [index](https://github.com/crashspringfield/myhike/blob/master/routes/index.js)
         but I want users to be able to share links to their favorite hikes. The
         right component doesn't populate with hike data if /hike/:id is linked
         to instead of accessed directly from a marker click
 
-      - Multiple Hike Reviews: This would allow a user to post a hike with their
+  - Multiple Hike Reviews: This would allow a user to post a hike with their
         review and other users to add their own review instead of having to add
         another hike. Checkout [the Hike model](https://github.com/crashspringfield/myhike/blob/master/src/components/containers/Hike.js) and [CreateHike component](https://github.com/crashspringfield/myhike/blob/master/src/components/containers/CreateHike.js).
 
-      - Email verification and lost password re-submission. I wrote this in AngularJs
+  - Email verification and lost password re-submission. I wrote this in AngularJs
         for [Camover](https://github.com/crashspringfield/camover) so a lot of the backend can be taken from there. The front
         will have to be rewritten in React.
 
-      - Mobile Compatibility: see above note re: different views and/or
+  - Mobile Compatibility: see above note re: different views and/or
         React-Native app.
 
-      - Long Term: I have a lot of ideas about what I'd want to see as a user of
+  - Long Term: I have a lot of ideas about what I'd want to see as a user of
         this site. It'd be great to search for hikes based on specifications other
         than just location by making descriptions and other review aspects (animals,
         plants, fungi) searchable. Also, I'd like users to be able to user their
