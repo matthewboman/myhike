@@ -3,6 +3,13 @@ import Dropzone from 'react-dropzone'
 import sha1 from 'sha1'
 import superagent from 'superagent'
 
+/*
+  TODO: Right now, every image is sent to Cloudinary before the user clicks
+    "submit images," so potentially a lot of bullshit is being posted.
+    There's a commented-out example below the code that might allow the images
+    to display on the page before being sent off
+*/
+
 class Images extends Component {
   constructor() {
     super()
@@ -12,11 +19,10 @@ class Images extends Component {
   }
 
   uploadFile(files) {
-    // console.log('uploadFile: '+ JSON.stringify(files))
-    // select first image
+    // Select first image
     const image = files[0]
-    // ========= prepare request for cloudinary ============
-    const cloudName = "dotkbdwdw" // /console - cloud name
+    // Prepare request for Cloudinary
+    const cloudName = "dotkbdwdw"
     const url = 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload'
     const timestamp = Date.now() / 1000
     const uploadPreset = 'me0nxa6b'
@@ -28,7 +34,7 @@ class Images extends Component {
       'upload_preset': uploadPreset,
       'signature': signature
     }
-    // ======== make the request ============
+    // Make the request
     let uploadRequest = superagent.post(url)
     uploadRequest.attach('file', image)
 
@@ -41,9 +47,9 @@ class Images extends Component {
         callback(err, null)
         return
       }
-      // console.log('UPLOAD COMPLETE: ' + JSON.stringify(res.body))
       const uploaded = res.body
 
+      // Set state with what I get back from Cloudinary
       let updatedImages = Object.assign([], this.state.images)
       updatedImages.push(uploaded)
 
@@ -55,7 +61,6 @@ class Images extends Component {
 
   removeImage(event) {
     event.preventDefault()
-    // console.log(event.target.id)
 
     let updatedImages = Object.assign([], this.state.images)
     updatedImages.splice(event.target.id, 1)
@@ -103,7 +108,7 @@ class Images extends Component {
 }
 
 
-//  ============== without sending everything to cloudinary ================
+// === Here's how I might do this without sending everything to cloudinary ====
 /*
 class Images extends Component {
   constructor() {

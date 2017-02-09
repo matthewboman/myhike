@@ -1,10 +1,10 @@
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var express = require('express');
-var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var path = require('path');
 var sessions = require('client-sessions')
 require('dotenv').config()
 
@@ -16,7 +16,7 @@ var routes = require('./routes/index');
 // Set up database
 mongoose.connect(process.env.DB_URL, function(err, res){
   if (err){
-    console.log('DB Connection failed:'+err)
+    console.log('DB Connection failed: '+ err)
   }
   else {
     console.log('DB Connection Success')
@@ -30,7 +30,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hjs');
 
-// uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());

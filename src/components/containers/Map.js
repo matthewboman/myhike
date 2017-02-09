@@ -6,6 +6,17 @@ import { browserHistory } from 'react-router'
 import actions from '../../actions'
 import { APIManager } from '../../utils'
 
+/*
+  TODO: Pass props of user location to app state instead of setting user location
+    as the local state. That way, user can set hike location to their current
+    location in the CreateHike component.
+  TODO: GET hikes from DB only within certain radius of user. Update API call
+    to database as view window changes. That way the app isn't calling every
+    hike in DB--only those necessary.
+  TODO: One color marker for hikes, another color marker for where the user clicks.
+  TODO: Figure out querystring hack in onMarkerClick()
+*/
+
 class Map extends Component {
   constructor() {
     super()
@@ -22,7 +33,7 @@ class Map extends Component {
   }
 
   componentDidMount() {
-    // Center map on user's location
+    // Center map on user's location (or 0,0 if user doesn't want to share)
     navigator.geolocation.getCurrentPosition(
       (position) => {
         let lat = position.coords.latitude
@@ -34,6 +45,15 @@ class Map extends Component {
             lng: position.coords.longitude,
           }
         })
+
+      //  use props instead of state for future
+      /*  this.props.userLocationReceived({
+          center: {
+            lat: lat,
+            lng: lng
+          }
+        })
+      */
       },
       (error) => {
         this.props.displayError("Error dectecting your location");
@@ -41,7 +61,6 @@ class Map extends Component {
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     )
-// =========================== Actual code ====================================
     // GET hikes from database
     /*
     This will have to be changed so it's only grabbing hikes within
@@ -49,74 +68,59 @@ class Map extends Component {
     */
     APIManager.get('/api/hike', null, (err, response) => {
       if (err) {
+        console.log(err)
         return
       }
       this.props.hikesReceived(response.results)
     })
-// ========================== End actual code ================================
-
-// ========================== Dummy data for github demo =====================
-    // this.props.hikesReceived(
-    //   [
-    //   {
-    //   "_id": "58988977ffa2d55508c709a2",
-    //   "__v": 0,
-    //   "review": {
-    //   "pictures": [],
-    //   "animals": "(unidentified) small black salamander, (unidentified) copper butterfly",
-    //   "fungi": "chanterelles",
-    //   "plants": "rhododendron, mountain ash, black and yellow birch, mountain angelica, blue berries, skunk goldenrod, yarrow, white snakeroot",
-    //   "description": "A short hike up to a grassy/health bald. It's always crowded during tourist season, and parking can be hard to find. There are a couple of trails--one that heads to a waterfall about 4 miles away.",
-    //   "user": "crash"
-    //   },
-    //   "position": {
-    //   "lat": 35.70407740396727,
-    //   "lng": -82.37317085266113
-    //   },
-    //   "name": "Craggy Gardens"
-    //   }
-    //   ]
-    // )
-// =========================== End dummy data ===================================
   }
 
-  componentDidUpdate() {
-    // console.log('updated list of hikes ' + JSON.stringify(this.props.hikes))
-  }
-
+  // Add marker to map where user clicks and re-direct to CreateHike component
   addMarker(event) {
+    // Display marker where user clicks
     let clicked = Object.assign({}, this.state.newHike)
     clicked.lat = event.latLng.lat()
     clicked.lng = event.latLng.lng()
     this.setState({
       newHike: clicked
     })
+    // Set app state location to where user clicks
     this.props.locationAdded(clicked)
+    // Open CreateHike component on right side
     browserHistory.push(`/add-hike`)
   }
 
+  // Make right component display hike when marker clicked
   onMarkerClick(id) {
     const hikeId = id
     // Set params to be fetched
     this.props.hikeSelected(hikeId)
     // GET hike data from database
     const hack = "/api/hike/" + hikeId
-    APIManager.get(hack, null, (err, response) => {
+    APIManager.get(hack, null, (err, response) => { // hack to get around whatever error this is
+    // APIManager.get("/api/hike/", params, (err, response) => { // what it should be
       if (err) {
         console.error(err)
         return
       }
       this.props.currentHikeReceived(response.result)
     })
-    // Change path to clicked hike
+    // Change path to selected hike
     const path = `/hike/${hikeId}`
     browserHistory.push(path)
   }
 
   render() {
-    // Set map center to user location
+    // Set map center to user location (component state version)
     const center = this.state.center
     if (center.lat == 0 && center.lng ==0) { return null }
+
+    // Set map center to user location (app state version)
+    /*
+    const center = this.props.userLocation
+    if (center.lat || center.lng == 0 || null || undefined) { return null }
+    */
+    
     // Place newHike marker where user clicks
     const marker = {
       position: this.state.newHike
@@ -162,7 +166,8 @@ class Map extends Component {
 const stateToProps = (state) => {
   return {
     hikes: state.hike.list,
-    location: state.newHike
+    location: state.newHike,
+    // userLocation: state.hike.center,
   }
 }
 
@@ -172,6 +177,7 @@ const dispatchToProps = (dispatch) => {
     hikesReceived: (hikes) => dispatch(actions.hikesReceived(hikes)),
     hikeSelected: (hike) => dispatch(actions.hikeSelected(hike)),
 		locationAdded: (location) => dispatch(actions.locationAdded(location)),
+    userLocationReceived: (center) => dispatch(actions.userLocationReceived(center)),
 	}
 }
 

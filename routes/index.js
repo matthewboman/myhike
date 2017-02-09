@@ -15,9 +15,11 @@ router.get('/register', function(req, res, next) {
   res.render('index', { title: 'My Hike' });
 });
 
-// router.get('/hike/:id', function(req, res, next) {
-//   res.render('index', { title: 'My Hike' });
-// });
+
+// this one doesn't render the specific hike.....
+router.get('/hike/:id', function(req, res, next) {
+  res.render('index', { title: 'My Hike' });
+});
 
 
 // -------------------- TESTING -------------------------

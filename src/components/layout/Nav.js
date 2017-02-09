@@ -11,10 +11,10 @@ import { Login } from '../presentation'
 class Navigation extends React.Component {
   constructor() {
     super()
-    this.state = {
-    }
+    this.state = {}
   }
 
+  // Check if user is logged in
   componentDidMount() {
     APIManager.get('/account/currentuser', null, (err, response) => {
       if (err) {
@@ -28,6 +28,7 @@ class Navigation extends React.Component {
     })
   }
 
+  // Log user in
   login(credentials) {
     APIManager.post('/account/login', credentials, (err, response) => {
       if (err) {
@@ -39,6 +40,7 @@ class Navigation extends React.Component {
     })
   }
 
+  // Log user out
   logout(event) {
     APIManager.get('/account/logout', null, (err, response) => {
       if (err) {

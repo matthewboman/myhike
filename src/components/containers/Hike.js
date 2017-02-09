@@ -5,21 +5,23 @@ import actions from '../../actions'
 import { APIManager } from '../../utils'
 import { Detail } from '../presentation'
 
+/*
+  TODO: Allow users to edit their own hike.
+  TODO: Allow users to post their own review of hike (new component similar to CreateHike)
+*/
+
 class Hike extends Component {
   constructor() {
     super()
     this.state = {}
   }
 
-  componentDidUpdate() {
-    console.log('dealing with ' + JSON.stringify(this.props.currentHike.review.pictures))
-  }
-
   render() {
-
+    // Make sure we get a hike from DB
     if (this.props.currentHike == null || undefined) { return false }
     const currentHike = this.props.currentHike
 
+    // Make sure we get pictures from DB / cloud
     if (this.props.currentHike.review.pictures == null || undefined) { return false }
     const pixx = this.props.currentHike.review.pictures.map((picture, i) => {
       return (
@@ -28,7 +30,6 @@ class Hike extends Component {
         </li>
       )
     })
-
 
     return (
       <div className="sidebar">

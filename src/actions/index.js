@@ -2,6 +2,7 @@ import constants from '../constants'
 
 export default {
 
+// ======================== User data =================================
   currentUserReceived: (profile) => {
 		return {
 			type: constants.CURRENT_USER_RECEIVED,
@@ -16,6 +17,7 @@ export default {
     }
   },
 
+// ======================== Hike and Map data ===============================
   currentHikeReceived: (hike) => {
     return {
       type: constants.CURRENT_HIKE_RECEIVED,
@@ -44,7 +46,12 @@ export default {
     }
   },
 
-
+  userLocationReceived: (center) => {
+    return {
+      type: constants.USER_LOCATION_RECEIVED,
+      center: center
+    }
+  },
 
 
 

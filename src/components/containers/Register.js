@@ -8,12 +8,11 @@ import { RegisterForm } from '../presentation/'
 class Register extends Component {
   constructor() {
     super()
-    this.state = {
-
-    }
+    this.state = {}
   }
 
   componentDidMount() {
+    // Check if user is logged in
     APIManager.get('/account/currentUser', null, (err, response) => {
       if (err) {
         console.error(err)
@@ -22,8 +21,6 @@ class Register extends Component {
       if (response.profile == null) {
         return
       }
-
-      console.log(response.profile)
       this.props.currentUserReceived(response.profile)
     })
   }
@@ -36,8 +33,6 @@ class Register extends Component {
         console.error(msg)
         return
       }
-
-      console.log(response.profile + 'successfully joined')
       this.props.profileCreated(response.profile)
     })
   }

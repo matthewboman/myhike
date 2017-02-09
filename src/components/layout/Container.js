@@ -5,6 +5,10 @@ import { connect } from 'react-redux'
 import { Map } from '../containers'
 import { Nav }from './'
 
+/*
+  TODO: The left/right component isn't working entirely how I want it too. Also,
+    I should make it more obvious that right/left components can be resized.
+*/
 
 class Container extends Component {
   constructor() {
@@ -19,6 +23,7 @@ class Container extends Component {
     }
   }
 
+  // Adjust right and left component size
   onResize(event, {element, size}){
     this.setState({
       leftWidth: size.width,

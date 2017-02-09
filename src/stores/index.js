@@ -10,10 +10,8 @@ export default {
   configureStore: () => {
     // combine all reducers
     const reducers = combineReducers({
-
       account: accountReducer,
       hike: hikeReducer,
-
     })
 
     store = createStore(

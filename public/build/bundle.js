@@ -28650,6 +28650,20 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/*
+	  TODO: Split into two componenets. Right now, it is getting the position
+	  from the app state but getting everything else from user input.
+	
+	  Smart component: gets location and current user from app and passes it down
+	  Dumb component: gets hike data from user input, saves in state to be sent back
+	    up to smart component on submit. Keep Image presentational component as is
+	    and also pass to smart component.
+	
+	  TODO: Allow for user to choose current location or click on map (or address?)
+	
+	  TODO: Hike can be submitted only if user is logged in and location is selected
+	*/
+	
 	var CreateHike = function (_Component) {
 	  _inherits(CreateHike, _Component);
 	
@@ -28676,17 +28690,6 @@
 	  }
 	
 	  _createClass(CreateHike, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      // console.log('props on CreateHike mounting ' + JSON.stringify(this.props))
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      console.log('CreateHike updating location to ' + this.props.location);
-	      console.log('CreateHike updating username to ' + this.props.currentUser.username);
-	    }
-	  }, {
 	    key: 'updateHike',
 	    value: function updateHike(event) {
 	      var updatedHike = Object.assign({}, this.state.hike);
@@ -28696,11 +28699,13 @@
 	        lng: this.props.location.lng
 	      };
 	      updatedHike["position"] = position;
+	
 	      // Get and assign form subfields
 	      var updatedReview = Object.assign({}, this.state.hike.review);
 	      updatedReview[event.target.id] = event.target.value;
 	      updatedReview["user"] = this.props.currentUser.username;
 	      updatedHike["review"] = updatedReview;
+	
 	      // Get and assign all fields
 	      updatedHike[event.target.id] = event.target.value; // kind of janks it b/c more is being submitted, but mongoose model makes it work
 	      // Set state with all the details
@@ -28713,6 +28718,7 @@
 	    value: function addImages(event) {
 	      var updatedHike = Object.assign({}, this.state.hike);
 	      var updatedReview = Object.assign({}, this.state.hike.review);
+	      // Add images from Image component
 	      var updatedImages = Object.assign([], this.state.hike.review.pictures);
 	      var _iteratorNormalCompletion = true;
 	      var _didIteratorError = false;
@@ -28741,6 +28747,7 @@
 	
 	      updatedReview["pictures"] = updatedImages;
 	      updatedHike["review"] = updatedReview;
+	      // Set state with all the details
 	      this.setState({
 	        hike: updatedHike
 	      });
@@ -28837,6 +28844,7 @@
 	
 	exports.default = {
 	
+	  // ======================== User data =================================
 	  currentUserReceived: function currentUserReceived(profile) {
 	    return {
 	      type: _constants2.default.CURRENT_USER_RECEIVED,
@@ -28851,6 +28859,7 @@
 	    };
 	  },
 	
+	  // ======================== Hike and Map data ===============================
 	  currentHikeReceived: function currentHikeReceived(hike) {
 	    return {
 	      type: _constants2.default.CURRENT_HIKE_RECEIVED,
@@ -28877,6 +28886,13 @@
 	      type: _constants2.default.LOCATION_ADDED,
 	      location: location
 	    };
+	  },
+	
+	  userLocationReceived: function userLocationReceived(center) {
+	    return {
+	      type: _constants2.default.USER_LOCATION_RECEIVED,
+	      center: center
+	    };
 	  }
 	
 	};
@@ -28898,7 +28914,8 @@
 	  CURRENT_HIKE_RECEIVED: 'CURRENT_HIKE_RECEIVED',
 	  HIKES_RECEIVED: 'HIKES_RECEIVED',
 	  HIKE_SELECTED: 'HIKE_SELECTED',
-	  LOCATION_ADDED: 'LOCATION_ADDED'
+	  LOCATION_ADDED: 'LOCATION_ADDED',
+	  USER_LOCATION_RECEIVED: 'USER_LOCATION_RECEIVED'
 	
 	};
 
@@ -30972,11 +30989,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.RegisterForm = exports.Login = exports.Images = exports.Home = exports.Detail = undefined;
-	
-	var _Detail = __webpack_require__(285);
-	
-	var _Detail2 = _interopRequireDefault(_Detail);
+	exports.RegisterForm = exports.Login = exports.Images = exports.Home = undefined;
 	
 	var _Home = __webpack_require__(286);
 	
@@ -30996,58 +31009,13 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	exports.Detail = _Detail2.default;
 	exports.Home = _Home2.default;
 	exports.Images = _Images2.default;
 	exports.Login = _Login2.default;
 	exports.RegisterForm = _RegisterForm2.default;
 
 /***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Detail = function (_Component) {
-	  _inherits(Detail, _Component);
-	
-	  function Detail() {
-	    _classCallCheck(this, Detail);
-	
-	    return _possibleConstructorReturn(this, (Detail.__proto__ || Object.getPrototypeOf(Detail)).apply(this, arguments));
-	  }
-	
-	  _createClass(Detail, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement('div', null);
-	    }
-	  }]);
-	
-	  return Detail;
-	}(_react.Component);
-	
-	exports.default = Detail;
-
-/***/ },
+/* 285 */,
 /* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31159,6 +31127,13 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/*
+	  TODO: Right now, every image is sent to Cloudinary before the user clicks
+	    "submit images," so potentially a lot of bullshit is being posted.
+	    There's a commented-out example below the code that might allow the images
+	    to display on the page before being sent off
+	*/
+	
 	var Images = function (_Component) {
 	  _inherits(Images, _Component);
 	
@@ -31178,11 +31153,10 @@
 	    value: function uploadFile(files) {
 	      var _this2 = this;
 	
-	      // console.log('uploadFile: '+ JSON.stringify(files))
-	      // select first image
+	      // Select first image
 	      var image = files[0];
-	      // ========= prepare request for cloudinary ============
-	      var cloudName = "dotkbdwdw"; // /console - cloud name
+	      // Prepare request for Cloudinary
+	      var cloudName = "dotkbdwdw";
 	      var url = 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload';
 	      var timestamp = Date.now() / 1000;
 	      var uploadPreset = 'me0nxa6b';
@@ -31194,7 +31168,7 @@
 	        'upload_preset': uploadPreset,
 	        'signature': signature
 	      };
-	      // ======== make the request ============
+	      // Make the request
 	      var uploadRequest = _superagent2.default.post(url);
 	      uploadRequest.attach('file', image);
 	
@@ -31207,9 +31181,9 @@
 	          callback(err, null);
 	          return;
 	        }
-	        // console.log('UPLOAD COMPLETE: ' + JSON.stringify(res.body))
 	        var uploaded = res.body;
 	
+	        // Set state with what I get back from Cloudinary
 	        var updatedImages = Object.assign([], _this2.state.images);
 	        updatedImages.push(uploaded);
 	
@@ -31222,7 +31196,6 @@
 	    key: 'removeImage',
 	    value: function removeImage(event) {
 	      event.preventDefault();
-	      // console.log(event.target.id)
 	
 	      var updatedImages = Object.assign([], this.state.images);
 	      updatedImages.splice(event.target.id, 1);
@@ -31296,7 +31269,7 @@
 	  return Images;
 	}(_react.Component);
 	
-	//  ============== without sending everything to cloudinary ================
+	// === Here's how I might do this without sending everything to cloudinary ====
 	/*
 	class Images extends Component {
 	  constructor() {
@@ -34396,6 +34369,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/*
+	  TODO: Allow users to edit their own hike.
+	  TODO: Allow users to post their own review of hike (new component similar to CreateHike)
+	*/
+	
 	var Hike = function (_Component) {
 	  _inherits(Hike, _Component);
 	
@@ -34409,19 +34387,15 @@
 	  }
 	
 	  _createClass(Hike, [{
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      console.log('dealing with ' + JSON.stringify(this.props.currentHike.review.pictures));
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	
+	      // Make sure we get a hike from DB
 	      if (this.props.currentHike == null || undefined) {
 	        return false;
 	      }
 	      var currentHike = this.props.currentHike;
 	
+	      // Make sure we get pictures from DB / cloud
 	      if (this.props.currentHike.review.pictures == null || undefined) {
 	        return false;
 	      }
@@ -34559,6 +34533,17 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/*
+	  TODO: Pass props of user location to app state instead of setting user location
+	    as the local state. That way, user can set hike location to their current
+	    location in the CreateHike component.
+	  TODO: GET hikes from DB only within certain radius of user. Update API call
+	    to database as view window changes. That way the app isn't calling every
+	    hike in DB--only those necessary.
+	  TODO: One color marker for hikes, another color marker for where the user clicks.
+	  TODO: Figure out querystring hack in onMarkerClick()
+	*/
+	
 	var Map = function (_Component) {
 	  _inherits(Map, _Component);
 	
@@ -34585,7 +34570,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 	
-	      // Center map on user's location
+	      // Center map on user's location (or 0,0 if user doesn't want to share)
 	      navigator.geolocation.getCurrentPosition(function (position) {
 	        var lat = position.coords.latitude;
 	        var lng = position.coords.longitude;
@@ -34596,11 +34581,19 @@
 	            lng: position.coords.longitude
 	          }
 	        });
+	
+	        //  use props instead of state for future
+	        /*  this.props.userLocationReceived({
+	            center: {
+	              lat: lat,
+	              lng: lng
+	            }
+	          })
+	        */
 	      }, function (error) {
 	        _this2.props.displayError("Error dectecting your location");
 	        console.error(JSON.stringify(error));
 	      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
-	      // =========================== Actual code ====================================
 	      // GET hikes from database
 	      /*
 	      This will have to be changed so it's only grabbing hikes within
@@ -34608,53 +34601,33 @@
 	      */
 	      _utils.APIManager.get('/api/hike', null, function (err, response) {
 	        if (err) {
+	          console.log(err);
 	          return;
 	        }
 	        _this2.props.hikesReceived(response.results);
 	      });
-	      // ========================== End actual code ================================
+	    }
 	
-	      // ========================== Dummy data for github demo =====================
-	      // this.props.hikesReceived(
-	      //   [
-	      //   {
-	      //   "_id": "58988977ffa2d55508c709a2",
-	      //   "__v": 0,
-	      //   "review": {
-	      //   "pictures": [],
-	      //   "animals": "(unidentified) small black salamander, (unidentified) copper butterfly",
-	      //   "fungi": "chanterelles",
-	      //   "plants": "rhododendron, mountain ash, black and yellow birch, mountain angelica, blue berries, skunk goldenrod, yarrow, white snakeroot",
-	      //   "description": "A short hike up to a grassy/health bald. It's always crowded during tourist season, and parking can be hard to find. There are a couple of trails--one that heads to a waterfall about 4 miles away.",
-	      //   "user": "crash"
-	      //   },
-	      //   "position": {
-	      //   "lat": 35.70407740396727,
-	      //   "lng": -82.37317085266113
-	      //   },
-	      //   "name": "Craggy Gardens"
-	      //   }
-	      //   ]
-	      // )
-	      // =========================== End dummy data ===================================
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate() {
-	      // console.log('updated list of hikes ' + JSON.stringify(this.props.hikes))
-	    }
+	    // Add marker to map where user clicks and re-direct to CreateHike component
+	
 	  }, {
 	    key: 'addMarker',
 	    value: function addMarker(event) {
+	      // Display marker where user clicks
 	      var clicked = Object.assign({}, this.state.newHike);
 	      clicked.lat = event.latLng.lat();
 	      clicked.lng = event.latLng.lng();
 	      this.setState({
 	        newHike: clicked
 	      });
+	      // Set app state location to where user clicks
 	      this.props.locationAdded(clicked);
+	      // Open CreateHike component on right side
 	      _reactRouter.browserHistory.push('/add-hike');
 	    }
+	
+	    // Make right component display hike when marker clicked
+	
 	  }, {
 	    key: 'onMarkerClick',
 	    value: function onMarkerClick(id) {
@@ -34666,13 +34639,15 @@
 	      // GET hike data from database
 	      var hack = "/api/hike/" + hikeId;
 	      _utils.APIManager.get(hack, null, function (err, response) {
+	        // hack to get around whatever error this is
+	        // APIManager.get("/api/hike/", params, (err, response) => { // what it should be
 	        if (err) {
 	          console.error(err);
 	          return;
 	        }
 	        _this3.props.currentHikeReceived(response.result);
 	      });
-	      // Change path to clicked hike
+	      // Change path to selected hike
 	      var path = '/hike/' + hikeId;
 	      _reactRouter.browserHistory.push(path);
 	    }
@@ -34681,11 +34656,18 @@
 	    value: function render() {
 	      var _this4 = this;
 	
-	      // Set map center to user location
+	      // Set map center to user location (component state version)
 	      var center = this.state.center;
 	      if (center.lat == 0 && center.lng == 0) {
 	        return null;
 	      }
+	
+	      // Set map center to user location (app state version)
+	      /*
+	      const center = this.props.userLocation
+	      if (center.lat || center.lng == 0 || null || undefined) { return null }
+	      */
+	
 	      // Place newHike marker where user clicks
 	      var marker = {
 	        position: this.state.newHike
@@ -34752,6 +34734,9 @@
 	    },
 	    locationAdded: function locationAdded(location) {
 	      return dispatch(_actions2.default.locationAdded(location));
+	    },
+	    userLocationReceived: function userLocationReceived(center) {
+	      return dispatch(_actions2.default.userLocationReceived(center));
 	    }
 	  };
 	};
@@ -60392,6 +60377,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 	
+	      // Check if user is logged in
 	      _utils.APIManager.get('/account/currentUser', null, function (err, response) {
 	        if (err) {
 	          console.error(err);
@@ -60400,8 +60386,6 @@
 	        if (response.profile == null) {
 	          return;
 	        }
-	
-	        console.log(response.profile);
 	        _this2.props.currentUserReceived(response.profile);
 	      });
 	    }
@@ -60417,8 +60401,6 @@
 	          console.error(msg);
 	          return;
 	        }
-	
-	        console.log(response.profile + 'successfully joined');
 	        _this3.props.profileCreated(response.profile);
 	      });
 	    }
@@ -60511,6 +60493,11 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	/*
+	  TODO: The left/right component isn't working entirely how I want it too. Also,
+	    I should make it more obvious that right/left components can be resized.
+	*/
+	
 	var Container = function (_Component) {
 	  _inherits(Container, _Component);
 	
@@ -60529,6 +60516,9 @@
 	    };
 	    return _this;
 	  }
+	
+	  // Adjust right and left component size
+	
 	
 	  _createClass(Container, [{
 	    key: 'onResize',
@@ -62711,6 +62701,9 @@
 	    return _this;
 	  }
 	
+	  // Check if user is logged in
+	
+	
 	  _createClass(Navigation, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
@@ -62727,6 +62720,9 @@
 	        _this2.props.currentUserReceived(response.profile);
 	      });
 	    }
+	
+	    // Log user in
+	
 	  }, {
 	    key: 'login',
 	    value: function login(credentials) {
@@ -62741,6 +62737,9 @@
 	        _this3.props.currentUserReceived(response.profile);
 	      });
 	    }
+	
+	    // Log user out
+	
 	  }, {
 	    key: 'logout',
 	    value: function logout(event) {
@@ -81775,10 +81774,8 @@
 	  configureStore: function configureStore() {
 	    // combine all reducers
 	    var reducers = (0, _redux.combineReducers)({
-	
 	      account: _reducers.accountReducer,
 	      hike: _reducers.hikeReducer
-	
 	    });
 	
 	    store = (0, _redux.createStore)(reducers, (0, _redux.applyMiddleware)(_reduxThunk2.default));
@@ -81871,11 +81868,12 @@
 	  var updated = Object.assign({}, state);
 	
 	  switch (action.type) {
-	    // assign 'currentUser' property when new user signs up
+	    // Assign 'currentUser' property when new user signs up
 	    case _constants2.default.PROFILE_CREATED:
 	      updated['currentUser'] = action.profile;
 	      return updated;
 	
+	    // Assign 'currentUser' property when returning user logs in
 	    case _constants2.default.CURRENT_USER_RECEIVED:
 	      updated['currentUser'] = action.profile;
 	      return updated;
@@ -81905,7 +81903,8 @@
 	  hikeLocation: null,
 	  list: [],
 	  selectedHike: null,
-	  currentHike: null
+	  currentHike: null,
+	  center: null
 	};
 	
 	exports.default = function () {
@@ -81916,24 +81915,34 @@
 	
 	  switch (action.type) {
 	
+	    // Set hike location on map click
 	    case _constants2.default.CURRENT_HIKE_RECEIVED:
 	      // console.log('CURRENT_HIKE_RECEIVED ' + JSON.stringify(action.hike))
 	      updated['currentHike'] = action.hike;
 	      return updated;
 	
+	    // Hikes gotten from database
 	    case _constants2.default.HIKES_RECEIVED:
-	      // console.log('HIKES_RECEIVED ' + JSON.stringify(action.hikes))
+	      console.log('HIKES_RECEIVED ' + JSON.stringify(action.hikes));
 	      updated['list'] = action.hikes;
 	      return updated;
 	
+	    // Hike marker on map clicked
 	    case _constants2.default.HIKE_SELECTED:
 	      // console.log('HIKE_SELECTED ' + JSON.stringify(action.hike))
 	      updated['selectedHike'] = action.hike;
 	      return updated;
 	
+	    //
 	    case _constants2.default.LOCATION_ADDED:
 	      // console.log('LOCATION_ADDED ' + JSON.stringify(action.location))
 	      updated['hikeLocation'] = action.location;
+	      return updated;
+	
+	    // User location gotten from browser -- not currently implemented
+	    case _constants2.default.USER_LOCATION_RECEIVED:
+	      console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.center));
+	      updated['center'] = action.center;
 	      return updated;
 	
 	    default:
