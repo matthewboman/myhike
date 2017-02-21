@@ -44,8 +44,8 @@ list of ways anyone interested can help:
   also using my Cloudinary account to store pictures. Please don't mess with this
   or I'll take it down.
 
-  You can also use your own database by changing [.env]() and photo cloud by changing
-  the [Images]() component.
+  You can also use your own database by changing [.env](https://github.com/crashspringfield/myhike/blob/master/.env) and photo cloud by changing
+  the [Images](https://github.com/crashspringfield/myhike/blob/master/src/components/presentation/Images.js) component.
 
   If you want to run locally, to test it out or contribute:
 
