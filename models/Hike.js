@@ -1,50 +1,33 @@
 var mongoose = require('mongoose')
 
-/*
-  TODO: Rewrite using a linked DB schema. Utimately, the goal is for one user
-    to create a hike, and for other users to be able to add their own reviews.
-    This will require a lot of reworking on the front-end too in
-    (/scr/components/containers/CreateHike and probably other places too)    
-*/
-
 var HikeSchema = new mongoose.Schema({
 
-  name: {
-    type: String,
-    default: ''
-  },
-  position: {
-    type: Object,
-    default: {}
-  },
-  review: {
-    user: {
-      type: String,
-      default: ''
-    },
-    description: {
-      type: String,
-      default: ''
-    },
-    plants: {
-      type: String,
-      default: ''
-    },
-    fungi: {
-      type: String,
-      default: ''
-    },
-    animals: {
-      type: String,
-      default: ''
-    },
-    pictures: {
-      type: Array,
-      default: []
-    }
-  }
-
+  name: { type: String, default: '' },
+  user: { type: String, default: '' },
+  position: { type: Object, default: {} },
+  useAddress: { type: Boolean, default: false },
+  address: { type: String, default: '' },
+  city: { type: String, default: '' },
+  state: { type: String, default: '' },
+  country: { type: String, default: '' },
+  timestamp: { type: Date, default: Date.now }
 
 })
+
+HikeSchema.methods.summary = function() {
+  var summary = {
+    id: this._id.toString(),
+    name: this.name,
+    user: this.user,
+    position: this.position,
+    useAddress: this.useAddress,
+    address: this.address,
+    city: this.city,
+    state: this.state,
+    country: this.country,
+    timestamp: this.timestamp
+  }
+  return summary
+}
 
 module.exports = mongoose.model('HikeSchema', HikeSchema);

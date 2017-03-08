@@ -28,18 +28,18 @@ module.exports = {
 		})
 	},
 
-	findById: function(id){
-		return new Promise(function(resolve, reject){
-			Profile.findById(id, function(err, profile){
-				if (err){
-					reject(err)
-					return
-				}
-
-				resolve(profile.summary())
-			})
-		})
-	},
+	// findById: function(id){
+	// 	return new Promise(function(resolve, reject){
+	// 		Profile.findById(id, function(err, profile){
+	// 			if (err){
+	// 				reject(err)
+	// 				return
+	// 			}
+	//
+	// 			resolve(profile.summary())
+	// 		})
+	// 	})
+	// },
 
 	create: function(params){
 		return new Promise(function(resolve, reject){
@@ -57,6 +57,32 @@ module.exports = {
 				resolve(profile.summary())
 			})
 		})
-	}
+	},
+
+	// PUT
+  update: function(id, params) {
+    return new Promise(function(resolve, reject) {
+      Profile.findByIdAndUpdate(id, params, {new: true}, function(err, profile) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(profile.summary);
+      })
+    })
+  },
+
+  // DELETE
+  delete: function(id) {
+    return new Promise(function(resolve, reject) {
+      Profile.findByIdAndRemove(id, function(err, profile) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(null)
+      })
+    })
+  },
 
 }

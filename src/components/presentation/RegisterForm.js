@@ -16,7 +16,6 @@ class RegisterForm extends Component {
   updateVisitor(event) {
     let updated = Object.assign({}, this.state.visitor)
     updated[event.target.id] = event.target.value
-    console.log(updated)
     this.setState({
       visitor: updated
     })

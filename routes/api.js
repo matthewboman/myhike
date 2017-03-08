@@ -16,20 +16,19 @@ router.get('/:resource', function(req, res, next) {
     return;
   }
 
-  controller.find(req.query, function(err, results) {
-    if (err) {
+  controller.find(req.query, false)
+    .then(function(entities) {
+      res.json({
+        confirmation: 'success',
+        results: entities
+      })
+    })
+    .catch(function(err) {
       res.json({
         confirmation: 'fail',
         message: err
       })
-      return;
-    }
-    res.json({
-      confirmation: 'success',
-      results: results
     })
-  })
-
 })
 
 // GET a specific instance of a resource
@@ -47,20 +46,19 @@ router.get('/:resource/:id', function(req, res, next) {
     return;
   }
 
-  controller.findById(id, function(err, result) {
-    if (err) {
+  controller.findById(id)
+    .then(function(result) {
+      res.json({
+        confirmation: 'success',
+        result: result
+      })
+    })
+    .catch(function(err) {
       res.json({
         confirmation: 'fail',
-        message: 'Not found'
-      });
-      return;
-    }
-    res.json({
-      confirmation: 'success',
-      result: result
-    });
-  })
-
+        message: resource + ' ' + id + ' ' + ' not found.'
+      })
+    })
 })
 
 // POST a new instance of a resource
@@ -77,20 +75,19 @@ router.post('/:resource', function(req, res, next) {
     return;
   }
 
-  controller.create(req.body, function(err, result) {
-    if (err) {
+  controller.create(req.body)
+    .then(function(result) {
+      res.json({
+        confirmation: 'success',
+        result: result
+      })
+    })
+    .catch(function(err) {
       res.json({
         confirmation: 'fail',
-        message: 'post failed'
+        message: err
       })
-      return;
-    }
-    res.json({
-      confirmation: 'success',
-      result: result
     })
-  })
-
 })
 
 
@@ -109,20 +106,19 @@ router.put('/:resource/:id', function(req, res, next) {
     return;
   }
 
-  controller.update(id, req.body, function(err, result) {
-    if (err) {
+  controller.update(id, req.body)
+    .then(function(result) {
+      res.json({
+        confirmation: 'success',
+        result: result
+      })
+    })
+    .catch(function(err) {
       res.json({
         confirmation: 'fail',
-        message: 'Update failed'
+        message: err
       })
-      return;
-    }
-    res.json({
-      confirmation: 'success',
-      result: result
     })
-  })
-
 })
 
 
@@ -141,20 +137,18 @@ router.delete('/:resource/:id', function(req, res, next) {
     return;
   }
 
-  controller.delete(id, function(err, result) {
-    if (err) {
+  controller.delete(id)
+    .then(function(result) {
       res.json({
-        confirmation: 'Fail',
-        message: 'Failed to delete'
+        confirmation: 'success'
       })
-      return;
-    }
-    res.json({
-      confirmation: 'success',
-      result: result
-    });
-  })
-
+    })
+    .catch(function(err) {
+      res.json({
+        confirmation: 'fail',
+        message: err
+      })
+    })
 })
 
 module.exports = router;

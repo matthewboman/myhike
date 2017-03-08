@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 import actions from '../../actions'
 import { APIManager } from '../../utils'
-import { Detail } from '../presentation'
+import { Review } from '../presentation'
 
 /*
   TODO: Allow users to edit their own hike.
@@ -13,48 +14,96 @@ import { Detail } from '../presentation'
 class Hike extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      addReview: false
+    }
+  }
+
+  componentDidUpdate() {
+    let hike = this.props.hike
+    if (hike == null) {
+      return
+    }
+    // prevents infinite loop, but also prevents live reload when user submits new review
+    let reviewsArray = this.props.reviewsMap[hike.id]
+    if (reviewsArray != null) {
+      return
+    }
+    this.props.fetchReviews(hike)
+  }
+
+  displayReviewComponent(event) {
+    this.setState({
+      addReview: true
+    })
+  }
+
+  submitReview(review) {
+    // check if user is logged in
+    // if (this.props.user == null) {
+    //   alert('You must be signed up')
+    //   return
+    // }
+    let updatedReview = Object.assign({}, review)
+    let hikeId = this.props.hike.id
+    updatedReview['hikeId'] = hikeId
+
+    this.props.reviewAdded(updatedReview, hikeId)
   }
 
   render() {
-    // Make sure we get a hike from DB
-    if (this.props.currentHike == null || undefined) { return false }
-    const currentHike = this.props.currentHike
 
-    // Make sure we get pictures from DB / cloud
-    if (this.props.currentHike.review.pictures == null || undefined) { return false }
-    const pixx = this.props.currentHike.review.pictures.map((picture, i) => {
-      return (
-        <li key={i} className="hike-image">
-          <img src={picture} className="image-preview"/>
-        </li>
+    let hike = this.props.hike
+    let reviews = this.props.reviewsMap
+    let reviewList
+    let header
+    let newReview
+
+    if (hike != null) {
+      header = (
+        <div>
+          <h3>{hike.name}</h3>
+        </div>
       )
-    })
+    }
+
+    if (reviews != null && hike != null) {
+      let hikeReviews = reviews[hike.id]
+      if (hikeReviews != null) {
+        reviewList = hikeReviews.map((review, i) => {
+          return (
+            <li className="review-block" key={i}>
+              <p className="review-description">{review.description}</p>
+              <p className="review-animals">{review.animals}</p>
+              <p className="review-plants">{review.plants}</p>
+              <p className="review-fungi">{review.fungi}</p>
+            </li>
+          )
+        })
+      }
+    }
+
+    if (this.state.addReview == true) {
+      newReview = (
+        <div>
+          <Review onReview={this.submitReview.bind(this)} />
+        </div>
+      )
+    } else {
+      newReview = (
+        <div>
+          <button onClick={this.displayReviewComponent.bind(this)}>Add a Review</button>
+        </div>
+      )
+    }
 
     return (
       <div className="sidebar">
-        <h2>{currentHike.name}</h2>
-        <div className="hikeBlock">
-          <h4>Hike Review and Description</h4>
-          <p>{currentHike.review.description}</p>
-        </div>
-        <div className="hikeBlock">
-          <h4>Animals</h4>
-          <p>{currentHike.review.animals}</p>
-        </div>
-        <div className="hikeBlock">
-          <h4>Plants</h4>
-          <p>{currentHike.review.plants}</p>
-        </div>
-        <div className="hikeBlock">
-          <h4>Fungi</h4>
-          <p>{currentHike.review.fungi}</p>
-        </div>
-        <div className="hikeBlock">
-        <ul className="hike-images">
-          {pixx}
-        </ul>
-        </div>
+      {header}
+      <ul className="reviews">
+        {reviewList}
+      </ul>
+      {newReview}
       </div>
     )
   }
@@ -62,8 +111,18 @@ class Hike extends Component {
 
 const stateToProps = (state) => {
   return {
-    currentHike: state.hike.currentHike,
+    hike: state.hike.currentHike,
+    reviewsMap: state.hike.reviewMap
+    // reviewsMap: state.
   }
 }
 
-export default connect(stateToProps)(Hike)
+const dispatchToProps = (dispatch) => {
+  return {
+    fetchHike: (params) => dispatch(actions.fetchHike(params)),
+    fetchReviews: (hike) => dispatch(actions.fetchReviews(hike)),
+    reviewAdded: (review) => dispatch(actions.reviewAdded(review)),
+  }
+}
+
+export default connect(stateToProps, dispatchToProps)(Hike)

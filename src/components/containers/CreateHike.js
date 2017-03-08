@@ -6,16 +6,7 @@ import { APIManager } from '../../utils'
 import { Images } from '../presentation'
 
 /*
-  TODO: Split into two componenets. Right now, it is getting the position
-  from the app state but getting everything else from user input.
-
-  Smart component: gets location and current user from app and passes it down
-  Dumb component: gets hike data from user input, saves in state to be sent back
-    up to smart component on submit. Keep Image presentational component as is
-    and also pass to smart component.
-
   TODO: Allow for user to choose current location or click on map (or address?)
-
   TODO: Hike can be submitted only if user is logged in and location is selected
 */
 
@@ -25,71 +16,111 @@ class CreateHike extends Component {
     this.state = {
       hike: {
         name: '',
-        position: {},
-        review: {
-          animals: '',
-          description: '',
-          fungi: '',
-          pictures: [],
-          plants: '',
-          user: '',
-        }
-      }
+        position: null,
+        useAddress: false,
+        address: '',
+        city: '',
+        state: '',
+        country: ''
+      },
     }
   }
+
+  componentDidUpdate () {
+    // console.log('updating with location ' + JSON.stringify(this.props.location))
+    // console.log('updating with user location ' + JSON.stringify(this.props.userLocation))
+  }
+
+
 
   updateHike(event) {
     let updatedHike = Object.assign({}, this.state.hike)
-    // Get new hike location from props and assign
-    let position = {
-      lat: this.props.location.lat,
-      lng: this.props.location.lng
-    }
-    updatedHike["position"] = position
-
-    // Get and assign form subfields
-    let updatedReview = Object.assign({}, this.state.hike.review)
-    updatedReview[event.target.id] = event.target.value
-    updatedReview["user"] = this.props.currentUser.username
-    updatedHike["review"] = updatedReview
-
-    // Get and assign all fields
-    updatedHike[event.target.id] = event.target.value // kind of janks it b/c more is being submitted, but mongoose model makes it work
-    // Set state with all the details
+    let updatedAddress = Object.assign({}, updatedHike.address)
+    updatedAddress[event.target.id] = event.target.value
+    updatedHike[event.target.id] = event.target.value
+    // console.log(JSON.stringify(updatedHike))
     this.setState({
       hike: updatedHike
     })
   }
 
-  addImages(event) {
+  useCurrentLocation(event) {
     let updatedHike = Object.assign({}, this.state.hike)
-    let updatedReview = Object.assign({}, this.state.hike.review)
-    // Add images from Image component
-    let updatedImages = Object.assign([], this.state.hike.review.pictures)
-    for (let value of event) {
-      updatedImages.push(value.secure_url)
-    }
-    updatedReview["pictures"] = updatedImages
-    updatedHike["review"] = updatedReview
-    // Set state with all the details
+    updatedHike['position'] = this.props.userLocation.center
+    updatedHike['useAddress'] = false
     this.setState({
       hike: updatedHike
     })
   }
+
+  useAddress(event) {
+    let updatedHike = Object.assign({}, this.state.hike)
+    updatedHike['useAddress'] = true
+    this.setState({
+      hike: updatedHike
+    })
+  }
+
+  useMap(event) {
+    let updatedHike = Object.assign({}, this.state.hike)
+    updatedHike['position'] = this.props.location
+    updatedHike['useAddress'] = false
+    this.setState({
+      hike: updatedHike
+    })
+  }
+
 
   submitHike(hike) {
     console.log('submitting ' + JSON.stringify(this.state.hike))
-    APIManager.post('/api/hike', this.state.hike, (err, response) => {
-      if (err) {
-        console.error('ERROR: ' + err.message)
-      }
-    })
+    // check if user is logged in
+    // if (this.props.user == null) {
+    //   alert('You must be signed up')
+    //   return
+    // }
+    let newHike = this.state.hike
+    this.props.hikeCreated(newHike)
   }
 
 
 
   render() {
-    const position = JSON.stringify(this.props.location) // for displaying GPS position in form
+    // Allow user to choose hike by map or current location
+    let lat
+    let lng
+    if (this.state.position != null) {
+      lat = this.state.hike.position.lat
+      lng = this.state.hike.position.lng
+    }
+
+
+    // Allow user to choose hike by address
+    let display = ''
+    let address = this.state.hike.useAddress
+    if (address == true) {
+      display = (
+        <div>
+          <input onChange={this.updateHike.bind(this)} id="address"
+            className="form-control" type="text" placeholder="Address" />
+          <br />
+          <input onChange={this.updateHike.bind(this)} id="city"
+            className="form-control" type="text" placeholder="City" />
+          <br />
+          <input onChange={this.updateHike.bind(this)} id="state"
+            className="form-control" type="text" placeholder="State" />
+          <br />
+          <input onChange={this.updateHike.bind(this)} id="country"
+            className="form-control" type="text" placeholder="Country" />
+          <br />
+        </div>
+      )
+    } else {
+      display = (
+        <div>
+          <p>Hike location is at latitude {lat} and longitude {lng}</p>
+        </div>
+      )
+    }
 
     return (
       <div className="sidebar">
@@ -97,22 +128,12 @@ class CreateHike extends Component {
         <input onChange={this.updateHike.bind(this)} id="name"
           className="form-control" type="text" placeholder="Hike Name" />
         <br />
-        <input id="location" onChange={this.updateHike.bind(this)} id="position"
-          className="form-control" type="text" placeholder={position}/>
+        <button onClick={this.useCurrentLocation.bind(this)}>Use current location</button>
+        <button onClick={this.useAddress.bind(this)}>Enter an address</button>
+        <button onClick={this.useMap.bind(this)}>Select Map Location</button>
+        <br/>
         <br />
-        <input onChange={this.updateHike.bind(this)} id="description"
-          className="form-control" type="text" placeholder="Describe it!" />
-        <br />
-        <input onChange={this.updateHike.bind(this)} id="plants"
-          className="form-control" type="text" placeholder="What plants?" />
-        <br />
-        <input onChange={this.updateHike.bind(this)} id="fungi"
-          className="form-control" type="text" placeholder="What mushrooms?" />
-        <br />
-        <input onChange={this.updateHike.bind(this)} id="animals"
-          className="form-control" type="text" placeholder="What animals" />
-        <br />
-        <Images onImageSubmit={this.addImages.bind(this)}/>
+        {display}
         <br />
         <button onClick={this.submitHike.bind(this)}
           className="btn btn-info btn-block">Add it</button>
@@ -124,12 +145,14 @@ class CreateHike extends Component {
 const stateToProps = (state) => {
   return {
     location: state.hike.hikeLocation,
-    currentUser: state.account.currentUser
+    currentUser: state.account.currentUser,
+    userLocation: state.hike.center,
   }
 }
 
 const dispatchToProps = (dispatch) => {
 	return {
+    hikeCreated: (newHike) => dispatch(actions.hikeCreated(newHike)),
 		locationAdded: (location) => dispatch(actions.locationAdded(location)),
 	}
 }
