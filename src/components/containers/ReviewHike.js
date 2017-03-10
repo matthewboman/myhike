@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import actions from '../../actions'
 import { APIManager } from '../../utils'
-import { Review } from '../presentation'
+import { CreateReview } from '../presentation'
 
 /*
   TODO: Hike can be submitted only if user is logged in and location is selected
@@ -12,9 +12,23 @@ import { Review } from '../presentation'
 class CreateHike extends Component {
   constructor() {
     super()
+    this.checkForReviews = this.checkForReviews.bind(this)
     this.state = {}
   }
 
+  checkForReviews() {
+    let hike = this.props.currentHike
+    if (hike == null) {
+      return
+    }
+
+    let reviewsArray = this.props.reviews[hike.id]
+    if (reviewsArray != null) {
+      console.log(reviewsArray)
+      return
+    }
+    this.props.fetchReviews({hikeId: hike.id})
+  }
 
   componentDidUpdate() {
     console.log("location " + JSON.stringify(this.props.location))
@@ -38,7 +52,7 @@ class CreateHike extends Component {
 
     return (
       <div className="sidebar">
-        <Review
+        <CreateReview
           user={this.props.currentUser.username}
           onReview={this.submitReview.bind(this)}/>
       </div>
@@ -49,12 +63,15 @@ class CreateHike extends Component {
 const stateToProps = (state) => {
   return {
     location: state.hike.hikeLocation,
-    currentUser: state.account.currentUser
+    currentHike: state.hike.currentHike,
+    currentUser: state.account.currentUser,
+    reviews: state.review.reviewMap
   }
 }
 
 const dispatchToProps = (dispatch) => {
 	return {
+    fetchReviews: (params) => dispatch(actions.fetchReviews(params)),
 		locationAdded: (location) => dispatch(actions.locationAdded(location)),
 	}
 }

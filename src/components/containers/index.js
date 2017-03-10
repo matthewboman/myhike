@@ -4,6 +4,7 @@ import Hike from './Hike'
 import Map from './Map'
 import Register from './Register'
 import ReviewHike from './ReviewHike'
+import Reviews from './Reviews'
 
 export {
 
@@ -12,6 +13,7 @@ export {
   Hike,
   Map,
   Register,
-  // ReviewHike
+  ReviewHike,
+  Reviews
 
 }

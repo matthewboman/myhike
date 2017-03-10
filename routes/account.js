@@ -16,43 +16,22 @@ router.get('/:action', function(req, res, next){
 		})
 	}
 
-
-	if (action == 'currentuser'){ // check for a current user
-		if (req.session == null){
-			res.json({
-				confirmation: 'success',
-				message: 'User not logged in.'
+	if (action == 'currentuser') {
+		controllers.account.currentUser(req)
+			.then(function(result) {
+				res.json({
+					confirmation: 'success',
+					user: result
+				})
 			})
-			return
-		}
-
-		if (req.session.token == null){
-			res.json({
-				confirmation: 'success',
-				message: 'User not logged in.'
+			.catch(function(err) {
+				res.json({
+					confirmation: 'fail',
+					message: err
+				})
 			})
-			return
-		}
-
-		var token = req.session.token
-		utils.JWT.verify(token, process.env.TOKEN_SECRET)
-  		.then(function(decode){
-  			return controllers.profile.findById(decode.id)
-  		})
-  		.then(function(profile){
-  			res.json({
-  				confirmation: 'success',
-  				profile: profile
-  			})
-  		})
-  		.catch(function(err){
-  			res.json({
-  				confirmation: 'fail',
-  				message: 'Invalid Token'
-  			})
-  			return
-  		})
 	}
+
 })
 
 // Register and login new user
@@ -106,7 +85,8 @@ router.post('/login', function(req, res, next){
   		// create signed token
   		var token = utils.JWT.sign({id: profile._id}, process.env.TOKEN_SECRET)
   		req.session.token = token
-
+			req.session.user = profile._id
+			// console.log('session is ' + JSON.stringify(req.session))
   		res.json({
   			confirmation: 'success',
   			profile: profile.summary(),

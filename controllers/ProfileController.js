@@ -5,6 +5,7 @@ var Profile = require('../models/Profile')
 
 module.exports = {
 
+	// GET
 	find: function(params, isRaw){
 		return new Promise(function(resolve, reject){
 			Profile.find(params, function(err, profiles){
@@ -28,18 +29,17 @@ module.exports = {
 		})
 	},
 
-	// findById: function(id){
-	// 	return new Promise(function(resolve, reject){
-	// 		Profile.findById(id, function(err, profile){
-	// 			if (err){
-	// 				reject(err)
-	// 				return
-	// 			}
-	//
-	// 			resolve(profile.summary())
-	// 		})
-	// 	})
-	// },
+	findById: function(id){
+		return new Promise(function(resolve, reject){
+			Profile.findById(id, function(err, profile){
+				if (err){
+					reject(err)
+					return
+				}
+				resolve(profile.summary())
+			})
+		})
+	},
 
 	create: function(params){
 		return new Promise(function(resolve, reject){

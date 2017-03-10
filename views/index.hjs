@@ -9,7 +9,9 @@
   </head>
   <body>
 
-    <div id="root"></div>
+    <div id="root">{{{ react }}}</div>
+
+    <script type="text/javascript">window.__PRELOADED_STATE__ = {{{ preloadedState }}}</script>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEdiRKVsNsrx8HXPDWTTKJ_txBzew8N2U"></script>
     <script type="text/javascript" src="/build/bundle.js"></script>

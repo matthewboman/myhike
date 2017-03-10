@@ -49,19 +49,19 @@ export default {
     }
   },
 
-  fetchReviews: (hike) => {
+  fetchReviews: (params) => {
     return (dispatch) => {
       // console.log('searching for reviews for ' + JSON.stringify(hike))
-      APIManager.get('/api/review', {hikeId: hike.id}, (err, response) => {
+      APIManager.get('/api/review', params, (err, response) => {
         if (err) {
           console.error(err)
           return
         }
         const reviews = response.results
-
+        console.log('actions received reviews ' + JSON.stringify(reviews))
         dispatch({
           type: constants.REVIEWS_RECEIVED,
-          hikeId: hike.id,
+          params: params,
           reviews: reviews
         })
       })
@@ -110,7 +110,7 @@ export default {
     }
   },
 
-  reviewAdded: (review, hikeId) => {
+  reviewCreated: (review, hikeId) => {
     return (dispatch) => {
       // console.log('action sez review is ' + review)
       APIManager.post('/api/review', review, (err, response) => {
@@ -127,6 +127,7 @@ export default {
       })
     }
   },
+
 
   userLocationReceived: (center) => {
     return {

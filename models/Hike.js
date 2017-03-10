@@ -16,7 +16,8 @@ var HikeSchema = new mongoose.Schema({
 
 HikeSchema.methods.summary = function() {
   var summary = {
-    id: this._id.toString(),
+    // id: this._id.toString(),
+    id: this._id,
     name: this.name,
     user: this.user,
     position: this.position,

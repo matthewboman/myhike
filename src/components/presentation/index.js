@@ -1,4 +1,5 @@
-import Home from './Home'
+import CreateReview from './CreateReview'
+import HomePage from './HomePage'
 import Images from './Images'
 import Login from './Login'
 import RegisterForm from './RegisterForm'
@@ -6,7 +7,8 @@ import Review from './Review'
 
 export {
 
-  Home,
+  CreateReview,
+  HomePage,
   Images,
   Login,
   RegisterForm,

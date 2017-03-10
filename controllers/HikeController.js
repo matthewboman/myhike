@@ -31,12 +31,15 @@ module.exports = {
 
   findById: function(id) {
     return new Promise(function(resolve, reject) {
+      // See if hike exists in database
       Hike.findById(id, function(err, hike) {
         if (err) {
           reject(err)
           return
         }
 
+        
+        console.log('summar is ' + JSON.stringify(hike.summary()))
         resolve(hike.summary())
       })
     })
@@ -66,7 +69,7 @@ module.exports = {
           var latLng = results[0].geometry.location
           // Insert lat/lng into Hike data
           params['position'] = latLng
-          // console.log(params)
+
           Hike.create(params, function(err, hike) {
             if (err) {
               reject(err);
@@ -88,7 +91,6 @@ module.exports = {
         })
       }
     })
-
 
   },
 
