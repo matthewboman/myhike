@@ -8,10 +8,36 @@ var APIManager = require("../utils").APIManager;
 module.exports = {
 
   // ======================== User data =================================
-  currentUserReceived: function (profile) {
-    return {
-      type: constants.CURRENT_USER_RECEIVED,
-      profile: profile
+  currentUserReceived: function (credentials) {
+    return function (dispatch) {
+      APIManager.post("/account/login", credentials, function (err, response) {
+        if (err) {
+          var msg = err.message || err;
+          console.error(msg);
+          return;
+        }
+        console.log(JSON.stringify(response.results));
+        var user = response.results;
+        dispatch({
+          type: constants.CURRENT_USER_RECEIVED,
+          user: user
+        });
+      });
+    };
+  },
+
+  logoutUser: function (user) {
+    return function (dispatch) {
+      APIManager.get("/account/logout", null, function (err, response) {
+        if (err) {
+          console.error(err.message);
+          return;
+        }
+        dispatch({
+          type: constants.CURRENT_USER_RECEIVED,
+          user: null
+        });
+      });
     };
   },
 

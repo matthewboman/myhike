@@ -42,7 +42,7 @@ router.get('/', function(req, res, next) {
   // See if user is logged in
   controllers.account.currentUser(req)
     .then(function(result) {
-      // Populate the reducer with user, if logged in
+      // Populate the account reducer with user, if logged in
       reducers['account'] = {
         user: result
       }
@@ -51,7 +51,7 @@ router.get('/', function(req, res, next) {
       return controllers.hike.find(null)
     })
     .then(function(hikes) {
-      // Populate the reducer with hikes
+      // Populate the hike reducer with hikes
       reducers['hike'] = {
         selectedHike: 0,
         list: hikes
@@ -60,8 +60,6 @@ router.get('/', function(req, res, next) {
     .then(function() {
       // Update intial state of Redux store with updated reducers
       initialStore = store.configureStore(reducers)
-      console.log('reducers are ' + JSON.stringify(reducers))
-      console.log('INITIAL STORE ' + JSON.stringify(initialStore))
       // Prepare Home route and app state
       var routes = {
         path: '/',
@@ -76,7 +74,9 @@ router.get('/', function(req, res, next) {
     .then(function(renderProps) {
       // Generate server-side HTML
       var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+      console.log('HTML: ' + html)
       // Send HTML and state to index.hjs
+      // console.log('preloaded state will be ' + JSON.stringify(initialStore.getState()))
       res.render('index', {
         react: html,
         preloadedState: JSON.stringify(initialStore.getState())
@@ -84,7 +84,7 @@ router.get('/', function(req, res, next) {
     })
     .catch(function(err) {
       // Handle errors
-      console.log(err)
+      console.log('Error in / route: ' + err)
     })
 })
 
@@ -100,6 +100,11 @@ router.get('/:page/:slug', function(req, res, next) {
 
   // If client is making API request, don't handle
   if (page == 'api') {
+    next()
+    return
+  }
+
+  if (page == 'account') {
     next()
     return
   }
@@ -140,7 +145,7 @@ router.get('/:page/:slug', function(req, res, next) {
       });
     })
     .catch(function(err) {
-      console.log('ERROR' + err)
+      console.log('Error in /:page/:slug route: ' + err)
     })
 })
 

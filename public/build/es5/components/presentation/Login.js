@@ -22,7 +22,7 @@ var Login = (function (Component) {
 
     _get(Object.getPrototypeOf(Login.prototype), "constructor", this).call(this);
     this.state = {
-      visitor: {
+      user: {
         username: "",
         password: ""
       }
@@ -34,10 +34,10 @@ var Login = (function (Component) {
   _prototypeProperties(Login, null, {
     updateVisitor: {
       value: function updateVisitor(event) {
-        var updated = Object.assign({}, this.state.visitor);
+        var updated = Object.assign({}, this.state.user);
         updated[event.target.id] = event.target.value;
         this.setState({
-          visitor: updated
+          user: updated
         });
       },
       writable: true,
@@ -46,8 +46,15 @@ var Login = (function (Component) {
     login: {
       value: function login(event) {
         event.preventDefault();
-        console.log(this.state.visitor + " allegedly logged in");
-        this.props.onLogin(this.state.visitor);
+        if (this.state.user.username == 0) {
+          console.log("Please enter your username");
+          return;
+        }
+        if (this.state.user.password.length == 0) {
+          console.log("Please enter your password");
+          return;
+        }
+        this.props.onLogin(this.state.user);
       },
       writable: true,
       configurable: true

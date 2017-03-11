@@ -5,18 +5,20 @@ var initialState = {
 }
 
 export default (state = initialState, action) => {
-  let updated = Object.assign({}, state)
+  let updatedState = Object.assign({}, state)
 
   switch (action.type) {
     // Assign 'currentUser' property when new user signs up
     case constants.PROFILE_CREATED:
-      updated['currentUser'] = action.profile
-      return updated
+      updatedState['user'] = action.profile
+      return updatedState
 
     // Assign 'currentUser' property when returning user logs in
     case constants.CURRENT_USER_RECEIVED:
-      updated['currentUser'] = action.profile
-      return updated
+      console.log('CURRENT_USER_RECEIVED: ' + JSON.stringify(action.user))
+      updatedState['user'] = action.user
+      console.log('updatedState ' + JSON.stringify(updatedState))
+      return updatedState
 
     default:
       return state

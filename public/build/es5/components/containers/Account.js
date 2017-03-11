@@ -10,19 +10,17 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== "fun
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-/*
-TODO: move logic from NAV to make this a smart component and nav layout only
-*/
-
 var _react = require("react");
 
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var Link = require("react-router").Link;
 var connect = require("react-redux").connect;
 var APIManager = require("../../utils").APIManager;
 var actions = _interopRequire(require("../../actions"));
 
+var Login = require("../presentation").Login;
 var Account = (function (Component) {
   function Account() {
     _classCallCheck(this, Account);
@@ -34,9 +32,71 @@ var Account = (function (Component) {
   _inherits(Account, Component);
 
   _prototypeProperties(Account, null, {
+    login: {
+      value: function login(credentials) {
+        this.props.currentUserReceived(credentials);
+      },
+      writable: true,
+      configurable: true
+    },
+    logout: {
+      value: function logout(event) {
+        event.preventDefault();
+        this.props.logoutUser(null);
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
-        return React.createElement("div", null);
+        /*
+          Display login/signup if user is not logged in.
+          If user is logged in, display profile link and logout.
+        */
+        var content = null;
+
+        if (this.props.user == null) {
+          content = React.createElement(
+            "div",
+            null,
+            React.createElement(Login, { onLogin: this.login.bind(this) }),
+            React.createElement(
+              Link,
+              { to: "/register" },
+              React.createElement(
+                "button",
+                null,
+                "Register"
+              )
+            )
+          );
+        } else {
+          content = React.createElement(
+            "div",
+            null,
+            React.createElement(
+              Link,
+              { to: "/currentuser" },
+              React.createElement(
+                "button",
+                null,
+                "Account"
+              )
+            ),
+            React.createElement(
+              "button",
+              { onClick: this.logout.bind(this) },
+              "Log out ",
+              this.props.user.username
+            )
+          );
+        }
+
+        return React.createElement(
+          "div",
+          null,
+          content
+        );
       },
       writable: true,
       configurable: true
@@ -46,4 +106,20 @@ var Account = (function (Component) {
   return Account;
 })(Component);
 
-module.exports = Account;
+var stateToProps = function (state) {
+  return {
+    user: state.account.user
+  };
+};
+
+var dispatchToProps = function (dispatch) {
+  return {
+    currentUserReceived: function (user) {
+      return dispatch(actions.currentUserReceived(user));
+    },
+    logoutUser: function (user) {
+      return dispatch(actions.logoutUser(user));
+    } };
+};
+
+module.exports = connect(stateToProps, dispatchToProps)(Account);

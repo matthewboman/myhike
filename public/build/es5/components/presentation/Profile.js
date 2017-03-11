@@ -15,56 +15,49 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var connect = require("react-redux").connect;
-var _containers = require("../containers");
+var Profile = (function (Component) {
+  function Profile() {
+    _classCallCheck(this, Profile);
 
-var Map = _containers.Map;
-var CreateHike = _containers.CreateHike;
-var Account = _containers.Account;
-var Nav = require("./").Nav;
-var Home = (function (Component) {
-  function Home() {
-    _classCallCheck(this, Home);
-
-    _get(Object.getPrototypeOf(Home.prototype), "constructor", this).call(this);
-    this.state = {};
+    _get(Object.getPrototypeOf(Profile.prototype), "constructor", this).call(this);
+    this.state = {
+      profile: {
+        username: "",
+        firstName: "",
+        lastName: "",
+        bio: "",
+        city: "",
+        image: "",
+        email: ""
+      }
+    };
   }
 
-  _inherits(Home, Component);
+  _inherits(Profile, Component);
 
-  _prototypeProperties(Home, null, {
+  _prototypeProperties(Profile, null, {
+    updateProfile: {
+      value: function updateProfile(event) {
+        event.preventDefault();
+        var upodateProfile = Object.assign({}, this.state.profile);
+        updatedProfile[event.target.id] = event.target.value;
+        this.setState({
+          profile: updatedProfile
+        });
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
-        var mapContainer = React.createElement("div", { style: { height: 500, width: 400 } });
-
-        return React.createElement(
-          "div",
-          null,
-          React.createElement(
-            "div",
-            { className: "nav" },
-            React.createElement(Account, null)
-          ),
-          React.createElement(
-            "div",
-            { className: "col-md-4" },
-            React.createElement(Map, {
-              mapContainer: mapContainer
-            })
-          ),
-          React.createElement(
-            "div",
-            { className: "col-md-8" },
-            React.createElement(CreateHike, null)
-          )
-        );
+        return React.createElement("div", null);
       },
       writable: true,
       configurable: true
     }
   });
 
-  return Home;
+  return Profile;
 })(Component);
 
-module.exports = Home;
+module.exports = Profile;

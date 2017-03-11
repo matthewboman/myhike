@@ -8,11 +8,14 @@ var Home = _interopRequire(require("./Home"));
 
 var Nav = _interopRequire(require("./Nav"));
 
+var Navbar = _interopRequire(require("./Navbar"));
+
 var PhoneContainer = _interopRequire(require("./PhoneContainer"));
 
 exports.Container = Container;
 exports.Home = Home;
 exports.Nav = Nav;
+exports.Navbar = Navbar;
 exports.PhoneContainer = PhoneContainer;
 Object.defineProperty(exports, "__esModule", {
   value: true

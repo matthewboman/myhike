@@ -6,7 +6,7 @@ class Login extends Component {
   constructor() {
     super()
     this.state = {
-      visitor: {
+      user: {
         username: '',
         password: ''
       }
@@ -14,17 +14,24 @@ class Login extends Component {
   }
 
   updateVisitor(event) {
-    let updated = Object.assign({}, this.state.visitor)
+    let updated = Object.assign({}, this.state.user)
     updated[event.target.id] = event.target.value
     this.setState({
-      visitor: updated
+      user: updated
     })
   }
 
   login(event) {
     event.preventDefault()
-    console.log(this.state.visitor + ' allegedly logged in')
-    this.props.onLogin(this.state.visitor)
+    if (this.state.user.username == 0) {
+      console.log('Please enter your username')
+      return
+    }
+    if (this.state.user.password.length == 0) {
+      console.log('Please enter your password')
+      return
+    }
+    this.props.onLogin(this.state.user)
   }
 
   render() {
