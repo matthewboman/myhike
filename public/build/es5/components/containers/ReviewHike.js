@@ -20,12 +20,6 @@ var actions = _interopRequire(require("../../actions"));
 
 var APIManager = require("../../utils").APIManager;
 var CreateReview = require("../presentation").CreateReview;
-
-
-/*
-  TODO: Hike can be submitted only if user is logged in and location is selected
-*/
-
 var CreateHike = (function (Component) {
   function CreateHike() {
     _classCallCheck(this, CreateHike);
@@ -55,14 +49,6 @@ var CreateHike = (function (Component) {
       writable: true,
       configurable: true
     },
-    componentDidUpdate: {
-      value: function componentDidUpdate() {
-        console.log("location " + JSON.stringify(this.props.location));
-        console.log(" hike ID " + this.props.currentHike._id);
-      },
-      writable: true,
-      configurable: true
-    },
     submitReview: {
       value: function submitReview(review) {
         console.log("submitting " + JSON.stringify(review));
@@ -70,17 +56,23 @@ var CreateHike = (function (Component) {
       writable: true,
       configurable: true
     },
+    componentDidMount: {
+      value: function componentDidMount() {
+        console.log("user is " + JSON.stringify(this.props.user));
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
-        if (this.props.currentUser == null || undefined) {
-          return false;
-        }
+        var user = this.props.user;
+        // if (this.props.currentUser == null || undefined) { return false }
 
         return React.createElement(
           "div",
           { className: "sidebar" },
           React.createElement(CreateReview, {
-            user: this.props.currentUser.username,
+            user: user,
             onReview: this.submitReview.bind(this) })
         );
       },
@@ -96,7 +88,7 @@ var stateToProps = function (state) {
   return {
     location: state.hike.hikeLocation,
     currentHike: state.hike.currentHike,
-    currentUser: state.account.currentUser,
+    user: state.account.user,
     reviews: state.review.reviewMap
   };
 };

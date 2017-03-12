@@ -61,6 +61,23 @@ module.exports = {
   },
 
   // DELETE that shit
-  "delete": function () {}
+  "delete": function () {},
 
-};
+  /* Upload image - set up for Cloudinary*/
+  upload: function (endpoint, file, params, callback) {
+    var uploadRequest = superagent.post(endpoint);
+
+    uploadRequest.attach("file", file); // 'file' is a Cloudinary requirement
+    // Add other parameters
+    Object.keys(params).forEach(function (key) {
+      uploadRequest.field(key, params[key]);
+    });
+
+    uploadRequest.end(function (err, response) {
+      if (err) {
+        callback(err, null);
+        return;
+      }
+      callback(null, response);
+    });
+  } };

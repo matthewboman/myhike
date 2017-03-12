@@ -23,7 +23,6 @@ var Images = require("../presentation").Images;
 
 
 /*
-  TODO: Allow for user to choose current location or click on map (or address?)
   TODO: Hike can be submitted only if user is logged in and location is selected
 */
 
@@ -47,18 +46,12 @@ var CreateHike = (function (Component) {
   _inherits(CreateHike, Component);
 
   _prototypeProperties(CreateHike, null, {
-    componentDidUpdate: {
-      value: function componentDidUpdate() {},
-      writable: true,
-      configurable: true
-    },
     updateHike: {
       value: function updateHike(event) {
         var updatedHike = Object.assign({}, this.state.hike);
         var updatedAddress = Object.assign({}, updatedHike.address);
         updatedAddress[event.target.id] = event.target.value;
         updatedHike[event.target.id] = event.target.value;
-        // console.log(JSON.stringify(updatedHike))
         this.setState({
           hike: updatedHike
         });
@@ -67,6 +60,8 @@ var CreateHike = (function (Component) {
       configurable: true
     },
     useCurrentLocation: {
+
+      // Set hike location to user's GPS coordinates
       value: function useCurrentLocation(event) {
         var updatedHike = Object.assign({}, this.state.hike);
         updatedHike.position = this.props.userLocation.center;
@@ -79,6 +74,8 @@ var CreateHike = (function (Component) {
       configurable: true
     },
     useAddress: {
+
+      // Set hike location to address user enters in
       value: function useAddress(event) {
         var updatedHike = Object.assign({}, this.state.hike);
         updatedHike.useAddress = true;
@@ -90,8 +87,14 @@ var CreateHike = (function (Component) {
       configurable: true
     },
     useMap: {
+
+      // Set hike location to where user clicks on map
       value: function useMap(event) {
         var updatedHike = Object.assign({}, this.state.hike);
+        if (!this.props.location) {
+          console.error("please click on the map");
+          return;
+        }
         updatedHike.position = this.props.location;
         updatedHike.useAddress = false;
         this.setState({
@@ -102,6 +105,8 @@ var CreateHike = (function (Component) {
       configurable: true
     },
     submitHike: {
+
+      // Add new hike to database
       value: function submitHike(hike) {
         console.log("submitting " + JSON.stringify(this.state.hike));
         // check if user is logged in
@@ -124,7 +129,6 @@ var CreateHike = (function (Component) {
           lat = this.state.hike.position.lat;
           lng = this.state.hike.position.lng;
         }
-
 
         // Allow user to choose hike by address
         var display = "";
@@ -225,5 +229,3 @@ var dispatchToProps = function (dispatch) {
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(CreateHike);
-// console.log('updating with location ' + JSON.stringify(this.props.location))
-// console.log('updating with user location ' + JSON.stringify(this.props.userLocation))

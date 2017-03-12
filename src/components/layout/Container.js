@@ -6,6 +6,9 @@ import { Map } from '../containers'
 import { Nav }from './'
 
 /*
+  NOT BEING USED FOR SERVER-SIDE RENDERING
+
+  
   TODO: The left/right component isn't working entirely how I want it too. Also,
     I should make it more obvious that right/left components can be resized.
 */

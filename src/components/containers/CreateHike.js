@@ -6,7 +6,6 @@ import { APIManager } from '../../utils'
 import { Images } from '../presentation'
 
 /*
-  TODO: Allow for user to choose current location or click on map (or address?)
   TODO: Hike can be submitted only if user is logged in and location is selected
 */
 
@@ -26,24 +25,18 @@ class CreateHike extends Component {
     }
   }
 
-  componentDidUpdate () {
-    // console.log('updating with location ' + JSON.stringify(this.props.location))
-    // console.log('updating with user location ' + JSON.stringify(this.props.userLocation))
-  }
-
-
 
   updateHike(event) {
     let updatedHike = Object.assign({}, this.state.hike)
     let updatedAddress = Object.assign({}, updatedHike.address)
     updatedAddress[event.target.id] = event.target.value
     updatedHike[event.target.id] = event.target.value
-    // console.log(JSON.stringify(updatedHike))
     this.setState({
       hike: updatedHike
     })
   }
 
+  // Set hike location to user's GPS coordinates
   useCurrentLocation(event) {
     let updatedHike = Object.assign({}, this.state.hike)
     updatedHike['position'] = this.props.userLocation.center
@@ -53,6 +46,7 @@ class CreateHike extends Component {
     })
   }
 
+  // Set hike location to address user enters in
   useAddress(event) {
     let updatedHike = Object.assign({}, this.state.hike)
     updatedHike['useAddress'] = true
@@ -61,8 +55,13 @@ class CreateHike extends Component {
     })
   }
 
+  // Set hike location to where user clicks on map
   useMap(event) {
     let updatedHike = Object.assign({}, this.state.hike)
+    if (!this.props.location) {
+      console.error('please click on the map')
+      return
+    }
     updatedHike['position'] = this.props.location
     updatedHike['useAddress'] = false
     this.setState({
@@ -70,7 +69,7 @@ class CreateHike extends Component {
     })
   }
 
-
+  // Add new hike to database
   submitHike(hike) {
     console.log('submitting ' + JSON.stringify(this.state.hike))
     // check if user is logged in
@@ -83,7 +82,6 @@ class CreateHike extends Component {
   }
 
 
-
   render() {
     // Allow user to choose hike by map or current location
     let lat
@@ -92,7 +90,6 @@ class CreateHike extends Component {
       lat = this.state.hike.position.lat
       lng = this.state.hike.position.lng
     }
-
 
     // Allow user to choose hike by address
     let display = ''

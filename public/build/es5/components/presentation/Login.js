@@ -33,6 +33,8 @@ var Login = (function (Component) {
 
   _prototypeProperties(Login, null, {
     updateVisitor: {
+
+      // Set state with what user types into inputs
       value: function updateVisitor(event) {
         var updated = Object.assign({}, this.state.user);
         updated[event.target.id] = event.target.value;
@@ -44,6 +46,8 @@ var Login = (function (Component) {
       configurable: true
     },
     login: {
+
+      // Log user in
       value: function login(event) {
         event.preventDefault();
         if (this.state.user.username == 0) {

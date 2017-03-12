@@ -1,3 +1,4 @@
+import AccountEditor from './AccountEditor'
 import CreateReview from './CreateReview'
 import HomePage from './HomePage'
 import Images from './Images'
@@ -8,6 +9,7 @@ import Review from './Review'
 
 export {
 
+  AccountEditor,
   CreateReview,
   HomePage,
   Images,

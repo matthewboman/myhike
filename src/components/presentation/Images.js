@@ -8,6 +8,9 @@ import superagent from 'superagent'
     "submit images," so potentially a lot of bullshit is being posted.
     There's a commented-out example below the code that might allow the images
     to display on the page before being sent off
+
+  TODO: move photo/API logic to ImageUploader
+
 */
 
 class Images extends Component {

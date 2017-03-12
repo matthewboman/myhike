@@ -72,7 +72,7 @@ class Map extends Component {
     // Set app state location to where user clicks
     this.props.locationAdded(clicked)
     // Open CreateHike component on right side
-    browserHistory.push(`/add-hike`)
+    // browserHistory.push(`/add-hike`)
   }
 
 

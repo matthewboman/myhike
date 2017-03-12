@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case constants.HIKE_ADDED:
-      console.log('HIKE_ADDED: ' + JSON.stringify(action.hike))
+      // console.log('HIKE_ADDED: ' + JSON.stringify(action.hike))
       updatedState['list'].push(action.hike)
       return updatedState
 

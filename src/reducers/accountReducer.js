@@ -8,6 +8,7 @@ export default (state = initialState, action) => {
   let updatedState = Object.assign({}, state)
 
   switch (action.type) {
+    
     // Assign 'currentUser' property when new user signs up
     case constants.PROFILE_CREATED:
       updatedState['user'] = action.profile

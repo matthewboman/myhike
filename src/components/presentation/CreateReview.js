@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 
 import { Images } from '../presentation'
 
-class CreateHike extends Component {
-  constructor() {
-    super()
+
+class CreateReview extends Component {
+  constructor(props) {
+    super(props)
     this.state = {
       review: {
         animals: '',
@@ -12,7 +13,8 @@ class CreateHike extends Component {
         fungi: '',
         pictures: [],
         plants: '',
-        user: '',
+        user: props.user,
+        hikeId: props.hike.id
       }
     }
   }
@@ -20,8 +22,6 @@ class CreateHike extends Component {
   updateHike(event) {
     let updatedReview = Object.assign({}, this.state.review)
     updatedReview[event.target.id] = event.target.value
-    updatedReview["user"] = this.props.user;
-    // console.log(updatedReview)
     this.setState({
       review: updatedReview
     })
@@ -73,4 +73,4 @@ class CreateHike extends Component {
   }
 }
 
-export default CreateHike
+export default CreateReview

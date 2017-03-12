@@ -15,7 +15,12 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var browserHistory = require("react-router").browserHistory;
+
+
+/*
+  TODO: allow error handling to bubble up from database
+*/
+
 var RegisterForm = (function (Component) {
   function RegisterForm() {
     _classCallCheck(this, RegisterForm);
@@ -34,6 +39,8 @@ var RegisterForm = (function (Component) {
 
   _prototypeProperties(RegisterForm, null, {
     updateVisitor: {
+
+      // Update state with what user enters into input
       value: function updateVisitor(event) {
         var updated = Object.assign({}, this.state.visitor);
         updated[event.target.id] = event.target.value;
@@ -45,10 +52,23 @@ var RegisterForm = (function (Component) {
       configurable: true
     },
     register: {
+
+      // REgister user if all checks out
       value: function register(event) {
         event.preventDefault();
+        if (this.state.visitor.username == 0) {
+          console.log("Please enter a username");
+          return;
+        }
+        if (this.state.visitor.email.length == 0) {
+          console.log("Please enter an email");
+          return;
+        }
+        if (this.state.visitor.password.length == 0) {
+          console.log("Please enter a password");
+          return;
+        }
         this.props.onRegister(this.state.visitor);
-        browserHistory.push("/");
       },
       writable: true,
       configurable: true

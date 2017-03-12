@@ -5,11 +5,29 @@ import { browserHistory } from 'react-router'
 import actions from '../../actions'
 import { APIManager } from '../../utils'
 import Reviews from './Reviews'
+import { CreateReview } from '../presentation'
 
 class Hike extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      addReview: false
+    }
+  }
+
+  // Show/hide CreateReview component
+  displayCreateReviewComponent(event) {
+    this.setState({
+      addReview: !this.state.addReview
+    })
+  }
+
+  submitReview(review) {
+    if (this.props.user == null) {
+      console.log('You must be logged in to post a review')
+      return
+    }
+    this.props.reviewCreated(review, this.props.hike)
   }
 
   componentDidUpdate() {
@@ -20,13 +38,33 @@ class Hike extends Component {
   }
 
   render() {
-    let hike = this.props.hike
-    let header
+    const hike = this.props.hike
+    const user = this.props.user
 
-    if (hike != null) {
-      header = (
+    //Make sure we have the hike info before rendering
+    if (hike == null ) {return false}
+    const header = (
+      <div>
+        <h3>{hike.name}</h3>
+      </div>
+    )
+
+    //Show/hide CreateReview component
+    let newReview
+
+    if (this.state.addReview == true) {
+      newReview = (
         <div>
-          <h3>{hike.name}</h3>
+        <CreateReview
+          user={user}
+          hike={this.props.hike}
+          onReview={this.submitReview.bind(this)} />
+        </div>
+      )
+    } else {
+      newReview = (
+        <div>
+          <button onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</button>
         </div>
       )
     }
@@ -35,6 +73,7 @@ class Hike extends Component {
       <div className="sidebar">
         {header}
         <Reviews />
+        {newReview}
       </div>
     )
   }
@@ -43,12 +82,14 @@ class Hike extends Component {
 const stateToProps = (state) => {
   return {
     hike: state.hike.currentHike,
+    user: state.account.user,
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return {
     fetchHike: (params) => dispatch(actions.fetchHike(params)),
+    reviewCreated: (review, params) => dispatch(actions.reviewCreated(review, params))
   }
 }
 

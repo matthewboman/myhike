@@ -16,11 +16,11 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var Images = require("../presentation").Images;
-var CreateHike = (function (Component) {
-  function CreateHike() {
-    _classCallCheck(this, CreateHike);
+var CreateReview = (function (Component) {
+  function CreateReview(props) {
+    _classCallCheck(this, CreateReview);
 
-    _get(Object.getPrototypeOf(CreateHike.prototype), "constructor", this).call(this);
+    _get(Object.getPrototypeOf(CreateReview.prototype), "constructor", this).call(this, props);
     this.state = {
       review: {
         animals: "",
@@ -28,19 +28,19 @@ var CreateHike = (function (Component) {
         fungi: "",
         pictures: [],
         plants: "",
-        user: "" }
+        user: props.user,
+        hikeId: props.hike.id
+      }
     };
   }
 
-  _inherits(CreateHike, Component);
+  _inherits(CreateReview, Component);
 
-  _prototypeProperties(CreateHike, null, {
+  _prototypeProperties(CreateReview, null, {
     updateHike: {
       value: function updateHike(event) {
         var updatedReview = Object.assign({}, this.state.review);
         updatedReview[event.target.id] = event.target.value;
-        updatedReview.user = this.props.user;
-        // console.log(updatedReview)
         this.setState({
           review: updatedReview
         });
@@ -111,7 +111,7 @@ var CreateHike = (function (Component) {
     }
   });
 
-  return CreateHike;
+  return CreateReview;
 })(Component);
 
-module.exports = CreateHike;
+module.exports = CreateReview;

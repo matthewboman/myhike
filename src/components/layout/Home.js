@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Map, CreateHike, Account } from '../containers'
+import { Map, CreateHike, NavAdmin } from '../containers'
 import { Nav }from './'
 
 
@@ -19,7 +19,7 @@ class Home extends Component {
       <div>
 
         <div className="nav">
-          <Account />
+          <NavAdmin />
         </div>
 
         <div className="col-md-4">

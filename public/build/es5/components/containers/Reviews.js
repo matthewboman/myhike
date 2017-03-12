@@ -21,25 +21,14 @@ var actions = _interopRequire(require("../../actions"));
 var store = _interopRequire(require("../../store/store"));
 
 var APIManager = require("../../utils").APIManager;
-var _presentation = require("../presentation");
-
-var CreateReview = _presentation.CreateReview;
-var Review = _presentation.Review;
-
-
-/*
-  TODO: Hike can be submitted only if user is logged in and location is selected
-*/
-
+var Review = require("../presentation").Review;
 var Reviews = (function (Component) {
   function Reviews() {
     _classCallCheck(this, Reviews);
 
     _get(Object.getPrototypeOf(Reviews.prototype), "constructor", this).call(this);
     this.checkForReviews = this.checkForReviews.bind(this);
-    this.state = {
-      addReview: false
-    };
+    this.state = {};
   }
 
   _inherits(Reviews, Component);
@@ -49,7 +38,7 @@ var Reviews = (function (Component) {
 
       // Get hike and reviews up and loaded before component renders
       value: function checkForReviews() {
-        var hike = this.props.currentHike;
+        var hike = this.props.hike;
         if (hike == null) {
           return;
         }
@@ -62,34 +51,11 @@ var Reviews = (function (Component) {
       writable: true,
       configurable: true
     },
-    displayCreateReviewComponent: {
+    updateReview: {
 
-      // Show/hide CreateReview component
-      value: function displayCreateReviewComponent(event) {
-        this.setState({
-          addReview: !this.state.addReview
-        });
-      },
-      writable: true,
-      configurable: true
-    },
-    submitReview: {
-
-      // Add new hike review to DB
-      value: function submitReview(review) {
-        // check if user is logged in
-        // if (this.props.user == null) {
-        //   alert('You must be signed up')
-        //   return
-        // }
-        var updatedReview = Object.assign({}, review);
-        var hikeId = this.props.currentHike.id;
-        updatedReview.hikeId = hikeId;
-        this.setState({
-          addReview: !this.state.addReview
-        });
-
-        this.props.reviewCreated(updatedReview, hikeId);
+      // Allow user to edit their hike review
+      value: function updateReview(review) {
+        this.props.reviewUpdated(review);
       },
       writable: true,
       configurable: true
@@ -110,45 +76,30 @@ var Reviews = (function (Component) {
     },
     render: {
       value: function render() {
-        /*
-        Show/hide CreateReview component
-        */
-        var newReview = undefined;
+        var _this = this;
 
-        if (this.state.addReview == true) {
-          newReview = React.createElement(
-            "div",
-            null,
-            React.createElement(CreateReview, { onReview: this.submitReview.bind(this) })
-          );
-        } else {
-          newReview = React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "button",
-              { onClick: this.displayCreateReviewComponent.bind(this) },
-              "Add a Review"
-            )
-          );
-        }
 
-        /*
-        Make sure component has what it needs to display reviews
-        */
-        var currentHike = this.props.currentHike;
-        var hikeName = null;
+        // Make sure component has what it needs to display reviews
+        var hike = this.props.hike;
+        var currentUser = this.props.user;
         var reviewList = null;
 
-        if (currentHike != null) {
-          var hikeReviews = this.props.reviews[currentHike.id];
+        if (hike != null) {
+          var hikeReviews = this.props.reviews[hike.id];
 
           if (hikeReviews != null) {
             reviewList = hikeReviews.map(function (review, i) {
+              var editable = false;
+              if (currentUser != null) {
+                editable = currentUser.id == review.user.id;
+              }
               return React.createElement(
                 "li",
                 { key: i },
-                React.createElement(Review, { currentReview: review })
+                React.createElement(Review, {
+                  onUpdate: _this.updateReview.bind(_this),
+                  isEditable: editable,
+                  review: review })
               );
             });
           }
@@ -157,8 +108,6 @@ var Reviews = (function (Component) {
         return React.createElement(
           "div",
           { className: "sidebar" },
-          newReview,
-          React.createElement("br", null),
           React.createElement(
             "ul",
             { className: "reviews" },
@@ -176,9 +125,9 @@ var Reviews = (function (Component) {
 
 var stateToProps = function (state) {
   return {
-    currentHike: state.hike.currentHike,
-    reviews: state.review.reviewMap
-  };
+    hike: state.hike.currentHike,
+    reviews: state.review.reviewMap,
+    user: state.account.user };
 };
 
 var dispatchToProps = function (dispatch) {
@@ -186,8 +135,8 @@ var dispatchToProps = function (dispatch) {
     fetchReviews: function (params) {
       return dispatch(actions.fetchReviews(params));
     },
-    reviewCreated: function (review, hikeId) {
-      return dispatch(actions.reviewCreated(review, hikeId));
+    reviewUpdated: function (review) {
+      return dispatch(actions.reviewUpdated(review));
     } };
 };
 

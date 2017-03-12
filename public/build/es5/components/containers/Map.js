@@ -99,8 +99,6 @@ var Map = (function (Component) {
         });
         // Set app state location to where user clicks
         this.props.locationAdded(clicked);
-        // Open CreateHike component on right side
-        browserHistory.push("/add-hike");
       },
       writable: true,
       configurable: true
@@ -196,3 +194,5 @@ var dispatchToProps = function (dispatch) {
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(Map);
+// Open CreateHike component on right side
+// browserHistory.push(`/add-hike`)

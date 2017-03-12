@@ -11,30 +11,10 @@ class Register extends Component {
     this.state = {}
   }
 
-  componentDidMount() {
-    // Check if user is logged in
-    APIManager.get('/account/currentUser', null, (err, response) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      if (response.profile == null) {
-        return
-      }
-      this.props.currentUserReceived(response.profile)
-    })
-  }
-
-  register(visitor) {
-    console.log(JSON.stringify(visitor) + ' is trying to join the site')
-    APIManager.post('/account/register', visitor, (err, response) => {
-      if (err) {
-        let msg = err.message || err
-        console.error(msg)
-        return
-      }
-      this.props.profileCreated(response.profile)
-    })
+  register(profile) {
+      console.log('register profile ' + JSON.stringify(profile))
+      this.props.profileCreated(profile)
+      this.props.onClose()
   }
 
   render() {
@@ -48,13 +28,12 @@ class Register extends Component {
 
 const stateToProps = (state) => {
   return {
-    currentUser: state.account.currentUser
+    // component breaks if this isn't in it
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return {
-    currentUserReceived: (profile) => dispatch(actions.currentUserReceived(profile)),
     profileCreated: (profile) => dispatch(actions.profileCreated(profile)),
   }
 }

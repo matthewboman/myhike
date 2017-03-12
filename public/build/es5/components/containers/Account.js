@@ -15,87 +15,116 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var Link = require("react-router").Link;
 var connect = require("react-redux").connect;
-var APIManager = require("../../utils").APIManager;
+var Dropzone = _interopRequire(require("react-dropzone"));
+
+var sha1 = _interopRequire(require("sha1"));
+
 var actions = _interopRequire(require("../../actions"));
 
-var Login = require("../presentation").Login;
+var _utils = require("../../utils");
+
+var APIManager = _utils.APIManager;
+var ImageHelper = _utils.ImageHelper;
+var AccountEditor = require("../presentation").AccountEditor;
+
+
+/*
+  TODO: move API logic to ImageUploader
+  TODO: multiple photo capabilities
+*/
+
 var Account = (function (Component) {
   function Account() {
     _classCallCheck(this, Account);
 
     _get(Object.getPrototypeOf(Account.prototype), "constructor", this).call(this);
-    this.state = {};
+    this.state = {
+      updated: {}
+    };
   }
 
   _inherits(Account, Component);
 
   _prototypeProperties(Account, null, {
-    login: {
-      value: function login(credentials) {
-        this.props.currentUserReceived(credentials);
+    uploadImage: {
+      value: function uploadImage(files) {
+        var _this = this;
+        // Select first image
+        var image = files[0];
+        // Prep Coudinary
+        var cloudName = "dotkbdwdw";
+        var url = "https://api.cloudinary.com/v1_1/" + cloudName + "/image/upload";
+        // Prep PARAMS
+        var upload_preset = "me0nxa6b";
+        var API_Secret = "i3ngvXSllacuFCrG_SCVwbfa1WI";
+        var timestamp = Date.now() / 1000; // they want seconds, not miliseconds
+        var paramsStr = "timestamp=" + timestamp + "&upload_preset=" + upload_preset + API_Secret;
+        var signature = sha1(paramsStr);
+
+        var params = {
+          api_key: "614624198613471",
+          timestamp: timestamp,
+          upload_preset: upload_preset,
+          signature: signature
+        };
+        // Upload image to Cloudinary
+        APIManager.upload(url, image, params, function (err, response) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          var updatedProfile = Object.assign({}, _this.props.user);
+          updatedProfile.image = response.body.secure_url;
+          _this.setState({
+            updated: updatedProfile
+          });
+        });
       },
       writable: true,
       configurable: true
     },
-    logout: {
-      value: function logout(event) {
-        event.preventDefault();
-        this.props.logoutUser(null);
+    updatePhoto: {
+      value: function updatePhoto(event) {
+        this.props.profileUpdated(this.props.user, this.state.updated);
+      },
+      writable: true,
+      configurable: true
+    },
+    submitUpdate: {
+      value: function submitUpdate(profile) {
+        console.log("just updated " + JSON.stringify(profile));
+        this.props.profileUpdated(this.props.user, profile);
       },
       writable: true,
       configurable: true
     },
     render: {
       value: function render() {
-        /*
-          Display login/signup if user is not logged in.
-          If user is logged in, display profile link and logout.
-        */
-        var content = null;
-
-        if (this.props.user == null) {
-          content = React.createElement(
-            "div",
-            null,
-            React.createElement(Login, { onLogin: this.login.bind(this) }),
-            React.createElement(
-              Link,
-              { to: "/register" },
-              React.createElement(
-                "button",
-                null,
-                "Register"
-              )
-            )
-          );
-        } else {
-          content = React.createElement(
-            "div",
-            null,
-            React.createElement(
-              Link,
-              { to: "/currentuser" },
-              React.createElement(
-                "button",
-                null,
-                "Account"
-              )
-            ),
-            React.createElement(
-              "button",
-              { onClick: this.logout.bind(this) },
-              "Log out ",
-              this.props.user.username
-            )
-          );
-        }
+        var profile = this.props.user;
+        var image = profile.image == null ? "" : ImageHelper.thumbnail(profile.image, 250);
 
         return React.createElement(
           "div",
           null,
-          content
+          React.createElement(
+            "h2",
+            null,
+            "Welcome ",
+            profile.username
+          ),
+          React.createElement("img", { src: image }),
+          React.createElement("br", null),
+          React.createElement(Dropzone, { onDrop: this.uploadImage.bind(this) }),
+          React.createElement(
+            "button",
+            { onClick: this.updatePhoto.bind(this) },
+            "Update Photo"
+          ),
+          React.createElement("br", null),
+          React.createElement(AccountEditor, {
+            profile: profile,
+            onUpdate: this.submitUpdate.bind(this) })
         );
       },
       writable: true,
@@ -114,12 +143,10 @@ var stateToProps = function (state) {
 
 var dispatchToProps = function (dispatch) {
   return {
-    currentUserReceived: function (user) {
-      return dispatch(actions.currentUserReceived(user));
-    },
-    logoutUser: function (user) {
-      return dispatch(actions.logoutUser(user));
-    } };
+    profileUpdated: function (user, profile) {
+      return dispatch(actions.profileUpdated(user, profile));
+    }
+  };
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(Account);

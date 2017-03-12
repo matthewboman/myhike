@@ -22,17 +22,42 @@ var actions = _interopRequire(require("../../actions"));
 var APIManager = require("../../utils").APIManager;
 var Reviews = _interopRequire(require("./Reviews"));
 
+var CreateReview = require("../presentation").CreateReview;
 var Hike = (function (Component) {
   function Hike() {
     _classCallCheck(this, Hike);
 
     _get(Object.getPrototypeOf(Hike.prototype), "constructor", this).call(this);
-    this.state = {};
+    this.state = {
+      addReview: false
+    };
   }
 
   _inherits(Hike, Component);
 
   _prototypeProperties(Hike, null, {
+    displayCreateReviewComponent: {
+
+      // Show/hide CreateReview component
+      value: function displayCreateReviewComponent(event) {
+        this.setState({
+          addReview: !this.state.addReview
+        });
+      },
+      writable: true,
+      configurable: true
+    },
+    submitReview: {
+      value: function submitReview(review) {
+        if (this.props.user == null) {
+          console.log("You must be logged in to post a review");
+          return;
+        }
+        this.props.reviewCreated(review, this.props.hike);
+      },
+      writable: true,
+      configurable: true
+    },
     componentDidUpdate: {
       value: function componentDidUpdate() {
         var hike = this.props.hike;
@@ -46,16 +71,42 @@ var Hike = (function (Component) {
     render: {
       value: function render() {
         var hike = this.props.hike;
-        var header = undefined;
+        var user = this.props.user;
 
-        if (hike != null) {
-          header = React.createElement(
+        //Make sure we have the hike info before rendering
+        if (hike == null) {
+          return false;
+        }
+        var header = React.createElement(
+          "div",
+          null,
+          React.createElement(
+            "h3",
+            null,
+            hike.name
+          )
+        );
+
+        //Show/hide CreateReview component
+        var newReview = undefined;
+
+        if (this.state.addReview == true) {
+          newReview = React.createElement(
+            "div",
+            null,
+            React.createElement(CreateReview, {
+              user: user,
+              hike: this.props.hike,
+              onReview: this.submitReview.bind(this) })
+          );
+        } else {
+          newReview = React.createElement(
             "div",
             null,
             React.createElement(
-              "h3",
-              null,
-              hike.name
+              "button",
+              { onClick: this.displayCreateReviewComponent.bind(this) },
+              "Add a Review"
             )
           );
         }
@@ -64,7 +115,8 @@ var Hike = (function (Component) {
           "div",
           { className: "sidebar" },
           header,
-          React.createElement(Reviews, null)
+          React.createElement(Reviews, null),
+          newReview
         );
       },
       writable: true,
@@ -77,14 +129,19 @@ var Hike = (function (Component) {
 
 var stateToProps = function (state) {
   return {
-    hike: state.hike.currentHike };
+    hike: state.hike.currentHike,
+    user: state.account.user };
 };
 
 var dispatchToProps = function (dispatch) {
   return {
     fetchHike: function (params) {
       return dispatch(actions.fetchHike(params));
-    } };
+    },
+    reviewCreated: function (review, params) {
+      return dispatch(actions.reviewCreated(review, params));
+    }
+  };
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(Hike);

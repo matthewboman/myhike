@@ -2,6 +2,8 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+var AccountEditor = _interopRequire(require("./AccountEditor"));
+
 var CreateReview = _interopRequire(require("./CreateReview"));
 
 var HomePage = _interopRequire(require("./HomePage"));
@@ -16,6 +18,7 @@ var RegisterForm = _interopRequire(require("./RegisterForm"));
 
 var Review = _interopRequire(require("./Review"));
 
+exports.AccountEditor = AccountEditor;
 exports.CreateReview = CreateReview;
 exports.HomePage = HomePage;
 exports.Images = Images;

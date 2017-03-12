@@ -20,7 +20,7 @@ var _containers = require("../containers");
 
 var Map = _containers.Map;
 var CreateHike = _containers.CreateHike;
-var Account = _containers.Account;
+var NavAdmin = _containers.NavAdmin;
 var Nav = require("./").Nav;
 var Home = (function (Component) {
   function Home() {
@@ -43,7 +43,7 @@ var Home = (function (Component) {
           React.createElement(
             "div",
             { className: "nav" },
-            React.createElement(Account, null)
+            React.createElement(NavAdmin, null)
           ),
           React.createElement(
             "div",

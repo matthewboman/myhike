@@ -31,36 +31,11 @@ var Register = (function (Component) {
   _inherits(Register, Component);
 
   _prototypeProperties(Register, null, {
-    componentDidMount: {
-      value: function componentDidMount() {
-        var _this = this;
-        // Check if user is logged in
-        APIManager.get("/account/currentUser", null, function (err, response) {
-          if (err) {
-            console.error(err);
-            return;
-          }
-          if (response.profile == null) {
-            return;
-          }
-          _this.props.currentUserReceived(response.profile);
-        });
-      },
-      writable: true,
-      configurable: true
-    },
     register: {
-      value: function register(visitor) {
-        var _this = this;
-        console.log(JSON.stringify(visitor) + " is trying to join the site");
-        APIManager.post("/account/register", visitor, function (err, response) {
-          if (err) {
-            var msg = err.message || err;
-            console.error(msg);
-            return;
-          }
-          _this.props.profileCreated(response.profile);
-        });
+      value: function register(profile) {
+        console.log("register profile " + JSON.stringify(profile));
+        this.props.profileCreated(profile);
+        this.props.onClose();
       },
       writable: true,
       configurable: true
@@ -82,19 +57,15 @@ var Register = (function (Component) {
 })(Component);
 
 var stateToProps = function (state) {
-  return {
-    currentUser: state.account.currentUser
-  };
+  return {};
 };
 
 var dispatchToProps = function (dispatch) {
   return {
-    currentUserReceived: function (profile) {
-      return dispatch(actions.currentUserReceived(profile));
-    },
     profileCreated: function (profile) {
       return dispatch(actions.profileCreated(profile));
     } };
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(Register);
+// component breaks if this isn't in it

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
+
+/*
+  TODO: allow error handling to bubble up from database
+*/
 
 class RegisterForm extends Component {
   constructor() {
@@ -13,6 +16,7 @@ class RegisterForm extends Component {
     }
   }
 
+  // Update state with what user enters into input
   updateVisitor(event) {
     let updated = Object.assign({}, this.state.visitor)
     updated[event.target.id] = event.target.value
@@ -21,10 +25,22 @@ class RegisterForm extends Component {
     })
   }
 
+  // REgister user if all checks out
   register(event) {
     event.preventDefault()
+    if (this.state.visitor.username == 0) {
+      console.log('Please enter a username')
+      return
+    }
+    if (this.state.visitor.email.length == 0) {
+      console.log('Please enter an email')
+      return
+    }
+    if (this.state.visitor.password.length == 0) {
+      console.log('Please enter a password')
+      return
+    }
     this.props.onRegister(this.state.visitor)
-    browserHistory.push(`/`)
   }
 
   render() {

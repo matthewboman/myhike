@@ -9,7 +9,7 @@ import store from './store/store'
 
 import Main from './components/Main'
 import { Home } from './components/layout'
-import { Hike } from './components/containers'
+import { Account, Hike, Register } from './components/containers'
 
 const initialState = window.__PRELOADED_STATE__
 
@@ -20,6 +20,7 @@ const app = (
 
         <IndexRoute component={Home}></IndexRoute>
         <Route path="/hike/:id" component={Hike}></Route>
+        <Route path="/currentuser" component={Account}></Route>
 
       </Route>
     </Router>

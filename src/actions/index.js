@@ -3,7 +3,9 @@ import { APIManager } from '../utils'
 
 export default {
 
-// ======================== User data =================================
+/* ======================== User data ================================= */
+
+  // Check if user is logged in
   currentUserReceived: (credentials) => {
     return (dispatch) => {
       APIManager.post('/account/login', credentials, (err, response) => {
@@ -12,7 +14,6 @@ export default {
           console.error(msg)
           return
         }
-        console.log(JSON.stringify(response.results))
         const user = response.results
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
@@ -22,6 +23,7 @@ export default {
     }
 	},
 
+  // Log user out
   logoutUser: (user) => {
     return (dispatch) => {
       APIManager.get('/account/logout', null, (err, response) => {
@@ -37,14 +39,44 @@ export default {
     }
   },
 
+  // Create new profile
   profileCreated: (profile) => {
-    return {
-      type: constants.PROFILE_CREATED,
-      profile: profile
+    return (dispatch) => {
+      APIManager.post('/account/register', profile, (err, response) => {
+        if (err) {
+          let msg = err.message || err
+          console.error(msg)
+          return
+        }
+        const user = response.profile
+
+        dispatch({
+          type: constants.CURRENT_USER_RECEIVED,
+          user: user
+        })
+      })
     }
   },
 
-// ======================== Hike and Map data ===============================
+  // Update Profile
+  profileUpdated: (user, profile) => {
+    return (dispatch) => {
+      const endpoint = '/api/profile/' + user.id
+      APIManager.put(endpoint, profile, (err, response) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        const user = response.result
+        dispatch({
+          type: constants.CURRENT_USER_RECEIVED,
+          user: user
+        })
+      })
+    }
+  },
+
+/* ======================== Hike and Map data ============================== */
   currentHikeReceived: (hike) => {
     return {
       type: constants.CURRENT_HIKE_RECEIVED,
@@ -52,6 +84,7 @@ export default {
     }
   },
 
+  // Get hikes to display on map
   fetchHikes: (params) => {
     return (dispatch) => {
       dispatch({
@@ -75,25 +108,7 @@ export default {
     }
   },
 
-  fetchReviews: (params) => {
-    return (dispatch) => {
-      // console.log('searching for reviews for ' + JSON.stringify(hike))
-      APIManager.get('/api/review', params, (err, response) => {
-        if (err) {
-          console.error(err)
-          return
-        }
-        const reviews = response.results
-        console.log('actions received reviews ' + JSON.stringify(reviews))
-        dispatch({
-          type: constants.REVIEWS_RECEIVED,
-          params: params,
-          reviews: reviews
-        })
-      })
-    }
-  },
-
+  // Create a new hike
   hikeCreated: (hike) => {
     return (dispatch) => {
       APIManager.post('/api/hike', hike, (err, response) => {
@@ -110,12 +125,13 @@ export default {
     }
   },
 
+  // Select a hike
   hikeSelected: (id) => {
     let hike = id.toString()
-    let url = '/api/hike/' + hike
+    let endpoint = '/api/hike/' + hike
     return (dispatch) => {
       // GET hike details
-      APIManager.get(url, null, (err, response) => {
+      APIManager.get(endpoint, null, (err, response) => {
         if (err) {
           console.error('ERROR: ' + err.message)
         }
@@ -129,6 +145,7 @@ export default {
     }
   },
 
+  // Add a hike location by clicking on the map
   locationAdded: (location) => {
     return {
       type: constants.LOCATION_ADDED,
@@ -136,25 +153,7 @@ export default {
     }
   },
 
-  reviewCreated: (review, hikeId) => {
-    return (dispatch) => {
-      // console.log('action sez review is ' + review)
-      APIManager.post('/api/review', review, (err, response) => {
-        if (err) {
-          console.error('Error: ' + err.message)
-        }
-        const reviews = response.result
-
-        dispatch({
-          type: constants.REVIEWS_RECEIVED,
-          hikeId: hikeId,
-          reviews: reviews
-        })
-      })
-    }
-  },
-
-
+  // Get user location (for using current location as hike location)
   userLocationReceived: (center) => {
     return {
       type: constants.USER_LOCATION_RECEIVED,
@@ -162,6 +161,60 @@ export default {
     }
   },
 
+/* ====================== Review Data ====================================== */
 
+  // Get reviews for a specific hike
+  fetchReviews: (params) => {
+    return (dispatch) => {
+      APIManager.get('/api/review', params, (err, response) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        const reviews = response.results
+        dispatch({
+          type: constants.REVIEWS_RECEIVED,
+          params: params,
+          reviews: reviews
+        })
+      })
+    }
+  },
+
+  // Allow user to add new review to a hike
+  reviewCreated: (review, params) => {
+    return (dispatch) => {
+      APIManager.post('/api/review', review, (err, response) => {
+        if (err) {
+          console.error('Error: ' + err.message)
+        }
+        const reviews = [response.result]
+
+        dispatch({
+          type: constants.REVIEWS_RECEIVED,
+          params: params,
+          reviews: reviews
+        })
+      })
+    }
+  },
+
+  // Update a user's review of a hike
+  reviewUpdated: (review) => {
+    return (dispatch) => {
+      const endpoint = '/api/review/' + review.id
+      APIManager.put(endpoint, review, (err, response) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        const updatedReview = response.result
+        dispatch({
+          type: constants.REVIEW_UPDATED,
+          review: updatedReview
+        })
+      })
+    }
+  },
 
 }

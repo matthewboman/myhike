@@ -13,7 +13,8 @@ var store = require('../public/build/es5/store/store')
 var Home = require('../public/build/es5/components/layout/Home')
 var Hike = require('../public/build/es5/components/containers/Hike')
 
-/* Private Functions */
+
+/* ==================== Private Functions ========================= */
 
 // Allows React-Router to connect app to previously-defined routes
 matchRoutes = function(req, routes) {
@@ -28,9 +29,9 @@ matchRoutes = function(req, routes) {
   })
 }
 
-/* End Private Functions */
+/* =================== End Private Functions ===================== */
 
-/* Server-side Routing */
+/* =================== Server-side Routing ====================== */
 
 // GET home page
 router.get('/', function(req, res, next) {
@@ -74,9 +75,7 @@ router.get('/', function(req, res, next) {
     .then(function(renderProps) {
       // Generate server-side HTML
       var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
-      console.log('HTML: ' + html)
       // Send HTML and state to index.hjs
-      // console.log('preloaded state will be ' + JSON.stringify(initialStore.getState()))
       res.render('index', {
         react: html,
         preloadedState: JSON.stringify(initialStore.getState())
@@ -89,25 +88,37 @@ router.get('/', function(req, res, next) {
 })
 
 //
+/* Server-side rendering for a specific page */
+//
+router.get('/:page', function(req, res, next) {
+  var page = req.params.page
+
+  // If client is making API request or accessing account, don't handle
+  if (page == 'api' || page == 'account') {
+    next()
+    return
+  }
+
+  let initialStore = null
+  let reducers = {}
+
+});
+
+//
 /* Server-side rendering for a specific page of a specific resource */
 //
 router.get('/:page/:slug', function(req, res, next) {
   var page = req.params.page
   var slug = req.params.slug
 
+  // If client is making API request or accessing account, don't handle
+  if (page == 'api' || page == 'account') {
+    next()
+    return
+  }
+
   let initialStore = null
   let reducers = {}
-
-  // If client is making API request, don't handle
-  if (page == 'api') {
-    next()
-    return
-  }
-
-  if (page == 'account') {
-    next()
-    return
-  }
 
   //////////////////////////////// controllers.page?
   /* specific case for testing */

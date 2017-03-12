@@ -37,21 +37,6 @@ export default (state = initialState, action) => {
       updated['hikeLocation'] = action.location
       return updated
 
-
-    // case constants.REVIEWS_RECEIVED:
-    //   // console.log('REVIEWS_RECEIVED ' + JSON.stringify(action.reviews) + 'received from ' + action.hikeId)
-    //   let updatedReviewMap = Object.assign({}, updated.reviewMap)
-    //   let hikeReviews = (updatedReviewMap[action.hikeId]) ? Object.assign([], updatedReviewMap[action.hikeId]) : []
-    //
-    //   // itterate through reviews received and populate the map
-    //   action.reviews.forEach((review, i) => {
-    //     hikeReviews.push(review)
-    //   })
-    //
-    //   updatedReviewMap[action.hikeId] = hikeReviews
-    //   updated['reviewMap'] = updatedReviewMap
-    //   return updated
-
     // User location gotten from browser -- not currently implemented
     case constants.USER_LOCATION_RECEIVED:
       // console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.center))

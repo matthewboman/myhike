@@ -10,9 +10,9 @@ var Hike = _interopRequire(require("./Hike"));
 
 var Map = _interopRequire(require("./Map"));
 
-var Register = _interopRequire(require("./Register"));
+var NavAdmin = _interopRequire(require("./NavAdmin"));
 
-var ReviewHike = _interopRequire(require("./ReviewHike"));
+var Register = _interopRequire(require("./Register"));
 
 var Reviews = _interopRequire(require("./Reviews"));
 
@@ -20,8 +20,8 @@ exports.Account = Account;
 exports.CreateHike = CreateHike;
 exports.Hike = Hike;
 exports.Map = Map;
+exports.NavAdmin = NavAdmin;
 exports.Register = Register;
-exports.ReviewHike = ReviewHike;
 exports.Reviews = Reviews;
 Object.defineProperty(exports, "__esModule", {
   value: true

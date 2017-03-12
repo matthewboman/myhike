@@ -2,8 +2,8 @@ import Account from './Account'
 import CreateHike from './CreateHike'
 import Hike from './Hike'
 import Map from './Map'
+import NavAdmin from './NavAdmin'
 import Register from './Register'
-import ReviewHike from './ReviewHike'
 import Reviews from './Reviews'
 
 export {
@@ -12,8 +12,8 @@ export {
   CreateHike,
   Hike,
   Map,
+  NavAdmin,
   Register,
-  ReviewHike,
   Reviews
 
 }

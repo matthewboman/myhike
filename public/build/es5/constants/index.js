@@ -24,6 +24,7 @@ module.exports = {
   // Profile
 
   // Reviews
+  REVIEW_UPDATED: "REVIEW_UPDATED",
 
 
 

@@ -71,6 +71,25 @@ export default {
   // DELETE that shit
   delete: () => {
 
-  }
+  },
+
+  /* Upload image - set up for Cloudinary*/
+  upload: (endpoint, file, params, callback) => {
+    let uploadRequest = superagent.post(endpoint)
+
+    uploadRequest.attach('file', file) // 'file' is a Cloudinary requirement
+    // Add other parameters
+    Object.keys(params).forEach((key) => {
+      uploadRequest.field(key, params[key])
+    })
+
+    uploadRequest.end((err, response) => {
+      if (err) {
+        callback(err, null)
+        return
+      }
+      callback(null, response)
+    })
+  },
 
 }

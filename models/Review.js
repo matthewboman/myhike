@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 var ReviewSchema = new mongoose.Schema({
 
   hikeId: { type: String, default: ''},
-  author: { type: mongoose.Schema.Types.Mixed, default: {} },
+  user: { type: mongoose.Schema.Types.Mixed, default: {} },
   description: { type: String, default: '' },
   plants: { type: String, default: '' },
   fungi: { type: String, default: '' },
@@ -16,7 +16,7 @@ ReviewSchema.methods.summary = function() {
   var summary = {
     id: this._id.toString(),
     hikeId: this.hikeId,
-    author: this.author,
+    user: this.user,
     description: this.description,
     plants: this.plants,
     fungi: this.fungi,

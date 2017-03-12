@@ -4,24 +4,18 @@ import { connect } from 'react-redux'
 import actions from '../../actions'
 import store from '../../store/store'
 import { APIManager } from '../../utils'
-import { CreateReview, Review } from '../presentation'
-
-/*
-  TODO: Hike can be submitted only if user is logged in and location is selected
-*/
+import { Review } from '../presentation'
 
 class Reviews extends Component {
   constructor() {
     super()
     this.checkForReviews = this.checkForReviews.bind(this)
-    this.state = {
-      addReview: false
-    }
+    this.state = {}
   }
 
   // Get hike and reviews up and loaded before component renders
   checkForReviews() {
-    let hike = this.props.currentHike
+    let hike = this.props.hike
     if (hike == null) {
       return
     }
@@ -32,28 +26,9 @@ class Reviews extends Component {
     this.props.fetchReviews({hikeId: hike.id})
   }
 
-  // Show/hide CreateReview component
-  displayCreateReviewComponent(event) {
-    this.setState({
-      addReview: !this.state.addReview
-    })
-  }
-
-  // Add new hike review to DB
-  submitReview(review) {
-    // check if user is logged in
-    // if (this.props.user == null) {
-    //   alert('You must be signed up')
-    //   return
-    // }
-    let updatedReview = Object.assign({}, review)
-    let hikeId = this.props.currentHike.id
-    updatedReview['hikeId'] = hikeId
-    this.setState({
-      addReview: !this.state.addReview
-    })
-
-    this.props.reviewCreated(updatedReview, hikeId)
+  // Allow user to edit their hike review
+  updateReview(review) {
+    this.props.reviewUpdated(review)
   }
 
   componentDidMount() {
@@ -65,40 +40,27 @@ class Reviews extends Component {
   }
 
   render() {
-    /*
-    Show/hide CreateReview component
-    */
-    let newReview
 
-    if (this.state.addReview == true) {
-      newReview = (
-        <div>
-          <CreateReview onReview={this.submitReview.bind(this)} />
-        </div>
-      )
-    } else {
-      newReview = (
-        <div>
-          <button onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</button>
-        </div>
-      )
-    }
-
-    /*
-    Make sure component has what it needs to display reviews
-    */
-    const currentHike = this.props.currentHike
-    let hikeName = null
+    // Make sure component has what it needs to display reviews
+    const hike = this.props.hike
+    const currentUser = this.props.user
     let reviewList = null
 
-    if (currentHike != null) {
-      let hikeReviews = this.props.reviews[currentHike.id]
+    if (hike != null) {
+      let hikeReviews = this.props.reviews[hike.id]
 
       if (hikeReviews != null) {
         reviewList = hikeReviews.map((review, i) => {
+          let editable = false
+          if (currentUser != null) {
+            editable = (currentUser.id == review.user.id)
+          }
           return (
             <li key={i}>
-              <Review currentReview={review} />
+              <Review
+                onUpdate={this.updateReview.bind(this)}
+                isEditable={editable}
+                review={review} />
             </li>
           )
         })
@@ -107,8 +69,6 @@ class Reviews extends Component {
 
     return (
       <div className="sidebar">
-        {newReview}
-        <br />
         <ul className="reviews">
           {reviewList}
         </ul>
@@ -119,15 +79,16 @@ class Reviews extends Component {
 
 const stateToProps = (state) => {
   return {
-    currentHike: state.hike.currentHike,
-    reviews: state.review.reviewMap
+    hike: state.hike.currentHike,
+    reviews: state.review.reviewMap,
+    user: state.account.user,
   }
 }
 
 const dispatchToProps = (dispatch) => {
 	return {
     fetchReviews: (params) => dispatch(actions.fetchReviews(params)),
-    reviewCreated: (review, hikeId) => dispatch(actions.reviewCreated(review, hikeId)),
+    reviewUpdated: (review) => dispatch(actions.reviewUpdated(review)),
 	}
 }
 

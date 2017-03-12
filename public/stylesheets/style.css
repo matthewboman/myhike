@@ -13,6 +13,17 @@ h1, h2, h3 {
   padding-bottom: 12px;
 }
 
+.x-button {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+.icon-image {
+  border-radius: 20px;
+  margin-right: 6px;
+}
+
 /*Navbar*/
 .navbar {
   margin-bottom: 0px !important;

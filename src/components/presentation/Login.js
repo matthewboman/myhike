@@ -13,6 +13,7 @@ class Login extends Component {
     }
   }
 
+  // Set state with what user types into inputs
   updateVisitor(event) {
     let updated = Object.assign({}, this.state.user)
     updated[event.target.id] = event.target.value
@@ -21,6 +22,7 @@ class Login extends Component {
     })
   }
 
+  // Log user in
   login(event) {
     event.preventDefault()
     if (this.state.user.username == 0) {
