@@ -3,6 +3,7 @@ import Home from './Home'
 import Nav from './Nav'
 import Navbar from './Navbar'
 import PhoneContainer from './PhoneContainer'
+import ProfileInfo from './ProfileInfo'
 
 export {
 
@@ -11,5 +12,6 @@ export {
   Nav,
   Navbar,
   PhoneContainer,
+  ProfileInfo
 
 }

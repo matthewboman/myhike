@@ -18,10 +18,32 @@ module.exports = {
           console.error(msg);
           return;
         }
-        var user = response.results;
+        var user = response.profile;
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
           user: user
+        });
+      });
+    };
+  },
+
+  // Get a profile for other users to see
+  fetchProfile: function (id) {
+    return function (dispatch) {
+      var endpoint = "/api/profile/" + id;
+      APIManager.get(endpoint, null, function (err, response) {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        if (response.result.length == 0) {
+          console.error("Profile not found");
+          return;
+        }
+        var profile = response.result;
+        dispatch({
+          type: constants.PROFILE_RECEIVED,
+          profile: profile
         });
       });
     };

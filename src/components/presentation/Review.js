@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 
 import { Images } from '../presentation'
 import { ImageHelper } from '../../utils'
@@ -96,7 +97,9 @@ class CreateHike extends Component {
             {review.fungi}
           </p>
           <img className="icon-image" src={ImageHelper.thumbnail(author.image, 40)} />
-          <span>{author.username}</span>
+          <span>
+            <Link to={"../profile/" + author.id}>{author.username}</Link>      
+          </span>
           <span> | </span>
           <span>{review.timestamp}</span>
           {

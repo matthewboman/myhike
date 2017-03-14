@@ -37,9 +37,7 @@ module.exports = {
           reject(err)
           return
         }
-
         
-        console.log('summar is ' + JSON.stringify(hike.summary()))
         resolve(hike.summary())
       })
     })

@@ -8,9 +8,20 @@ import routes from './routes'
 import store from './store/store'
 
 import Main from './components/Main'
-import { Home } from './components/layout'
-import { Account, Hike, Register } from './components/containers'
+import { Home, ProfileInfo } from './components/layout'
+import { Account, CreateHike, Hike, Profile } from './components/containers'
 
+/*
+// NOTE: path="../profile/:id"
+//  It has to go up a directory because, at the moment, profiles
+//  are accessible through clicking on a review on a hike. Without
+//  the preceding '../' path would be '/hike/profile/:id'.
+//
+// TODO: Figure out a way of rending the profile from the Review
+//  that doesn't prevent route from working at other times.
+*/
+
+// Get initial state as rendered by the server
 const initialState = window.__PRELOADED_STATE__
 
 const app = (
@@ -20,7 +31,11 @@ const app = (
 
         <IndexRoute component={Home}></IndexRoute>
         <Route path="/hike/:id" component={Hike}></Route>
+        <Route path="/create-hike" component={CreateHike}></Route>
         <Route path="/currentuser" component={Account}></Route>
+        <Route path="../profile/:id" component={ProfileInfo}></Route>
+        <Route path="/profile/:id" component={ProfileInfo}></Route>
+
 
       </Route>
     </Router>

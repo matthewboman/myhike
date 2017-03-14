@@ -83,10 +83,9 @@ router.post('/login', function(req, res, next){
   		}
 
   		// create signed token
-  		var token = utils.JWT.sign({id: profile._id}, process.env.TOKEN_SECRET)
+  		var token = utils.JWT.sign({id: profile.id}, process.env.TOKEN_SECRET)
   		req.session.token = token
-			req.session.user = profile._id
-			// console.log('session is ' + JSON.stringify(req.session))
+			req.session.user = profile.id
   		res.json({
   			confirmation: 'success',
   			profile: profile.summary(),

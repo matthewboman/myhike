@@ -54,32 +54,49 @@ class NavAdmin extends Component {
       Display login/signup if user is not logged in.
       If user is logged in, display profile link and logout.
     */
+    const user = this.props.user
     let content = null
 
-    if (this.props.user == null) {
+    if (user == null) {
       content = (
-        <div>
-          <Login onLogin={this.login.bind(this)} />
-          <button onClick={this.openModal}>Register</button>
-
-          <Modal
-            isOpen={this.state.modalIsOpen}
-            onAfterOpen={this.afterOpenModal}
-            onRequestClose={this.closeModal}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-            <button className="x-button" onClick={this.closeModal}>X</button>
-            <Register onClose={this.closeModal}/>
-          </Modal>
-
+        <div className="collapse navbar-collapse" id="menu-list">
+          <ul className="nav navbar-nav">
+            <li>
+              <Link to="/create-hike">Create Hike</Link>
+            </li>
+            <li>
+              <Login onLogin={this.login.bind(this)} />
+            </li>
+            <li>
+              <button className="btn-login" onClick={this.openModal}>Register</button>
+            </li>
+            <Modal
+              isOpen={this.state.modalIsOpen}
+              onAfterOpen={this.afterOpenModal}
+              onRequestClose={this.closeModal}
+              style={customStyles}
+              contentLabel="Example Modal"
+            >
+              <button className="x-button" onClick={this.closeModal}>X</button>
+              <Register onClose={this.closeModal}/>
+            </Modal>
+          </ul>
         </div>
       )
     } else {
       content = (
-        <div>
-          <Link to="/currentuser"><button>Account</button></Link>
-          <button onClick={this.logout.bind(this)}>Log out</button>
+        <div className="collapse navbar-collapse" id="menu-list">
+          <ul className="nav navbar-nav">
+            <li>
+              <Link to="/create-hike">Create Hike</Link>
+            </li>
+            <li>
+              <Link to="/currentuser"><button>Account</button></Link>
+            </li>
+            <li>
+              <button onClick={this.logout.bind(this)}>Log out</button>
+            </li>
+          </ul>
         </div>
       )
     }

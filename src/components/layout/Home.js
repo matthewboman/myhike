@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { Map, CreateHike, NavAdmin } from '../containers'
-import { Nav }from './'
+import { Navbar } from './'
+import { HomePage } from '../presentation'
 
 
 class Home extends Component {
@@ -19,7 +20,7 @@ class Home extends Component {
       <div>
 
         <div className="nav">
-          <NavAdmin />
+          <Navbar />
         </div>
 
         <div className="col-md-4">
@@ -29,7 +30,7 @@ class Home extends Component {
         </div>
 
         <div className="col-md-8">
-          <CreateHike />
+          <HomePage />
         </div>
 
       </div>

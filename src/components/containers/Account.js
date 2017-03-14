@@ -4,7 +4,7 @@ import Dropzone from 'react-dropzone'
 import sha1 from 'sha1'
 
 import actions from '../../actions'
-import { APIManager, ImageHelper } from '../../utils'
+import { APIManager, ImageHelper, ImageUploader } from '../../utils'
 import { AccountEditor } from '../presentation'
 
 /*

@@ -21,7 +21,8 @@ var _containers = require("../containers");
 var Map = _containers.Map;
 var CreateHike = _containers.CreateHike;
 var NavAdmin = _containers.NavAdmin;
-var Nav = require("./").Nav;
+var Navbar = require("./").Navbar;
+var HomePage = require("../presentation").HomePage;
 var Home = (function (Component) {
   function Home() {
     _classCallCheck(this, Home);
@@ -43,7 +44,7 @@ var Home = (function (Component) {
           React.createElement(
             "div",
             { className: "nav" },
-            React.createElement(NavAdmin, null)
+            React.createElement(Navbar, null)
           ),
           React.createElement(
             "div",
@@ -55,7 +56,7 @@ var Home = (function (Component) {
           React.createElement(
             "div",
             { className: "col-md-8" },
-            React.createElement(CreateHike, null)
+            React.createElement(HomePage, null)
           )
         );
       },

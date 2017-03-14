@@ -14,7 +14,7 @@ export default {
           console.error(msg)
           return
         }
-        const user = response.results
+        const user = response.profile
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
           user: user
@@ -22,6 +22,28 @@ export default {
       })
     }
 	},
+
+  // Get a profile for other users to see
+  fetchProfile: (id) => {
+    return (dispatch) => {
+      const endpoint = '/api/profile/' + id
+      APIManager.get(endpoint, null, (err, response) => {
+        if (err) {
+          console.error(err)
+          return
+        }
+        if (response.result.length == 0 ) {
+          console.error('Profile not found')
+          return
+        }
+        const profile = response.result
+        dispatch({
+          type: constants.PROFILE_RECEIVED,
+          profile: profile
+        })
+      })
+    }
+  },
 
   // Log user out
   logoutUser: (user) => {

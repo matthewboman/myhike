@@ -23,7 +23,6 @@ module.exports = function (_x, action) {
     case constants.CURRENT_USER_RECEIVED:
       console.log("CURRENT_USER_RECEIVED: " + JSON.stringify(action.user));
       updatedState.user = action.user;
-      console.log("updatedState " + JSON.stringify(updatedState));
       return updatedState;
 
     default:

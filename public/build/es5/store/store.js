@@ -14,6 +14,7 @@ var _reducers = require("../reducers");
 var accountReducer = _reducers.accountReducer;
 var hikeReducer = _reducers.hikeReducer;
 var mapReducer = _reducers.mapReducer;
+var profileReducer = _reducers.profileReducer;
 var reviewReducer = _reducers.reviewReducer;
 
 
@@ -27,8 +28,8 @@ module.exports = {
       account: accountReducer,
       hike: hikeReducer,
       map: mapReducer,
-      review: reviewReducer
-    });
+      profile: profileReducer,
+      review: reviewReducer });
 
     store = createStore(reducers, initial, applyMiddleware(thunk));
 

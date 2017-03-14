@@ -15,6 +15,7 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var Link = require("react-router").Link;
 var Images = require("../presentation").Images;
 var ImageHelper = require("../../utils").ImageHelper;
 
@@ -177,7 +178,11 @@ var CreateHike = (function (Component) {
             React.createElement(
               "span",
               null,
-              author.username
+              React.createElement(
+                Link,
+                { to: "../profile/" + author.id },
+                author.username
+              )
             ),
             React.createElement(
               "span",

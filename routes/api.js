@@ -7,8 +7,6 @@ router.get('/:resource', function(req, res, next) {
 
   var resource = req.params.resource;
   var controller = controllers[resource];
-  console.log('resource ' + resource)
-  console.log('controller ' + JSON.stringify(controller))
 
   if (controller == null) {
     res.json({

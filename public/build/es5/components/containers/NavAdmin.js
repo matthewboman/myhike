@@ -90,52 +90,95 @@ var NavAdmin = (function (Component) {
           Display login/signup if user is not logged in.
           If user is logged in, display profile link and logout.
         */
+        var user = this.props.user;
         var content = null;
 
-        if (this.props.user == null) {
+        if (user == null) {
           content = React.createElement(
             "div",
-            null,
-            React.createElement(Login, { onLogin: this.login.bind(this) }),
+            { className: "collapse navbar-collapse", id: "menu-list" },
             React.createElement(
-              "button",
-              { onClick: this.openModal },
-              "Register"
-            ),
-            React.createElement(
-              Modal,
-              {
-                isOpen: this.state.modalIsOpen,
-                onAfterOpen: this.afterOpenModal,
-                onRequestClose: this.closeModal,
-                style: customStyles,
-                contentLabel: "Example Modal"
-              },
+              "ul",
+              { className: "nav navbar-nav" },
               React.createElement(
-                "button",
-                { className: "x-button", onClick: this.closeModal },
-                "X"
+                "li",
+                null,
+                React.createElement(
+                  Link,
+                  { to: "/create-hike" },
+                  "Create Hike"
+                )
               ),
-              React.createElement(Register, { onClose: this.closeModal })
+              React.createElement(
+                "li",
+                null,
+                React.createElement(Login, { onLogin: this.login.bind(this) })
+              ),
+              React.createElement(
+                "li",
+                null,
+                React.createElement(
+                  "button",
+                  { className: "btn-login", onClick: this.openModal },
+                  "Register"
+                )
+              ),
+              React.createElement(
+                Modal,
+                {
+                  isOpen: this.state.modalIsOpen,
+                  onAfterOpen: this.afterOpenModal,
+                  onRequestClose: this.closeModal,
+                  style: customStyles,
+                  contentLabel: "Example Modal"
+                },
+                React.createElement(
+                  "button",
+                  { className: "x-button", onClick: this.closeModal },
+                  "X"
+                ),
+                React.createElement(Register, { onClose: this.closeModal })
+              )
             )
           );
         } else {
           content = React.createElement(
             "div",
-            null,
+            { className: "collapse navbar-collapse", id: "menu-list" },
             React.createElement(
-              Link,
-              { to: "/currentuser" },
+              "ul",
+              { className: "nav navbar-nav" },
               React.createElement(
-                "button",
+                "li",
                 null,
-                "Account"
+                React.createElement(
+                  Link,
+                  { to: "/create-hike" },
+                  "Create Hike"
+                )
+              ),
+              React.createElement(
+                "li",
+                null,
+                React.createElement(
+                  Link,
+                  { to: "/currentuser" },
+                  React.createElement(
+                    "button",
+                    null,
+                    "Account"
+                  )
+                )
+              ),
+              React.createElement(
+                "li",
+                null,
+                React.createElement(
+                  "button",
+                  { onClick: this.logout.bind(this) },
+                  "Log out"
+                )
               )
-            ),
-            React.createElement(
-              "button",
-              { onClick: this.logout.bind(this) },
-              "Log out"
             )
           );
         }

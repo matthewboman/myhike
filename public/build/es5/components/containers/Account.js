@@ -26,6 +26,7 @@ var _utils = require("../../utils");
 
 var APIManager = _utils.APIManager;
 var ImageHelper = _utils.ImageHelper;
+var ImageUploader = _utils.ImageUploader;
 var AccountEditor = require("../presentation").AccountEditor;
 
 

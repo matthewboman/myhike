@@ -12,6 +12,7 @@ var serverapp = require('../public/build/es5/serverapp')
 var store = require('../public/build/es5/store/store')
 var Home = require('../public/build/es5/components/layout/Home')
 var Hike = require('../public/build/es5/components/containers/Hike')
+var ProfileInfo = require('../public/build/es5/components/layout/ProfileInfo')
 
 
 /* ==================== Private Functions ========================= */
@@ -121,43 +122,84 @@ router.get('/:page/:slug', function(req, res, next) {
   let reducers = {}
 
   //////////////////////////////// controllers.page?
-  /* specific case for testing */
+  /* specific cases for testing */
   //////////////////////////////
-  // hike controller ill have to make second request for reviews but others will only make one
-  controllers.hike.findById(slug)
-    .then(function(hike) {
-      // var hike = hike
-      var hikeMap = {}
-      hikeMap[slug] = hike
 
-      reducers['hike'] = {
-        currentHike: hike,
-        hikeMap: hikeMap
-      }
+  // Profile
+  if (page == 'profile') {
+    controllers.profile.findById(slug)
+      .then(function(profile) {
+        var profileMap = {}
+        profileMap[slug] = profile
 
-      initialStore = store.configureStore(reducers)
-
-      var routes = {
-        path : '/hike/:id',
-        component: serverapp, // define initial component
-        initial: initialStore,
-        indexRoute: {
-          component: Hike
+        reducers['profile'] = {
+          profileMap: profileMap
         }
-      }
-      return matchRoutes(req, routes)
-    })
-    .then(function(renderProps) {
-      // generate server-side html
-      var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
-      res.render('index', {
-        react: html,
-        preloadedState: JSON.stringify(initialStore.getState())
-      });
-    })
-    .catch(function(err) {
-      console.log('Error in /:page/:slug route: ' + err)
-    })
+        initialStore = store.configureStore(reducers)
+
+        var routes = {
+          path: '/profile/:id',
+          component: serverapp,
+          initial: initialStore,
+          indexRoute: {
+            component: ProfileInfo
+          }
+        }
+        return matchRoutes(req, routes)
+      })
+      .then(function(renderProps) {
+        var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+        res.render('index', {
+          react: html,
+          preloadedState: JSON.stringify(initialStore.getState())
+        })
+      })
+      .catch(function(err) {
+        console.log(err)
+      })
+  }
+
+  // Hike
+  if (page == 'hike') {
+    // hike controller ill have to make second request for reviews but others will only make one
+    controllers.hike.findById(slug)
+      .then(function(hike) {
+        // var hike = hike
+        var hikeMap = {}
+        hikeMap[slug] = hike
+
+        reducers['hike'] = {
+          currentHike: hike,
+          hikeMap: hikeMap
+        }
+
+        initialStore = store.configureStore(reducers)
+
+        var routes = {
+          path : '/hike/:id',
+          component: serverapp, // define initial component
+          initial: initialStore,
+          indexRoute: {
+            component: Hike
+          }
+        }
+        return matchRoutes(req, routes)
+      })
+      .then(function(renderProps) {
+        // generate server-side html
+        var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+        res.render('index', {
+          react: html,
+          preloadedState: JSON.stringify(initialStore.getState())
+        });
+      })
+      .catch(function(err) {
+        console.log('Error in /:page/:slug route: ' + err)
+      })
+  }
+
+
+
 })
 
 
