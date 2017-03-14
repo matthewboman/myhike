@@ -4,6 +4,7 @@ This app allows nature enthusiasts to share their favorite spots and foragers
 their best finds, and also provides a public database of species dispersal
 to measure the effects of climate change on different ecosystems.
 
+
 ## contributing
 This is an ongoing project, so this is as much as a personal to-do list as it's a
 list of ways anyone interested can help:
@@ -11,6 +12,16 @@ list of ways anyone interested can help:
       - Email verification and lost password re-submission. I wrote this in AngularJs
         for [Camover]() so a lot of the backend can be taken from there. The front
         will have to be rewritten in React.
+        
+      - Server-side routing for all components (some are front-end only). Also, making
+        routing more general instead of being controller-specific.
+        
+      - Aesthetics (everything looks like garbage since I got rid of Bootstap-React
+        but I also haven't tried to fix it yet.
+        
+      - Mobile routing and rewriting the Map/Container files. There are some leftover
+        pieces from when I had integrated the Shoji component that break on when implemented
+        with server-side routing because Node.js doesn't know what 'window, etc' is.
 
 
 ## running locally
