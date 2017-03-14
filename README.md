@@ -12,12 +12,6 @@ list of ways anyone interested can help:
         for [Camover]() so a lot of the backend can be taken from there. The front
         will have to be rewritten in React.
 
-      - Long Term: I have a lot of ideas about what I'd want to see as a user of
-        this site. It'd be great to search for hikes based on specifications other
-        than just location by making descriptions and other review aspects (animals,
-        plants, fungi) searchable. Also, I'd like users to be able to user their
-        current location as a hike location (see [Map]() and [CreateHike]() components)
-        or use an address.
 
 ## running locally
 
@@ -26,8 +20,8 @@ list of ways anyone interested can help:
   also using my Cloudinary account to store pictures. Please don't mess with this
   or I'll take it down.
 
-  You can also use your own database by changing [.env]() and photo cloud by changing
-  the [Images]() component.
+  You can also use your own database by changing [.env](https://github.com/crashspringfield/myhike/blob/master/.env) and photo cloud by changing
+  the [Images](https://github.com/crashspringfield/myhike/blob/master/src/components/presentation/Images.js) component.
 
   If you want to run locally, to test it out or contribute:
 
