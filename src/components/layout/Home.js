@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { Map, CreateHike, NavAdmin } from '../containers'
+import { Map } from '../containers'
 import { Navbar } from './'
 import { HomePage } from '../presentation'
 
@@ -18,10 +18,6 @@ class Home extends Component {
 
     return (
       <div>
-
-        <div className="nav">
-          <Navbar />
-        </div>
 
         <div className="col-md-4">
           <Map

@@ -16,11 +16,7 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var connect = require("react-redux").connect;
-var _containers = require("../containers");
-
-var Map = _containers.Map;
-var CreateHike = _containers.CreateHike;
-var NavAdmin = _containers.NavAdmin;
+var Map = require("../containers").Map;
 var Navbar = require("./").Navbar;
 var HomePage = require("../presentation").HomePage;
 var Home = (function (Component) {
@@ -41,11 +37,6 @@ var Home = (function (Component) {
         return React.createElement(
           "div",
           null,
-          React.createElement(
-            "div",
-            { className: "nav" },
-            React.createElement(Navbar, null)
-          ),
           React.createElement(
             "div",
             { className: "col-md-4" },

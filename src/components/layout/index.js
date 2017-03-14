@@ -1,15 +1,15 @@
-import Container from './Container'
+import CreateContainer from './CreateContainer'
+import HikeContainer from './HikeContainer'
 import Home from './Home'
-import Nav from './Nav'
 import Navbar from './Navbar'
 import PhoneContainer from './PhoneContainer'
 import ProfileInfo from './ProfileInfo'
 
 export {
 
-  Container,
+  CreateContainer,
+  HikeContainer,
   Home,
-  Nav,
   Navbar,
   PhoneContainer,
   ProfileInfo

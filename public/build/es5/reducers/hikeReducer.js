@@ -14,7 +14,6 @@ var initialState = {
   hikeMap: {}
 };
 
-// TODO: make hike map instead of list
 
 module.exports = function (_x, action) {
   var state = arguments[0] === undefined ? initialState : arguments[0];
@@ -25,9 +24,6 @@ module.exports = function (_x, action) {
     case constants.CURRENT_HIKE_RECEIVED:
       // console.log('CURRENT_HIKE_RECEIVED ' + JSON.stringify(action.currentHike))
       updated.currentHike = action.currentHike;
-      // let updatedMap = Object.assign({}, updated.map)
-      // updatedMap[action.currentHike.id] = action.currentHike
-      // updated['map'] = updatedMap
       return updated;
 
     // Hike marker on map clicked
@@ -36,15 +32,15 @@ module.exports = function (_x, action) {
       updated.selectedHike = action.hike;
       return updated;
 
-    //
+    // (For adding a new hike) set location to where user clicks on map
     case constants.LOCATION_ADDED:
       // console.log('LOCATION_ADDED ' + JSON.stringify(action.location))
       updated.hikeLocation = action.location;
       return updated;
 
-    // User location gotten from browser -- not currently implemented
+    // User location gotten from browser
     case constants.USER_LOCATION_RECEIVED:
-      // console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.center))
+      console.log("USER_LOCATION_RECEIVED " + JSON.stringify(action.center));
       updated.center = action.center;
       return updated;
 

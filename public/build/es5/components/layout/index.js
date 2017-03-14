@@ -2,11 +2,11 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var Container = _interopRequire(require("./Container"));
+var CreateContainer = _interopRequire(require("./CreateContainer"));
+
+var HikeContainer = _interopRequire(require("./HikeContainer"));
 
 var Home = _interopRequire(require("./Home"));
-
-var Nav = _interopRequire(require("./Nav"));
 
 var Navbar = _interopRequire(require("./Navbar"));
 
@@ -14,9 +14,9 @@ var PhoneContainer = _interopRequire(require("./PhoneContainer"));
 
 var ProfileInfo = _interopRequire(require("./ProfileInfo"));
 
-exports.Container = Container;
+exports.CreateContainer = CreateContainer;
+exports.HikeContainer = HikeContainer;
 exports.Home = Home;
-exports.Nav = Nav;
 exports.Navbar = Navbar;
 exports.PhoneContainer = PhoneContainer;
 exports.ProfileInfo = ProfileInfo;

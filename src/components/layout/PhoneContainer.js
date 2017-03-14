@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Resizable, ResizableBox } from 'react-resizable';
 import { connect } from 'react-redux'
 
 import { Map } from '../containers'
-import { Nav }from './'
+
+/*
+NOT CURRENTLY IMPLEMENTED
+*/
 
 
 class Container extends Component {

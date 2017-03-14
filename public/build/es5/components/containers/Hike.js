@@ -53,7 +53,11 @@ var Hike = (function (Component) {
           console.log("You must be logged in to post a review");
           return;
         }
+        console.log(JSON.stringify(review));
         this.props.reviewCreated(review, this.props.hike);
+        this.setState({
+          addReview: !this.state.addReview
+        });
       },
       writable: true,
       configurable: true

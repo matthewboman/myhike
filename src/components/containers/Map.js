@@ -7,9 +7,6 @@ import actions from '../../actions'
 import { APIManager } from '../../utils'
 
 /*
-  TODO: Pass props of user location to app state instead of setting user location
-    as the local state. That way, user can set hike location to their current
-    location in the CreateHike component.
   TODO: GET hikes from DB only within certain radius of user. Update API call
     to database as view window changes. That way the app isn't calling every
     hike in DB--only those necessary.
@@ -40,14 +37,8 @@ class Map extends Component {
           }
         })
 
-      //  pass to props for "CreateHike" component
-      this.props.userLocationReceived({
-          center: {
-            lat: lat,
-            lng: lng
-          }
-        })
-
+      //  Pass to props for "CreateHike" component
+      this.props.userLocationReceived({center: {lat: lat, lng: lng} })
       },
       (error) => {
         this.props.displayError("Error dectecting your location");
@@ -59,7 +50,7 @@ class Map extends Component {
     this.props.fetchHikes(null)
   }
 
-  // Add marker to map where user clicks and re-direct to CreateHike component
+  // Add marker to map where user clicks
   addMarker(event) {
     console.log('marker added')
     // Display marker where user clicks
@@ -71,11 +62,9 @@ class Map extends Component {
     })
     // Set app state location to where user clicks
     this.props.locationAdded(clicked)
-    // Open CreateHike component on right side
-    // browserHistory.push(`/add-hike`)
   }
 
-
+  // Set currentHike to whichever hike user clicks on and change route
   selectHike(id) {
     this.props.hikeSelected(id)
     const path = `/hike/${id}`

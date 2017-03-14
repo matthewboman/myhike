@@ -14,6 +14,7 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var Profile = require("../containers").Profile;
+var Navbar = require("./").Navbar;
 var ProfileInfo = (function (Component) {
   function ProfileInfo() {
     _classCallCheck(this, ProfileInfo);
@@ -31,7 +32,6 @@ var ProfileInfo = (function (Component) {
         return React.createElement(
           "div",
           null,
-          "Profile Info layout",
           React.createElement(Profile, { id: this.props.params.id })
         );
       },

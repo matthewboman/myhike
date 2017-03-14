@@ -20,7 +20,7 @@ class Navigation extends React.Component {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="#">Home</a>
+            <a className="navbar-brand" href="/">Home</a>
           </div>
 
           <div className="pull-right">

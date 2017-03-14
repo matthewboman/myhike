@@ -10,9 +10,15 @@ var controllers = require('../controllers')
 
 var serverapp = require('../public/build/es5/serverapp')
 var store = require('../public/build/es5/store/store')
+var Account = require('../public/build/es5/components/containers/Account')
+var CreateContainer = require('../public/build/es5/components/layout/CreateContainer')
+var HikeContainer = require('../public/build/es5/components/layout/HikeContainer')
 var Home = require('../public/build/es5/components/layout/Home')
-var Hike = require('../public/build/es5/components/containers/Hike')
 var ProfileInfo = require('../public/build/es5/components/layout/ProfileInfo')
+
+/*
+TODO: Write general routes for pages.
+*/
 
 
 /* ==================== Private Functions ========================= */
@@ -103,6 +109,69 @@ router.get('/:page', function(req, res, next) {
   let initialStore = null
   let reducers = {}
 
+  // Server-side rendering for CreateHike component
+  if (page == 'create-hike') {
+    // See if user is logged in
+    controllers.account.currentUser(req)
+      .then(function(result) {
+        reducers['account'] = {
+          user: result
+        }
+
+        initialStore = store.configureStore(reducers)
+        var routes = {
+          path: '/create-hike',
+          component: serverapp,
+          initial: initialStore,
+          indexRoute: {
+            component: CreateContainer
+          }
+        }
+        return matchRoutes(req, routes)
+      })
+      .then(function(renderProps) {
+        var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+        res.render('index', {
+          react: html,
+          preloadedState: JSON.stringify(initialStore.getState())
+        })
+      })
+      .catch(function(err) {
+        console.log(err)
+      })
+  }
+
+  // Server-side rendering for Account component
+  if (page == 'currentuser') {
+    controllers.account.currentUser(req)
+      .then(function(result) {
+        reducers['account'] = {
+          user: result
+        }
+        initialStore = store.configureStore(reducers)
+
+        var routes = {
+          path: '/currentuser',
+          component: serverapp,
+          initial: initialStore,
+          indexRoute: {
+            component: Account
+          }
+        }
+        return matchRoutes(req, routes)
+      })
+      .then(function(renderProps) {
+        var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+        res.render('index', {
+          react: html,
+          preloadedState: JSON.stringify(initialStore.getState())
+        })
+      })
+      .catch(function(err) {
+        console.log(err)
+      })
+  }
+
 });
 
 //
@@ -121,7 +190,7 @@ router.get('/:page/:slug', function(req, res, next) {
   let initialStore = null
   let reducers = {}
 
-  //////////////////////////////// controllers.page?
+  ////////////////////////////////
   /* specific cases for testing */
   //////////////////////////////
 
@@ -161,7 +230,6 @@ router.get('/:page/:slug', function(req, res, next) {
 
   // Hike
   if (page == 'hike') {
-    // hike controller ill have to make second request for reviews but others will only make one
     controllers.hike.findById(slug)
       .then(function(hike) {
         // var hike = hike
@@ -172,7 +240,15 @@ router.get('/:page/:slug', function(req, res, next) {
           currentHike: hike,
           hikeMap: hikeMap
         }
-
+        return controllers.account.currentUser(req)
+      })
+      .then(function(result) {
+        console.log('current user should be ' + JSON.stringify(result))
+        reducers['account'] = {
+          user: result
+        }
+      })
+      .then(function() {
         initialStore = store.configureStore(reducers)
 
         var routes = {
@@ -180,7 +256,7 @@ router.get('/:page/:slug', function(req, res, next) {
           component: serverapp, // define initial component
           initial: initialStore,
           indexRoute: {
-            component: Hike
+            component: HikeContainer
           }
         }
         return matchRoutes(req, routes)

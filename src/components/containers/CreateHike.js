@@ -73,10 +73,10 @@ class CreateHike extends Component {
   submitHike(hike) {
     console.log('submitting ' + JSON.stringify(this.state.hike))
     // check if user is logged in
-    // if (this.props.user == null) {
-    //   alert('You must be signed up')
-    //   return
-    // }
+    if (this.props.user == null) {
+      alert('You must be signed up')
+      return
+    }
     let newHike = this.state.hike
     this.props.hikeCreated(newHike)
   }
@@ -142,7 +142,7 @@ class CreateHike extends Component {
 const stateToProps = (state) => {
   return {
     location: state.hike.hikeLocation,
-    currentUser: state.account.currentUser,
+    user: state.account.user,
     userLocation: state.hike.center,
   }
 }

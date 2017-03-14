@@ -8,17 +8,15 @@ import routes from './routes'
 import store from './store/store'
 
 import Main from './components/Main'
-import { Home, ProfileInfo } from './components/layout'
+import { CreateContainer, HikeContainer, Home, ProfileInfo } from './components/layout'
 import { Account, CreateHike, Hike, Profile } from './components/containers'
 
 /*
 // NOTE: path="../profile/:id"
 //  It has to go up a directory because, at the moment, profiles
 //  are accessible through clicking on a review on a hike. Without
-//  the preceding '../' path would be '/hike/profile/:id'.
-//
-// TODO: Figure out a way of rending the profile from the Review
-//  that doesn't prevent route from working at other times.
+//  the preceding '../' path would be '/hike/profile/:id'. The other
+//  option (path="/profile/:id") allows it to work with server-side routing.
 */
 
 // Get initial state as rendered by the server
@@ -30,8 +28,8 @@ const app = (
       <Route path="/" component={Main}>
 
         <IndexRoute component={Home}></IndexRoute>
-        <Route path="/hike/:id" component={Hike}></Route>
-        <Route path="/create-hike" component={CreateHike}></Route>
+        <Route path="/hike/:id" component={HikeContainer}></Route>
+        <Route path="/create-hike" component={CreateContainer}></Route>
         <Route path="/currentuser" component={Account}></Route>
         <Route path="../profile/:id" component={ProfileInfo}></Route>
         <Route path="/profile/:id" component={ProfileInfo}></Route>

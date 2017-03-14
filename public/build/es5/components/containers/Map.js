@@ -30,9 +30,6 @@ var APIManager = require("../../utils").APIManager;
 
 
 /*
-  TODO: Pass props of user location to app state instead of setting user location
-    as the local state. That way, user can set hike location to their current
-    location in the CreateHike component.
   TODO: GET hikes from DB only within certain radius of user. Update API call
     to database as view window changes. That way the app isn't calling every
     hike in DB--only those necessary.
@@ -68,13 +65,8 @@ var Map = (function (Component) {
               lng: lng }
           });
 
-          //  pass to props for "CreateHike" component
-          _this.props.userLocationReceived({
-            center: {
-              lat: lat,
-              lng: lng
-            }
-          });
+          //  Pass to props for "CreateHike" component
+          _this.props.userLocationReceived({ center: { lat: lat, lng: lng } });
         }, function (error) {
           _this.props.displayError("Error dectecting your location");
           console.error(JSON.stringify(error));
@@ -87,7 +79,7 @@ var Map = (function (Component) {
     },
     addMarker: {
 
-      // Add marker to map where user clicks and re-direct to CreateHike component
+      // Add marker to map where user clicks
       value: function addMarker(event) {
         console.log("marker added");
         // Display marker where user clicks
@@ -104,6 +96,8 @@ var Map = (function (Component) {
       configurable: true
     },
     selectHike: {
+
+      // Set currentHike to whichever hike user clicks on and change route
       value: function selectHike(id) {
         this.props.hikeSelected(id);
         var path = "/hike/" + id;
@@ -194,5 +188,3 @@ var dispatchToProps = function (dispatch) {
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(Map);
-// Open CreateHike component on right side
-// browserHistory.push(`/add-hike`)

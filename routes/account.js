@@ -5,6 +5,11 @@ var bcrypt = require('bcryptjs')
 var controllers = require('../controllers')
 var utils = require('../utils')
 
+/*
+TODO: Move password logic to profile or account controller so that this 
+			handles only routing.
+*/
+
 // Log user out, check if user is logged in
 router.get('/:action', function(req, res, next){
 	var action = req.params.action

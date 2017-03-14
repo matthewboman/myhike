@@ -6,6 +6,7 @@ import sha1 from 'sha1'
 import actions from '../../actions'
 import { APIManager, ImageHelper, ImageUploader } from '../../utils'
 import { AccountEditor } from '../presentation'
+import { Navbar } from '../layout'
 
 /*
   TODO: move API logic to ImageUploader

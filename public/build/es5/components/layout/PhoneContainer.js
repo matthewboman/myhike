@@ -15,13 +15,15 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var _reactResizable = require("react-resizable");
-
-var Resizable = _reactResizable.Resizable;
-var ResizableBox = _reactResizable.ResizableBox;
 var connect = require("react-redux").connect;
 var Map = require("../containers").Map;
-var Nav = require("./").Nav;
+
+
+/*
+NOT CURRENTLY IMPLEMENTED
+*/
+
+
 var Container = (function (Component) {
   function Container() {
     _classCallCheck(this, Container);

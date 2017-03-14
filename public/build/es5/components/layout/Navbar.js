@@ -53,7 +53,7 @@ var Navigation = (function (_React$Component) {
               ),
               React.createElement(
                 "a",
-                { className: "navbar-brand", href: "#" },
+                { className: "navbar-brand", href: "/" },
                 "Home"
               )
             ),

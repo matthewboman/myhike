@@ -17,6 +17,7 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var Navbar = require("./layout").Navbar;
 var Main = (function (Component) {
   function Main() {
     _classCallCheck(this, Main);
@@ -34,6 +35,11 @@ var Main = (function (Component) {
         return React.createElement(
           "div",
           null,
+          React.createElement(
+            "div",
+            { className: "nav" },
+            React.createElement(Navbar, null)
+          ),
           this.props.children
         );
       },
