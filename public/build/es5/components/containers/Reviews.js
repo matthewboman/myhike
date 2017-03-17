@@ -107,7 +107,7 @@ var Reviews = (function (Component) {
 
         return React.createElement(
           "div",
-          { className: "sidebar" },
+          null,
           React.createElement(
             "ul",
             { className: "reviews" },

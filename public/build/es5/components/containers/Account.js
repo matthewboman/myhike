@@ -42,44 +42,38 @@ var Account = (function (Component) {
 
     _get(Object.getPrototypeOf(Account.prototype), "constructor", this).call(this);
     this.state = {
-      updated: {}
+      updated: {
+        image: ""
+      },
+      updateImage: false,
+      buttonText: "Nevermind"
     };
   }
 
   _inherits(Account, Component);
 
   _prototypeProperties(Account, null, {
+    toggleImageUploader: {
+
+      // Show/hide editing capabilities
+      value: function toggleImageUploader() {
+        this.setState({
+          updateImage: !this.state.updateImage
+        });
+      },
+      writable: true,
+      configurable: true
+    },
     uploadImage: {
       value: function uploadImage(files) {
         var _this = this;
-        // Select first image
         var image = files[0];
-        // Prep Coudinary
-        var cloudName = "dotkbdwdw";
-        var url = "https://api.cloudinary.com/v1_1/" + cloudName + "/image/upload";
-        // Prep PARAMS
-        var upload_preset = "me0nxa6b";
-        var API_Secret = "i3ngvXSllacuFCrG_SCVwbfa1WI";
-        var timestamp = Date.now() / 1000; // they want seconds, not miliseconds
-        var paramsStr = "timestamp=" + timestamp + "&upload_preset=" + upload_preset + API_Secret;
-        var signature = sha1(paramsStr);
-
-        var params = {
-          api_key: "614624198613471",
-          timestamp: timestamp,
-          upload_preset: upload_preset,
-          signature: signature
-        };
-        // Upload image to Cloudinary
-        APIManager.upload(url, image, params, function (err, response) {
-          if (err) {
-            console.error(err);
-            return;
-          }
+        ImageUploader.upload(image, function (results) {
           var updatedProfile = Object.assign({}, _this.props.user);
-          updatedProfile.image = response.body.secure_url;
+          updatedProfile.image = results.secure_url;
           _this.setState({
-            updated: updatedProfile
+            updated: updatedProfile,
+            buttonText: "Update Profile Picture"
           });
         });
       },
@@ -88,14 +82,18 @@ var Account = (function (Component) {
     },
     updatePhoto: {
       value: function updatePhoto(event) {
+        if (this.state.updated.image == "") {
+          this.setState({ updateImage: false });
+          return;
+        }
         this.props.profileUpdated(this.props.user, this.state.updated);
+        this.setState({ updateImage: false });
       },
       writable: true,
       configurable: true
     },
     submitUpdate: {
       value: function submitUpdate(profile) {
-        console.log("just updated " + JSON.stringify(profile));
         this.props.profileUpdated(this.props.user, profile);
       },
       writable: true,
@@ -104,29 +102,73 @@ var Account = (function (Component) {
     render: {
       value: function render() {
         var profile = this.props.user;
-        var image = profile.image == null ? "" : ImageHelper.thumbnail(profile.image, 250);
+        var image = profile.image == null ? "" : ImageHelper.profile(profile.image, 400, 360);
+        var newImage = this.state.updated.image == "" ? "" : ImageHelper.preview(this.state.updated.image, 325, 300);
+
+        var updateImage = undefined;
+
+        if (this.state.updateImage == true) {
+          updateImage = React.createElement(
+            "div",
+            null,
+            React.createElement(Dropzone, { onDrop: this.uploadImage.bind(this) }),
+            React.createElement("br", null),
+            React.createElement("img", { src: newImage }),
+            React.createElement("br", null),
+            React.createElement(
+              "button",
+              { onClick: this.updatePhoto.bind(this) },
+              this.state.buttonText
+            )
+          );
+        } else {
+          updateImage = React.createElement(
+            "div",
+            null,
+            React.createElement(
+              "button",
+              { onClick: this.toggleImageUploader.bind(this) },
+              "Update Profile picture"
+            )
+          );
+        }
 
         return React.createElement(
           "div",
-          null,
+          { className: "container" },
           React.createElement(
             "h2",
             null,
             "Welcome ",
             profile.username
           ),
-          React.createElement("img", { src: image }),
-          React.createElement("br", null),
-          React.createElement(Dropzone, { onDrop: this.uploadImage.bind(this) }),
           React.createElement(
-            "button",
-            { onClick: this.updatePhoto.bind(this) },
-            "Update Photo"
+            "div",
+            { className: "row" },
+            React.createElement(
+              "div",
+              { className: "col-md-6" },
+              React.createElement(
+                "div",
+                { className: "account-image" },
+                React.createElement("img", { src: image })
+              ),
+              React.createElement("br", null),
+              updateImage
+            ),
+            React.createElement(
+              "div",
+              { className: "col-md-6" },
+              React.createElement(
+                "div",
+                { className: "account-info" },
+                React.createElement(AccountEditor, {
+                  profile: profile,
+                  onUpdate: this.submitUpdate.bind(this) })
+              )
+            )
           ),
-          React.createElement("br", null),
-          React.createElement(AccountEditor, {
-            profile: profile,
-            onUpdate: this.submitUpdate.bind(this) })
+          React.createElement("div", { className: "row" })
         );
       },
       writable: true,

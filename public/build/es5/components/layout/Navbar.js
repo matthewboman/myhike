@@ -15,7 +15,6 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var Link = require("react-router").Link;
 var NavAdmin = require("../containers").NavAdmin;
 var Navigation = (function (_React$Component) {
   function Navigation() {
@@ -31,8 +30,8 @@ var Navigation = (function (_React$Component) {
     render: {
       value: function render() {
         return React.createElement(
-          "div",
-          { className: "navbar" },
+          "nav",
+          { className: "navbar navbar-default" },
           React.createElement(
             "div",
             { className: "container-fluid" },
@@ -41,7 +40,7 @@ var Navigation = (function (_React$Component) {
               { className: "navbar-header" },
               React.createElement(
                 "button",
-                { type: "button", className: "navbar-toggle collapsed", "data-toggle": "collapse", "data-target": "#menu-list", "aria-expanded": "false" },
+                { type: "button", className: "navbar-toggle collapsed", "data-toggle": "collapse", "data-target": "#bs-example-navbar-collapse-1", "aria-expanded": "false" },
                 React.createElement(
                   "span",
                   { className: "sr-only" },
@@ -59,7 +58,7 @@ var Navigation = (function (_React$Component) {
             ),
             React.createElement(
               "div",
-              { className: "pull-right" },
+              { className: "collapse navbar-collapse", id: "bs-example-navbar-collapse-1" },
               React.createElement(NavAdmin, null)
             )
           )

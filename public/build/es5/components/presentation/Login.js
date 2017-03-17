@@ -68,12 +68,55 @@ var Login = (function (Component) {
         return React.createElement(
           "div",
           null,
-          React.createElement("input", { className: "login-form", onChange: this.updateVisitor.bind(this), type: "text", id: "username", placeholder: "username" }),
-          React.createElement("input", { className: "login-form", onChange: this.updateVisitor.bind(this), type: "password", id: "password", placeholder: "Password" }),
           React.createElement(
-            "button",
-            { className: "btn-login", onClick: this.login.bind(this) },
-            "Log in"
+            "form",
+            null,
+            React.createElement(
+              "h3",
+              null,
+              "Log in"
+            ),
+            React.createElement(
+              "div",
+              null,
+              React.createElement(
+                "label",
+                null,
+                "Username"
+              ),
+              React.createElement("input", {
+                className: "form-control",
+                onChange: this.updateVisitor.bind(this),
+                type: "text", id: "username",
+                placeholder: "username" })
+            ),
+            React.createElement("br", null),
+            React.createElement(
+              "div",
+              null,
+              React.createElement(
+                "label",
+                null,
+                "Password"
+              ),
+              React.createElement("input", {
+                className: "form-control",
+                onChange: this.updateVisitor.bind(this),
+                type: "password", id: "password",
+                placeholder: "password" })
+            ),
+            React.createElement("br", null),
+            React.createElement(
+              "div",
+              null,
+              React.createElement(
+                "button",
+                {
+                  className: "btn btn-info btn-block",
+                  onClick: this.login.bind(this) },
+                "Log in"
+              )
+            )
           )
         );
       },

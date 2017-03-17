@@ -19,7 +19,7 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="sidebar">
+      <div>
         <RegisterForm onRegister={this.register.bind(this)}/>
       </div>
     )

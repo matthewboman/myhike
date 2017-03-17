@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
 
+/*
+TODO: build "upate email" capabilities that generates token,
+      stores in DB w/ new email, mails link to user, validates,
+      and updated.
+
+      mailchimp?, nodemailer?
+*/
+
 class AccountEditor extends Component {
   constructor(props) {
     super(props)
     this.state = {
       isEditing: false,
-      profile: props.profile
+      profile: props.profile,
     }
   }
 
@@ -29,10 +37,10 @@ class AccountEditor extends Component {
 
   submitUpdate(event) {
     event.preventDefault()
-    this.props.onUpdate(this.state.profile)
     this.setState({
-      isEditing: !this.state.isEditing
+      isEditing: !this.state.isEditing,
     })
+    this.props.onUpdate(this.state.profile)
   }
 
   render() {
@@ -44,31 +52,38 @@ class AccountEditor extends Component {
       content = (
         <div>
           <input
+            className="form-control"
             id="firstName"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.firstName} />
           <br />
           <input
+            className="form-control"
             id="lastName"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.lastName} />
           <br />
           <input
+            className="form-control"
             id="city"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.city} />
           <br />
-          <input
+        {/*  <input
             id="email"
+            className="form-control"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.email} />
-          <br />
+          <br /> */}
           <textarea
+            className="form-control"
             id="bio"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.bio} />
           <br />
-          <button onClick={this.submitUpdate.bind(this)}>Done</button>
+          <button onClick={this.submitUpdate.bind(this)}>Update</button>
+          <button onClick={this.toggleEdit.bind(this)}>Nevermind</button>
+
         </div>
       )
     } else {

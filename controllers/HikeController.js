@@ -37,7 +37,7 @@ module.exports = {
           reject(err)
           return
         }
-        
+
         resolve(hike.summary())
       })
     })
@@ -46,48 +46,14 @@ module.exports = {
   // POST
   create: function(params) {
     return new Promise(function(resolve, reject) {
-
-      // If user gives address and not lat/lng
-      if (params.useAddress == true) {
-        // Prep shit for query
-        var address = params.address + ',' + params.city + ',' + params.state
-        address = address.replace(/ /g, '+')
-        var url = 'https://maps.googleapis.com/maps/api/geocode/json'
-        var geoParams = {
-          key: process.env.GOOGLE_MAP_API,
-          address: address
+      Hike.create(params, function(err, hike) {
+        if (err) {
+          reject(err);
+          return;
         }
-        // Query Google Maps API to get lat/lng
-        utils.Requests.get(url, geoParams, function(err, response) {
-          if (err) {
-            reject(err)
-            return
-          }
-          var results = response.results
-          var latLng = results[0].geometry.location
-          // Insert lat/lng into Hike data
-          params['position'] = latLng
-
-          Hike.create(params, function(err, hike) {
-            if (err) {
-              reject(err);
-              return;
-            }
-            resolve(hike.summary());
-            return
-          })
-        })
-      // If user uses current location or map point
-      } else {
-        Hike.create(params, function(err, hike) {
-          if (err) {
-            reject(err);
-            return;
-          }
-          resolve(hike.summary());
-          return
-        })
-      }
+        resolve(hike.summary());
+        return
+      })
     })
 
   },

@@ -15,11 +15,96 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var Validation = _interopRequire(require("react-validation"));
 
+var validator = _interopRequire(require("validator"));
 
 /*
-  TODO: allow error handling to bubble up from database
+TODO: move validation rules to utils
+TODO: get API error (username/email taken) from action.index
+      by creating 'error state' in account reducer
 */
+
+// ================ Validation =========================
+Object.assign(Validation.rules, {
+  // Field must have 8+ characters
+  length: {
+    rule: function (value) {
+      return value.length > 7;
+    },
+    hint: function (value) {
+      return React.createElement(
+        "span",
+        { className: "form-error is-visible" },
+        "Password must be at least 8 characters"
+      );
+    }
+  },
+  // Field is required
+  required: {
+    // Make sure what we get is strings
+    rule: function (value) {
+      return value.toString().trim();
+    },
+    hint: function (value) {
+      return React.createElement(
+        "span",
+        { className: "form-error is-visible" },
+        "Required"
+      );
+    }
+  },
+  // Make sure email field is email
+  email: {
+    rule: function (value) {
+      return validator.isEmail(value);
+    },
+    hint: function (value) {
+      return React.createElement(
+        "span",
+        { className: "form-error is-visible" },
+        value,
+        " is not a valid email address"
+      );
+    }
+  },
+  // Compare two password fields
+  password: {
+    rule: function (value, components) {
+      var password = components.password.state;
+      var passwordConfirm = components.passwordConfirm.state;
+      var isBothUsed = password && passwordConfirm && password.isUsed && passwordConfirm.isUsed;
+      var isBothChanged = isBothUsed && password.isChanged && passwordConfirm.isChanged;
+
+      if (!isBothUsed || !isBothChanged) {
+        return true;
+      }
+
+      return password.value === passwordConfirm.value;
+    },
+    hint: function () {
+      return React.createElement(
+        "span",
+        { className: "form-error is-visible" },
+        "Passwords should match"
+      );
+    }
+  },
+  // Define API rule to show hint after API error response
+  api: {
+    // no rule needed b/c it will bubble up from DB
+    hint: function (value) {
+      return React.createElement(
+        "button",
+        { className: "form-error is-visible" },
+        "API Error on \"",
+        value,
+        "\" value. Focus to hide."
+      );
+    }
+  }
+});
+// =================== END Validation ======================
 
 var RegisterForm = (function (Component) {
   function RegisterForm() {
@@ -53,21 +138,9 @@ var RegisterForm = (function (Component) {
     },
     register: {
 
-      // REgister user if all checks out
+      // Register user if all checks out
       value: function register(event) {
         event.preventDefault();
-        if (this.state.visitor.username == 0) {
-          console.log("Please enter a username");
-          return;
-        }
-        if (this.state.visitor.email.length == 0) {
-          console.log("Please enter an email");
-          return;
-        }
-        if (this.state.visitor.password.length == 0) {
-          console.log("Please enter a password");
-          return;
-        }
         this.props.onRegister(this.state.visitor);
       },
       writable: true,
@@ -76,23 +149,89 @@ var RegisterForm = (function (Component) {
     render: {
       value: function render() {
         return React.createElement(
-          "div",
+          Validation.components.Form,
           null,
           React.createElement(
-            "h2",
+            "h3",
             null,
-            "Sign Up"
+            "Sign up"
           ),
-          React.createElement("input", { onChange: this.updateVisitor.bind(this), className: "form-control", type: "text", id: "username", placeholder: "username" }),
-          React.createElement("br", null),
-          React.createElement("input", { onChange: this.updateVisitor.bind(this), className: "form-control", type: "text", id: "email", placeholder: "Email" }),
-          React.createElement("br", null),
-          React.createElement("input", { onChange: this.updateVisitor.bind(this), className: "form-control", type: "password", id: "password", placeholder: "Password" }),
+          React.createElement(
+            "div",
+            null,
+            React.createElement(
+              "label",
+              null,
+              "Username"
+            ),
+            React.createElement(Validation.components.Input, {
+              onChange: this.updateVisitor.bind(this),
+              value: "",
+              className: "form-control",
+              name: "username", id: "username",
+              validations: ["required"] })
+          ),
           React.createElement("br", null),
           React.createElement(
-            "button",
-            { onClick: this.register.bind(this), className: "btn btn-info btn-block" },
-            "Join"
+            "div",
+            null,
+            React.createElement(
+              "label",
+              null,
+              "Email"
+            ),
+            React.createElement(Validation.components.Input, {
+              onChange: this.updateVisitor.bind(this),
+              value: "",
+              className: "form-control",
+              name: "email", id: "email",
+              validations: ["required", "email"] })
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            null,
+            React.createElement(
+              "label",
+              null,
+              "Password"
+            ),
+            React.createElement(Validation.components.Input, {
+              onChange: this.updateVisitor.bind(this),
+              type: "password",
+              value: "",
+              className: "form-control",
+              name: "password", id: "password",
+              validations: ["length", "required", "password"] })
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            null,
+            React.createElement(
+              "label",
+              null,
+              "Confirm Password"
+            ),
+            React.createElement(Validation.components.Input, {
+              onChange: this.updateVisitor.bind(this),
+              type: "password",
+              value: "",
+              className: "form-control",
+              name: "passwordConfirm", id: "passwordConfirm",
+              validations: ["length", "required", "password"] })
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            null,
+            React.createElement(
+              Validation.components.Button,
+              {
+                onClick: this.register.bind(this),
+                className: "btn btn-info btn-block" },
+              "Join now!"
+            )
           )
         );
       },

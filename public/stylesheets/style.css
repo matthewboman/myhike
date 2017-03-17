@@ -1,6 +1,6 @@
 body {
   font-family: fantasy;
-  background-color: #e5f3d1;
+  /*background-color: #e5f3d1;*/
   color: #515c41;
 }
 
@@ -16,40 +16,21 @@ h1, h2, h3 {
 .x-button {
   position: absolute;
   top: 2px;
-  right: 2px;
+  : 2px;
 }
 
-.icon-image {
-  border-radius: 20px;
-  margin-right: 6px;
-}
+
 
 /*Navbar*/
 .navbar {
-  margin-bottom: 0px !important;
-  background-color: #cbe6a3;
-  border-color: #515c41;
   border-radius: 0;
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
-
-}
-.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
-    /*margin-left: -75px;*/
-    color: #515c41;
-}
-.navbar-default .navbar-nav>li>a {
-    color: #515c41;
-}
-.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
-    color: #515c41;
-    background-color: #cbe6a3;
 }
 
 .navbar-right {
     float: right!important;
-    /*margin-right: -75px;*/
 }
 
 @media (max-width: 768px) {
@@ -59,93 +40,10 @@ h1, h2, h3 {
   .navbar-right {
       margin-right: 0px;
   }
-  .navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
-    background-color: #e5f3d1;
-  }
-  .navbar-default .navbar-toggle {
-      border-color: #ddd;
-  }
-}
-
-.login-form {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-left: 5px;
-}
-.btn-login {
-  color: #fff;
-  background-color: #515c41;
-  border-color: #46b8da;
-  display: inline-block;
-  margin-bottom: 0;
-  margin-left: 5px;
-  font-weight: 400;
-  line-height: 1.42857143;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-  touch-action: manipulation;
-  cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-  user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-.register {
-  padding-top: 3px;
-}
-
-/*Shoji*/
-.left {
-  position: absolute;
-  float: left;
-  border-right-style: double;
-  border-right-color: #2E2421;
-  /*padding-bottom: 12em;*/
-  background-color: #e5f3d1;
-}
-.right {
-  float: right;
-  background-color: #e5f3d1;
-  /*padding-bottom: 12em;*/
-}
-.react-resizable {
-
-}
-.react-resizable-handle {
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  top: 50%;
-  /*bottom: 0;*/
-  vertical-align: middle;
-  right: 0;
-  background: url('../images/shoji-handle.png');
-  background-position: right;
-  padding: 0 3px 3px 0;
-  background-repeat: no-repeat;
-  background-origin: content-box;
-  box-sizing: border-box;
-  cursor: col-resize;
 }
 
 
-/*Right side component*/
-.sidebar {
-  padding: 15px;
-}
-.btn {
-  background-color: #515c41;
-  border-color: #515c41;
-}
-.btn:hover, .btn:active, .btn:focus {
-  background-color: #515c41;
-  border-color: #515c41;
-}
+
 
 
 
@@ -192,7 +90,6 @@ h1, h2, h3 {
 .hikeBlock {
   padding-top: 6px;
   padding-bottom: 6px;
-  /*text-align: center;*/
 }
 .hike-images .hike-image{
   display: inline-flex;
@@ -200,23 +97,7 @@ h1, h2, h3 {
   padding-right: 2px;
 }
 
-.reviews {
-  list-style-type: none;
-}
 
-.review-block {
-  border-width: 1px;
-  border-style: solid;
-  border-color: #515c41;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  padding: 1.5em;
-}
-
-.review-header {
-  padding-top: none;
-  font-weight: 400;
-}
 
 .wrapper {
   overflow-y: scroll;
@@ -234,3 +115,43 @@ h1, h2, h3 {
   }
 
 }
+
+/* CreateHike Component */
+.btn-change {
+  margin-right: 10px;
+}
+
+/* Account Component */
+
+
+/* Review Component */
+.reviews {
+  list-style-type: none;
+  padding-left: inherit;
+}
+
+.review-block {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #515c41;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 1.5em;
+}
+
+.review-header {
+  padding-top: none;
+  font-weight: 400;
+}
+
+.review-edit-button {
+  float: right;
+}
+
+.icon-image {
+  border-radius: 20px;
+  margin-right: 6px;
+}
+
+
+/*temp shit*/

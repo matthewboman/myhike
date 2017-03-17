@@ -78,6 +78,8 @@ var CreateHike = (function (Component) {
     render: {
       value: function render() {
         var review = this.props.review;
+        var reviewDate = review.timestamp.slice(0, review.timestamp.indexOf("T"));
+
         var author = review.user;
         var editable = this.props.isEditable ? this.props.isEditable : false;
 
@@ -192,11 +194,11 @@ var CreateHike = (function (Component) {
             React.createElement(
               "span",
               null,
-              review.timestamp
+              reviewDate
             ),
             editable ? React.createElement(
               "button",
-              { onClick: this.toggleEdit.bind(this) },
+              { className: "review-edit-button", onClick: this.toggleEdit.bind(this) },
               "Edit Review"
             ) : null
           );

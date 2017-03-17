@@ -6,7 +6,7 @@ var controllers = require('../controllers')
 var utils = require('../utils')
 
 /*
-TODO: Move password logic to profile or account controller so that this 
+TODO: Move password logic to profile or account controller so that this
 			handles only routing.
 */
 
@@ -56,9 +56,22 @@ router.post('/register', function(req, res, next){
 			})
 		})
 		.catch(function(err){
+			let errors = []
+			// If username is taken
+			if (err.errors.username) {
+				errors.push(err.errors.username.message)
+			}
+			// If email is taken
+			if (err.errors.email) {
+				errors.push(err.errors.email.message)
+			}
+			// Other errors
+			if (!err.errors.username || !err.errors.email) {
+				errors.push(err)
+			}
 			res.json({
 				confirmation: 'fail',
-				message: err.message || err
+				message: errors
 			})
 		})
 })

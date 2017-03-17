@@ -46,25 +46,45 @@ var NavAdmin = (function (Component) {
 
     _get(Object.getPrototypeOf(NavAdmin.prototype), "constructor", this).call(this);
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      isLogin: false,
+      isRegister: false
     };
-    this.openModal = this.openModal.bind(this);
+    this.openLogin = this.openLogin.bind(this);
+    this.openRegister = this.openRegister.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
   _inherits(NavAdmin, Component);
 
   _prototypeProperties(NavAdmin, null, {
-    openModal: {
-      value: function openModal() {
-        this.setState({ modalIsOpen: true });
+    openLogin: {
+      value: function openLogin() {
+        this.setState({
+          modalIsOpen: true,
+          isLogin: true
+        });
+      },
+      writable: true,
+      configurable: true
+    },
+    openRegister: {
+      value: function openRegister() {
+        this.setState({
+          modalIsOpen: true,
+          isRegister: true
+        });
       },
       writable: true,
       configurable: true
     },
     closeModal: {
       value: function closeModal() {
-        this.setState({ modalIsOpen: false });
+        this.setState({
+          modalIsOpen: false,
+          isLogin: false,
+          isRegister: false
+        });
       },
       writable: true,
       configurable: true
@@ -72,6 +92,9 @@ var NavAdmin = (function (Component) {
     login: {
       value: function login(credentials) {
         this.props.currentUserReceived(credentials);
+        this.setState({
+          modalIsOpen: false
+        });
       },
       writable: true,
       configurable: true
@@ -87,6 +110,25 @@ var NavAdmin = (function (Component) {
     render: {
       value: function render() {
         /*
+          Populate modal with Login or Register
+        */
+        var modal = null;
+        if (this.state.isRegister) {
+          modal = React.createElement(
+            "div",
+            null,
+            React.createElement(Register, { onClose: this.closeModal })
+          );
+        }
+        if (this.state.isLogin) {
+          modal = React.createElement(
+            "div",
+            null,
+            React.createElement(Login, { onLogin: this.login.bind(this) })
+          );
+        }
+
+        /*
           Display login/signup if user is not logged in.
           If user is logged in, display profile link and logout.
         */
@@ -95,89 +137,65 @@ var NavAdmin = (function (Component) {
 
         if (user == null) {
           content = React.createElement(
-            "div",
-            { className: "collapse navbar-collapse", id: "menu-list" },
+            "ul",
+            { className: "nav navbar-nav navbar-right" },
             React.createElement(
-              "ul",
-              { className: "nav navbar-nav" },
+              "li",
+              null,
               React.createElement(
-                "li",
-                null,
-                React.createElement(
-                  Link,
-                  { to: "/create-hike" },
-                  "Create Hike"
-                )
-              ),
+                Link,
+                { to: "/create-hike" },
+                "Create Hike"
+              )
+            ),
+            React.createElement(
+              "li",
+              null,
               React.createElement(
-                "li",
-                null,
-                React.createElement(Login, { onLogin: this.login.bind(this) })
-              ),
+                "a",
+                { onClick: this.openLogin },
+                "Login"
+              )
+            ),
+            React.createElement(
+              "li",
+              null,
               React.createElement(
-                "li",
-                null,
-                React.createElement(
-                  "button",
-                  { className: "btn-login", onClick: this.openModal },
-                  "Register"
-                )
-              ),
-              React.createElement(
-                Modal,
-                {
-                  isOpen: this.state.modalIsOpen,
-                  onAfterOpen: this.afterOpenModal,
-                  onRequestClose: this.closeModal,
-                  style: customStyles,
-                  contentLabel: "Example Modal"
-                },
-                React.createElement(
-                  "button",
-                  { className: "x-button", onClick: this.closeModal },
-                  "X"
-                ),
-                React.createElement(Register, { onClose: this.closeModal })
+                "a",
+                { onClick: this.openRegister },
+                "Register"
               )
             )
           );
         } else {
           content = React.createElement(
-            "div",
-            { className: "collapse navbar-collapse", id: "menu-list" },
+            "ul",
+            { className: "nav navbar-nav navbar-right" },
             React.createElement(
-              "ul",
-              { className: "nav navbar-nav" },
+              "li",
+              null,
               React.createElement(
-                "li",
-                null,
-                React.createElement(
-                  Link,
-                  { to: "/create-hike" },
-                  "Create Hike"
-                )
-              ),
+                Link,
+                { to: "/create-hike" },
+                "Create Hike"
+              )
+            ),
+            React.createElement(
+              "li",
+              null,
               React.createElement(
-                "li",
-                null,
-                React.createElement(
-                  Link,
-                  { to: "/currentuser" },
-                  React.createElement(
-                    "button",
-                    null,
-                    "Account"
-                  )
-                )
-              ),
+                Link,
+                { to: "/currentuser" },
+                "Account"
+              )
+            ),
+            React.createElement(
+              "li",
+              null,
               React.createElement(
-                "li",
-                null,
-                React.createElement(
-                  "button",
-                  { onClick: this.logout.bind(this) },
-                  "Log out"
-                )
+                "a",
+                { onClick: this.logout.bind(this) },
+                "Log out"
               )
             )
           );
@@ -186,7 +204,23 @@ var NavAdmin = (function (Component) {
         return React.createElement(
           "div",
           null,
-          content
+          content,
+          React.createElement(
+            Modal,
+            {
+              isOpen: this.state.modalIsOpen,
+              onAfterOpen: this.afterOpenModal,
+              onRequestClose: this.closeModal,
+              style: customStyles,
+              contentLabel: "Example Modal"
+            },
+            React.createElement(
+              "button",
+              { className: "x-button", onClick: this.closeModal },
+              "X"
+            ),
+            modal
+          )
         );
       },
       writable: true,

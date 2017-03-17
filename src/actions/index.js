@@ -66,8 +66,8 @@ export default {
     return (dispatch) => {
       APIManager.post('/account/register', profile, (err, response) => {
         if (err) {
-          let msg = err.message || err
-          console.error(msg)
+          // let msg = err.message || err
+          console.error(err)
           return
         }
         const user = response.profile

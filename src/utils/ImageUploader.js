@@ -7,7 +7,7 @@ import { APIManager } from './'
 
 export default {
 
-  upload: (image) => {
+  upload: (image, callback) => {
     // Prep Coudinary
     const cloudName = 'dotkbdwdw'
     const url = 'https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload'
@@ -30,13 +30,7 @@ export default {
         console.error(err)
         return
       }
-      // let updatedProfile = Object.assign({}, this.props.user)
-      // updatedProfile['image'] = response.body['secure_url']
-      // this.setState({
-      //   updated: updatedProfile
-      // })
-      const imageUrl = response.body['secure_url']
-      return imageUrl
+      callback(response.body)
     })
   }
 

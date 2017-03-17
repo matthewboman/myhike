@@ -15,6 +15,16 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+
+
+/*
+TODO: build "upate email" capabilities that generates token,
+      stores in DB w/ new email, mails link to user, validates,
+      and updated.
+
+      mailchimp?, nodemailer?
+*/
+
 var AccountEditor = (function (Component) {
   function AccountEditor(props) {
     _classCallCheck(this, AccountEditor);
@@ -22,8 +32,7 @@ var AccountEditor = (function (Component) {
     _get(Object.getPrototypeOf(AccountEditor.prototype), "constructor", this).call(this, props);
     this.state = {
       isEditing: false,
-      profile: props.profile
-    };
+      profile: props.profile };
   }
 
   _inherits(AccountEditor, Component);
@@ -57,10 +66,9 @@ var AccountEditor = (function (Component) {
     submitUpdate: {
       value: function submitUpdate(event) {
         event.preventDefault();
-        this.props.onUpdate(this.state.profile);
         this.setState({
-          isEditing: !this.state.isEditing
-        });
+          isEditing: !this.state.isEditing });
+        this.props.onUpdate(this.state.profile);
       },
       writable: true,
       configurable: true
@@ -76,26 +84,25 @@ var AccountEditor = (function (Component) {
             "div",
             null,
             React.createElement("input", {
+              className: "form-control",
               id: "firstName",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.firstName }),
             React.createElement("br", null),
             React.createElement("input", {
+              className: "form-control",
               id: "lastName",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.lastName }),
             React.createElement("br", null),
             React.createElement("input", {
+              className: "form-control",
               id: "city",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.city }),
             React.createElement("br", null),
-            React.createElement("input", {
-              id: "email",
-              onChange: this.updateProfile.bind(this),
-              defaultValue: profile.email }),
-            React.createElement("br", null),
             React.createElement("textarea", {
+              className: "form-control",
               id: "bio",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.bio }),
@@ -103,7 +110,12 @@ var AccountEditor = (function (Component) {
             React.createElement(
               "button",
               { onClick: this.submitUpdate.bind(this) },
-              "Done"
+              "Update"
+            ),
+            React.createElement(
+              "button",
+              { onClick: this.toggleEdit.bind(this) },
+              "Nevermind"
             )
           );
         } else {
@@ -171,3 +183,9 @@ var AccountEditor = (function (Component) {
 })(Component);
 
 module.exports = AccountEditor;
+/*  <input
+   id="email"
+   className="form-control"
+   onChange={this.updateProfile.bind(this)}
+   defaultValue={profile.email} />
+ <br /> */

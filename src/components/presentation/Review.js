@@ -45,6 +45,8 @@ class CreateHike extends Component {
 
   render() {
     let review = this.props.review
+    let reviewDate = review.timestamp.slice(0, review.timestamp.indexOf("T"))
+
     const author = review.user
     const editable = (this.props.isEditable) ? this.props.isEditable : false
 
@@ -98,12 +100,12 @@ class CreateHike extends Component {
           </p>
           <img className="icon-image" src={ImageHelper.thumbnail(author.image, 40)} />
           <span>
-            <Link to={"../profile/" + author.id}>{author.username}</Link>      
+            <Link to={"../profile/" + author.id}>{author.username}</Link>
           </span>
           <span> | </span>
-          <span>{review.timestamp}</span>
+          <span>{reviewDate}</span>
           {
-            (editable) ? <button onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
+            (editable) ? <button className="review-edit-button" onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
           }
         </div>
       )

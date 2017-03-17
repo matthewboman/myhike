@@ -13,7 +13,7 @@ var APIManager = require("./").APIManager;
 
 module.exports = {
 
-  upload: function (image) {
+  upload: function (image, callback) {
     // Prep Coudinary
     var cloudName = "dotkbdwdw";
     var url = "https://api.cloudinary.com/v1_1/" + cloudName + "/image/upload";
@@ -36,13 +36,7 @@ module.exports = {
         console.error(err);
         return;
       }
-      // let updatedProfile = Object.assign({}, this.props.user)
-      // updatedProfile['image'] = response.body['secure_url']
-      // this.setState({
-      //   updated: updatedProfile
-      // })
-      var imageUrl = response.body.secure_url;
-      return imageUrl;
+      callback(response.body);
     });
   }
 

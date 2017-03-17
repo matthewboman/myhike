@@ -68,7 +68,7 @@ class Reviews extends Component {
     }
 
     return (
-      <div className="sidebar">
+      <div>
         <ul className="reviews">
           {reviewList}
         </ul>

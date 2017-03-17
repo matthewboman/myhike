@@ -16,6 +16,8 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var connect = require("react-redux").connect;
+var Autocomplete = _interopRequire(require("react-google-autocomplete"));
+
 var actions = _interopRequire(require("../../actions"));
 
 var APIManager = require("../../utils").APIManager;
@@ -64,6 +66,7 @@ var CreateHike = (function (Component) {
       // Set hike location to user's GPS coordinates
       value: function useCurrentLocation(event) {
         var updatedHike = Object.assign({}, this.state.hike);
+        console.log(JSON.stringify(this.props.userLocation.center));
         updatedHike.position = this.props.userLocation.center;
         updatedHike.useAddress = false;
         this.setState({
@@ -104,6 +107,18 @@ var CreateHike = (function (Component) {
       writable: true,
       configurable: true
     },
+    updateAddress: {
+      value: function updateAddress(event) {
+        var addressLocation = event.geometry.location;
+        var updatedHike = Object.assign({}, this.state.hike);
+        updatedHike.position = addressLocation;
+        this.setState({
+          hike: updatedHike
+        });
+      },
+      writable: true,
+      configurable: true
+    },
     submitHike: {
 
       // Add new hike to database
@@ -137,31 +152,12 @@ var CreateHike = (function (Component) {
           display = React.createElement(
             "div",
             null,
-            React.createElement("input", { onChange: this.updateHike.bind(this), id: "address",
-              className: "form-control", type: "text", placeholder: "Address" }),
-            React.createElement("br", null),
-            React.createElement("input", { onChange: this.updateHike.bind(this), id: "city",
-              className: "form-control", type: "text", placeholder: "City" }),
-            React.createElement("br", null),
-            React.createElement("input", { onChange: this.updateHike.bind(this), id: "state",
-              className: "form-control", type: "text", placeholder: "State" }),
-            React.createElement("br", null),
-            React.createElement("input", { onChange: this.updateHike.bind(this), id: "country",
-              className: "form-control", type: "text", placeholder: "Country" }),
-            React.createElement("br", null)
-          );
-        } else {
-          display = React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "p",
-              null,
-              "Hike location is at latitude ",
-              lat,
-              " and longitude ",
-              lng
-            )
+            React.createElement(Autocomplete, {
+              className: "form-control",
+              style: { width: "90%" },
+              onPlaceSelected: this.updateAddress.bind(this),
+              types: ["geocode"]
+            })
           );
         }
 
@@ -178,17 +174,17 @@ var CreateHike = (function (Component) {
           React.createElement("br", null),
           React.createElement(
             "button",
-            { onClick: this.useCurrentLocation.bind(this) },
+            { className: "btn btn-change", onClick: this.useCurrentLocation.bind(this) },
             "Use current location"
           ),
           React.createElement(
             "button",
-            { onClick: this.useAddress.bind(this) },
+            { className: "btn btn-change", onClick: this.useAddress.bind(this) },
             "Enter an address"
           ),
           React.createElement(
             "button",
-            { onClick: this.useMap.bind(this) },
+            { className: "btn btn-change", onClick: this.useMap.bind(this) },
             "Select Map Location"
           ),
           React.createElement("br", null),
@@ -198,7 +194,7 @@ var CreateHike = (function (Component) {
           React.createElement(
             "button",
             { onClick: this.submitHike.bind(this),
-              className: "btn btn-info btn-block" },
+              className: "btn btn-block" },
             "Add it"
           )
         );

@@ -70,8 +70,8 @@ module.exports = {
     return function (dispatch) {
       APIManager.post("/account/register", profile, function (err, response) {
         if (err) {
-          var msg = err.message || err;
-          console.error(msg);
+          // let msg = err.message || err
+          console.error(err);
           return;
         }
         var user = response.profile;

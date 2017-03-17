@@ -44,7 +44,7 @@ var Register = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "sidebar" },
+          null,
           React.createElement(RegisterForm, { onRegister: this.register.bind(this) })
         );
       },

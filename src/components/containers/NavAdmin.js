@@ -25,22 +25,42 @@ class NavAdmin extends Component {
   constructor() {
     super()
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      isLogin: false,
+      isRegister: false
     }
-    this.openModal = this.openModal.bind(this)
+    this.openLogin = this.openLogin.bind(this)
+    this.openRegister = this.openRegister.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
+  openLogin() {
+    this.setState({
+      modalIsOpen: true,
+      isLogin: true
+    });
+  }
+
+  openRegister() {
+    this.setState({
+      modalIsOpen: true,
+      isRegister: true
+    });
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({
+      modalIsOpen: false,
+      isLogin: false,
+      isRegister: false
+    });
   }
 
   login(credentials) {
     this.props.currentUserReceived(credentials)
+    this.setState({
+      modalIsOpen: false
+    })
   }
 
   logout(event) {
@@ -51,6 +71,25 @@ class NavAdmin extends Component {
 
   render() {
     /*
+      Populate modal with Login or Register
+    */
+    let modal = null
+    if (this.state.isRegister) {
+      modal = (
+        <div>
+          <Register onClose={this.closeModal}/>
+        </div>
+      )
+    }
+    if (this.state.isLogin) {
+      modal = (
+        <div>
+          <Login onLogin={this.login.bind(this)} />
+        </div>
+      )
+    }
+
+    /*
       Display login/signup if user is not logged in.
       If user is logged in, display profile link and logout.
     */
@@ -59,51 +98,47 @@ class NavAdmin extends Component {
 
     if (user == null) {
       content = (
-        <div className="collapse navbar-collapse" id="menu-list">
-          <ul className="nav navbar-nav">
+          <ul className="nav navbar-nav navbar-right">
             <li>
               <Link to="/create-hike">Create Hike</Link>
             </li>
             <li>
-              <Login onLogin={this.login.bind(this)} />
+              <a onClick={this.openLogin}>Login</a>
             </li>
             <li>
-              <button className="btn-login" onClick={this.openModal}>Register</button>
+              <a onClick={this.openRegister}>Register</a>
             </li>
-            <Modal
-              isOpen={this.state.modalIsOpen}
-              onAfterOpen={this.afterOpenModal}
-              onRequestClose={this.closeModal}
-              style={customStyles}
-              contentLabel="Example Modal"
-            >
-              <button className="x-button" onClick={this.closeModal}>X</button>
-              <Register onClose={this.closeModal}/>
-            </Modal>
           </ul>
-        </div>
       )
     } else {
       content = (
-        <div className="collapse navbar-collapse" id="menu-list">
-          <ul className="nav navbar-nav">
-            <li>
-              <Link to="/create-hike">Create Hike</Link>
-            </li>
-            <li>
-              <Link to="/currentuser"><button>Account</button></Link>
-            </li>
-            <li>
-              <button onClick={this.logout.bind(this)}>Log out</button>
-            </li>
-          </ul>
-        </div>
+        <ul className="nav navbar-nav navbar-right">
+          <li>
+            <Link to="/create-hike">Create Hike</Link>
+          </li>
+          <li>
+            <Link to="/currentuser">Account</Link>
+          </li>
+          <li>
+            <a onClick={this.logout.bind(this)}>Log out</a>
+          </li>
+        </ul>
       )
     }
 
     return (
       <div>
         {content}
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          onAfterOpen={this.afterOpenModal}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <button className="x-button" onClick={this.closeModal}>X</button>
+          {modal}
+        </Modal>
       </div>
     )
   }
