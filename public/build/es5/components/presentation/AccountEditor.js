@@ -83,38 +83,48 @@ var AccountEditor = (function (Component) {
           content = React.createElement(
             "div",
             null,
+            "First name:",
             React.createElement("input", {
               className: "form-control",
               id: "firstName",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.firstName }),
             React.createElement("br", null),
+            "Last name:",
             React.createElement("input", {
               className: "form-control",
               id: "lastName",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.lastName }),
             React.createElement("br", null),
+            "City:",
             React.createElement("input", {
               className: "form-control",
               id: "city",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.city }),
             React.createElement("br", null),
+            "Bio:",
             React.createElement("textarea", {
-              className: "form-control",
+              className: "form-control edit-bio",
               id: "bio",
+              rows: "8",
               onChange: this.updateProfile.bind(this),
               defaultValue: profile.bio }),
             React.createElement("br", null),
             React.createElement(
               "button",
-              { onClick: this.submitUpdate.bind(this) },
+              { className: "btn", onClick: this.submitUpdate.bind(this) },
               "Update"
             ),
             React.createElement(
+              "span",
+              null,
+              "  "
+            ),
+            React.createElement(
               "button",
-              { onClick: this.toggleEdit.bind(this) },
+              { className: "btn", onClick: this.toggleEdit.bind(this) },
               "Nevermind"
             )
           );
@@ -162,7 +172,7 @@ var AccountEditor = (function (Component) {
             React.createElement("br", null),
             React.createElement(
               "button",
-              { onClick: this.toggleEdit.bind(this) },
+              { className: "btn", onClick: this.toggleEdit.bind(this) },
               "Edit"
             )
           );

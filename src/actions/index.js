@@ -3,6 +3,16 @@ import { APIManager } from '../utils'
 
 export default {
 
+/* ======================== General =================================== */
+
+    displayMessage: (message) => {
+      console.log('action ' + message)
+      return {
+        type: constants.MESSAGE_RECEIVED,
+        message: message,
+      }
+    },
+
 /* ======================== User data ================================= */
 
   // Check if user is logged in
@@ -97,6 +107,7 @@ export default {
       })
     }
   },
+
 
 /* ======================== Hike and Map data ============================== */
   currentHikeReceived: (hike) => {

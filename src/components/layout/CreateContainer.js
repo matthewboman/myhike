@@ -11,15 +11,17 @@ class CreateContainer extends Component {
   }
 
   render() {
-    const mapContainer = <div style={{height: 500, width: 400}}></div>
+    const mapContainer = <div style={{height: '80vh', width: '30vw'}}></div>
 
     return (
       <div>
 
         <div className="col-md-4">
+          <section style={{height: '100%'}} className="map-section">      
           <Map
             mapContainer={mapContainer}
             />
+          </section>
         </div>
 
         <div className="col-md-8">

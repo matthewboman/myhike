@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Dropzone from 'react-dropzone'
-import sha1 from 'sha1'
 
 import actions from '../../actions'
-import { APIManager, ImageHelper, ImageUploader } from '../../utils'
+import { ImageHelper, ImageUploader } from '../../utils'
 import { AccountEditor } from '../presentation'
 import { Navbar } from '../layout'
+import UserReviews from './UserReviews'
 
-/*
-  TODO: move API logic to ImageUploader
-  TODO: multiple photo capabilities
-*/
 
 class Account extends Component {
   constructor() {
@@ -21,9 +17,13 @@ class Account extends Component {
         image: ''
       },
       updateImage: false,
-      buttonText: "Nevermind"
+      showNevermind: false
     }
   }
+
+  // componentDidMount() {
+  //   this.getCurrentUserReviews(user)
+  // }
 
   // Show/hide editing capabilities
   toggleImageUploader() {
@@ -39,7 +39,7 @@ class Account extends Component {
       updatedProfile['image'] = results.secure_url
       this.setState({
         updated: updatedProfile,
-        buttonText: "Update Profile Picture"
+        showNevermind: true
       })
     })
   }
@@ -59,52 +59,62 @@ class Account extends Component {
 
   render() {
     const profile = this.props.user
-    const image = (profile.image == null) ? '' : ImageHelper.profile(profile.image, 400, 360)
+
+    // displaying and updating image
+    const image = (profile.image == null) ? '' : ImageHelper.profile(profile.image, 300)
     const newImage = (this.state.updated.image == '') ? '' : ImageHelper.preview(this.state.updated.image, 325, 300)
 
     let updateImage
 
     if (this.state.updateImage == true) {
       updateImage = (
-        <div>
+        <div className="update-profile-image">
           <Dropzone onDrop={this.uploadImage.bind(this)} />
           <br />
-          <img src={newImage} />
+          <img className="image-preview" src={newImage} />
           <br />
-          <button onClick={this.updatePhoto.bind(this)}>{this.state.buttonText}</button>
+          <button className="btn" onClick={this.updatePhoto.bind(this)}>Update</button>
+          <span>  </span>
+          <button className="btn" onClick={this.toggleImageUploader.bind(this)}>Nevermind</button>
         </div>
       )
     } else {
       updateImage = (
         <div>
-          <button onClick={this.toggleImageUploader.bind(this)}>Update Profile picture</button>
+          <button className="btn change" onClick={this.toggleImageUploader.bind(this)}>Change profile picture</button>
         </div>
       )
     }
 
+    // displaying user's hike reviews
+
+
+
     return (
-      <div className="container">
+      <div className="container-fluid">
         <h2>Welcome {profile.username}</h2>
 
         <div className="row">
           <div className="col-md-6">
-            <div className="account-image">
-              <img src={image} />
+            <div className="account-image-box">
+              <img className="account-image" src={image} />
+              <br />
+              {updateImage}
             </div>
-            <br />
-            {updateImage}
           </div>
+
           <div className="col-md-6">
-            <div className="account-info">
+            <div className="bio-block">
               <AccountEditor
                 profile={profile}
                 onUpdate={this.submitUpdate.bind(this)} />
             </div>
           </div>
+
         </div>
-
+        <br />
         <div className="row">
-
+          <UserReviews />
         </div>
 
       </div>
@@ -114,12 +124,14 @@ class Account extends Component {
 
 const stateToProps = (state) => {
   return {
-    user: state.account.user
+    user: state.account.user,
+    reviews: state.review.reviewMap
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return {
+    // getCurrentUserReviews: (user) => dispath(actions.getCurrentUserReviews(user)),
     profileUpdated: (user, profile) => dispatch(actions.profileUpdated(user, profile))
   }
 }

@@ -19,6 +19,9 @@ var connect = require("react-redux").connect;
 var Map = require("../containers").Map;
 var Navbar = require("./").Navbar;
 var HomePage = require("../presentation").HomePage;
+// import styles from './Home.scss'
+
+
 var Home = (function (Component) {
   function Home() {
     _classCallCheck(this, Home);
@@ -32,7 +35,7 @@ var Home = (function (Component) {
   _prototypeProperties(Home, null, {
     render: {
       value: function render() {
-        var mapContainer = React.createElement("div", { style: { height: 500, width: 400 } });
+        var mapContainer = React.createElement("div", { style: { height: "90vh", width: "30vw" } });
 
         return React.createElement(
           "div",
@@ -40,9 +43,13 @@ var Home = (function (Component) {
           React.createElement(
             "div",
             { className: "col-md-4" },
-            React.createElement(Map, {
-              mapContainer: mapContainer
-            })
+            React.createElement(
+              "section",
+              { style: { height: "100%" }, className: "map-section" },
+              React.createElement(Map, {
+                mapContainer: mapContainer
+              })
+            )
           ),
           React.createElement(
             "div",

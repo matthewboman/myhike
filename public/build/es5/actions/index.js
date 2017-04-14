@@ -7,6 +7,15 @@ var constants = _interopRequire(require("../constants"));
 var APIManager = require("../utils").APIManager;
 module.exports = {
 
+  /* ======================== General =================================== */
+
+  displayMessage: function (message) {
+    console.log("action " + message);
+    return {
+      type: constants.MESSAGE_RECEIVED,
+      message: message };
+  },
+
   /* ======================== User data ================================= */
 
   // Check if user is logged in
@@ -101,6 +110,7 @@ module.exports = {
       });
     };
   },
+
 
   /* ======================== Hike and Map data ============================== */
   currentHikeReceived: function (hike) {

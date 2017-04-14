@@ -29,7 +29,7 @@ var HomePage = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "sidebar" },
+          { className: "homepage" },
           React.createElement(
             "h2",
             null,
@@ -37,7 +37,7 @@ var HomePage = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "hikeBlock" },
+            { className: "" },
             React.createElement(
               "p",
               null,
@@ -51,7 +51,7 @@ var HomePage = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "hikeBlock" },
+            { className: "" },
             React.createElement(
               "p",
               null,

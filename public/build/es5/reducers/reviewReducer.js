@@ -27,7 +27,7 @@ module.exports = function (_x, action) {
       });
       updatedMap[value] = array;
       updatedState.reviewMap = updatedMap;
-      // console.log(JSON.stringify(updatedState))
+
       return updatedState;
 
     case constants.REVIEW_UPDATED:

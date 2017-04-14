@@ -20,7 +20,7 @@ var browserHistory = require("react-router").browserHistory;
 var actions = _interopRequire(require("../../actions"));
 
 var APIManager = require("../../utils").APIManager;
-var Reviews = _interopRequire(require("./Reviews"));
+var HikeReviews = _interopRequire(require("./HikeReviews"));
 
 var CreateReview = require("../presentation").CreateReview;
 var Hike = (function (Component) {
@@ -109,7 +109,7 @@ var Hike = (function (Component) {
             null,
             React.createElement(
               "button",
-              { onClick: this.displayCreateReviewComponent.bind(this) },
+              { className: "btn", onClick: this.displayCreateReviewComponent.bind(this) },
               "Add a Review"
             )
           );
@@ -119,7 +119,7 @@ var Hike = (function (Component) {
           "div",
           { className: "sidebar" },
           header,
-          React.createElement(Reviews, null),
+          React.createElement(HikeReviews, null),
           newReview
         );
       },

@@ -9,6 +9,7 @@ module.exports = {
   find: function(params, isRaw) {
     return new Promise(function(resolve, reject) {
       Hike.find(params, function(err, hikes) {
+
         if (err) {
           reject(err)
           return

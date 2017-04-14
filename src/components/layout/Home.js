@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Map } from '../containers'
 import { Navbar } from './'
 import { HomePage } from '../presentation'
+// import styles from './Home.scss'
 
 
 class Home extends Component {
@@ -14,15 +15,17 @@ class Home extends Component {
 
   render() {
 
-    const mapContainer = <div style={{height: 500, width: 400}}></div>
+    const mapContainer = <div style={{height: '90vh', width: '30vw'}}></div>
 
     return (
       <div>
 
         <div className="col-md-4">
+          <section style={{height: '100%'}} className="map-section">
           <Map
             mapContainer={mapContainer}
             />
+          </section>
         </div>
 
         <div className="col-md-8">

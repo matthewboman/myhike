@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 class HomePage extends Component {
   render() {
     return (
-      <div className="sidebar">
+      <div className="homepage">
       <h2>Welcome</h2>
-      <div className="hikeBlock">
+      <div className="">
         <p>
         My Hike is sort of like a social network meets wikipedia meets public database.
         This site allows nature enthusiasts to share their favorite spots and foragers
@@ -18,7 +18,7 @@ class HomePage extends Component {
         marker to get a hikes details.
         </p>
       </div>
-      <div className="hikeBlock">
+      <div className="">
         <p>
           My Hike is currently in development phase. Here are some things we could
           use help with: allowing users to edit their own hikes but not others,

@@ -14,6 +14,7 @@ var _reducers = require("../reducers");
 var accountReducer = _reducers.accountReducer;
 var hikeReducer = _reducers.hikeReducer;
 var mapReducer = _reducers.mapReducer;
+var messageReducer = _reducers.messageReducer;
 var profileReducer = _reducers.profileReducer;
 var reviewReducer = _reducers.reviewReducer;
 
@@ -28,6 +29,7 @@ module.exports = {
       account: accountReducer,
       hike: hikeReducer,
       map: mapReducer,
+      message: messageReducer,
       profile: profileReducer,
       review: reviewReducer });
 

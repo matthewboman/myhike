@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
 
     // Assign 'currentUser' property when returning user logs in
     case constants.CURRENT_USER_RECEIVED:
-      console.log('CURRENT_USER_RECEIVED: ' + JSON.stringify(action.user))
+      // console.log('CURRENT_USER_RECEIVED: ' + JSON.stringify(action.user))
       updatedState['user'] = action.user
       return updatedState
 

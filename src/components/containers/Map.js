@@ -36,7 +36,6 @@ class Map extends Component {
             lng: lng,
           }
         })
-
       //  Pass to props for "CreateHike" component
       this.props.userLocationReceived({center: {lat: lat, lng: lng} })
       },
@@ -60,7 +59,7 @@ class Map extends Component {
     this.setState({
       newHike: clicked
     })
-    // Set app state location to where user clicks
+    // Set app state location to where user clicks (for user adding hike based on map location)
     this.props.locationAdded(clicked)
   }
 
@@ -99,6 +98,7 @@ class Map extends Component {
               />
     })
 
+
     return (
       <GoogleMapLoader
         containerElement = { this.props.mapContainer }
@@ -108,7 +108,7 @@ class Map extends Component {
             defaultCenter={this.state.center}
             options={{streetViewControl: false, mapTypeControl: false}}
             onClick={this.addMarker.bind(this)} >
-             <Marker
+              <Marker
                 {...marker}
               />
               {hikes}
@@ -122,7 +122,9 @@ class Map extends Component {
 const stateToProps = (state) => {
   return {
     hikes: state.map.list,
+    newHikeLocation: state.map.hikeLocation,
     userLocation: state.hike.center,
+
   }
 }
 

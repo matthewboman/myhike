@@ -34,7 +34,7 @@ var CreateContainer = (function (Component) {
   _prototypeProperties(CreateContainer, null, {
     render: {
       value: function render() {
-        var mapContainer = React.createElement("div", { style: { height: 500, width: 400 } });
+        var mapContainer = React.createElement("div", { style: { height: "80vh", width: "30vw" } });
 
         return React.createElement(
           "div",
@@ -42,9 +42,13 @@ var CreateContainer = (function (Component) {
           React.createElement(
             "div",
             { className: "col-md-4" },
-            React.createElement(Map, {
-              mapContainer: mapContainer
-            })
+            React.createElement(
+              "section",
+              { style: { height: "100%" }, className: "map-section" },
+              React.createElement(Map, {
+                mapContainer: mapContainer
+              })
+            )
           ),
           React.createElement(
             "div",

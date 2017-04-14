@@ -1,7 +1,7 @@
 body {
-  font-family: fantasy;
+  font-family: Helvetica;
   /*background-color: #e5f3d1;*/
-  color: #515c41;
+  color: #1e180e;
 }
 
 a {
@@ -16,17 +16,39 @@ h1, h2, h3 {
 .x-button {
   position: absolute;
   top: 2px;
-  : 2px;
+  right: 2px;
+}
+
+.error {
+  color: red;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.btn {
+  background-color: #7fc857;
+  border-color: #66a046;
 }
 
 
-
 /*Navbar*/
+
 .navbar {
+  background: #296d36;
+  border-color: #66a046;
   border-radius: 0;
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #d8d8d8;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #d8d8d8;
 }
 
 .navbar-right {
@@ -42,8 +64,21 @@ h1, h2, h3 {
   }
 }
 
+/* Map Component */
+/* Used in:
+    /layout/Home
+    /layout/CreateContainer
+    /layout/HikeContainer
+*/
+.map-section {
+
+}
 
 
+/* Home Component */
+.homepage {
+
+}
 
 
 
@@ -76,12 +111,13 @@ h1, h2, h3 {
 .image-preview {
   width: 150px;
   height: 150px;
+  margin: 1em;
 }
 .close {
   position: absolute;
   top: 0;
   right: 0;
-  color: black;
+  /*color: black;*/
   background-color: #fff;
 }
 
@@ -122,6 +158,67 @@ h1, h2, h3 {
 }
 
 /* Account Component */
+.account-image {
+  margin-left:auto;
+  margin-right:auto;
+  display:block;
+  border-radius: 4px;
+}
+
+.account-image-box {
+  border-radius: 4px;
+  background-color: #f7fbf5;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 22px;
+  margin-right: 22px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #515c41;
+  -webkit-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+}
+
+.bio-block {
+  border-radius: 4px;
+  background-color: #f7fbf5;
+  padding: 1em;
+  margin-left: 22px;
+  margin-right: 22px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #515c41;
+  -webkit-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+}
+
+.profile-city {
+  margin-left: 1em;
+}
+
+.bio {
+  padding: 1em;
+}
+
+.edit-bio {
+  resize: vertical;
+}
+
+.update-profile-image {
+  padding-left: 2em;
+}
+
+.text-center {
+
+   text-align:center
+}
+
+.change {
+  margin-left: 2em;
+}
+
 
 
 /* Review Component */
@@ -137,10 +234,14 @@ h1, h2, h3 {
   border-radius: 4px;
   margin-bottom: 10px;
   padding: 1.5em;
+  background-color: #f7fbf5;
+  -webkit-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+-moz-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
 }
 
 .review-header {
-  padding-top: none;
+  padding-top: 0;
   font-weight: 400;
 }
 
@@ -148,10 +249,20 @@ h1, h2, h3 {
   float: right;
 }
 
+.hike-review-photos {
+  list-style-type: none;
+  display: inline-flex;
+}
+
+.hike-review-photo {
+  margin-right: 5px;
+}
+
 .icon-image {
   border-radius: 20px;
   margin-right: 6px;
 }
 
-
-/*temp shit*/
+#description {
+  resize: vertical;
+}

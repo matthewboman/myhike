@@ -25,6 +25,7 @@ var Images = require("../presentation").Images;
 
 
 /*
+  TODO: Place marker on map if user uses current location or address
   TODO: Hike can be submitted only if user is logged in and location is selected
 */
 
@@ -66,9 +67,10 @@ var CreateHike = (function (Component) {
       // Set hike location to user's GPS coordinates
       value: function useCurrentLocation(event) {
         var updatedHike = Object.assign({}, this.state.hike);
-        console.log(JSON.stringify(this.props.userLocation.center));
+        // console.log(JSON.stringify(this.props.userLocation.center))
         updatedHike.position = this.props.userLocation.center;
         updatedHike.useAddress = false;
+        this.props.locationAdded(this.props.userLocation.center);
         this.setState({
           hike: updatedHike
         });
@@ -123,10 +125,16 @@ var CreateHike = (function (Component) {
 
       // Add new hike to database
       value: function submitHike(hike) {
-        console.log("submitting " + JSON.stringify(this.state.hike));
         // check if user is logged in
         if (this.props.user == null) {
-          alert("You must be signed up");
+          var message = "You must be logged in to add hikes";
+          this.props.displayMessage(message);
+          return;
+        }
+        // check for location
+        if (this.state.hike.location == null) {
+          var message = "Add a hike location before submitting";
+          this.props.displayMessage(message);
           return;
         }
         var newHike = this.state.hike;
@@ -140,7 +148,7 @@ var CreateHike = (function (Component) {
         // Allow user to choose hike by map or current location
         var lat = undefined;
         var lng = undefined;
-        if (this.state.position != null) {
+        if (this.state.hike.position != null) {
           lat = this.state.hike.position.lat;
           lng = this.state.hike.position.lng;
         }
@@ -161,16 +169,35 @@ var CreateHike = (function (Component) {
           );
         }
 
+        var errorMessage = this.props.message;
+
         return React.createElement(
           "div",
           { className: "sidebar" },
+          React.createElement(
+            "span",
+            { className: "error" },
+            errorMessage
+          ),
           React.createElement(
             "h3",
             null,
             "Add a New Hike"
           ),
+          React.createElement(
+            "span",
+            null,
+            "Hike Name:"
+          ),
+          React.createElement("br", null),
           React.createElement("input", { onChange: this.updateHike.bind(this), id: "name",
-            className: "form-control", type: "text", placeholder: "Hike Name" }),
+            className: "form-control", type: "text", placeholder: "ex. Graveyard Fields" }),
+          React.createElement("br", null),
+          React.createElement(
+            "span",
+            null,
+            "I want to:"
+          ),
           React.createElement("br", null),
           React.createElement(
             "button",
@@ -210,12 +237,16 @@ var CreateHike = (function (Component) {
 var stateToProps = function (state) {
   return {
     location: state.hike.hikeLocation,
+    message: state.message.message,
     user: state.account.user,
     userLocation: state.hike.center };
 };
 
 var dispatchToProps = function (dispatch) {
   return {
+    displayMessage: function (message) {
+      return dispatch(actions.displayMessage(message));
+    },
     hikeCreated: function (newHike) {
       return dispatch(actions.hikeCreated(newHike));
     },

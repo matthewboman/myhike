@@ -15,12 +15,6 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-
-
-/*
-not currently implemented
-*/
-
 var Profile = (function (Component) {
   function Profile() {
     _classCallCheck(this, Profile);

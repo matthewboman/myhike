@@ -18,23 +18,15 @@ var Component = _react.Component;
 var connect = require("react-redux").connect;
 var Dropzone = _interopRequire(require("react-dropzone"));
 
-var sha1 = _interopRequire(require("sha1"));
-
 var actions = _interopRequire(require("../../actions"));
 
 var _utils = require("../../utils");
 
-var APIManager = _utils.APIManager;
 var ImageHelper = _utils.ImageHelper;
 var ImageUploader = _utils.ImageUploader;
 var AccountEditor = require("../presentation").AccountEditor;
 var Navbar = require("../layout").Navbar;
-
-
-/*
-  TODO: move API logic to ImageUploader
-  TODO: multiple photo capabilities
-*/
+var UserReviews = _interopRequire(require("./UserReviews"));
 
 var Account = (function (Component) {
   function Account() {
@@ -46,7 +38,7 @@ var Account = (function (Component) {
         image: ""
       },
       updateImage: false,
-      buttonText: "Nevermind"
+      showNevermind: false
     };
   }
 
@@ -54,6 +46,10 @@ var Account = (function (Component) {
 
   _prototypeProperties(Account, null, {
     toggleImageUploader: {
+
+      // componentDidMount() {
+      //   this.getCurrentUserReviews(user)
+      // }
 
       // Show/hide editing capabilities
       value: function toggleImageUploader() {
@@ -73,7 +69,7 @@ var Account = (function (Component) {
           updatedProfile.image = results.secure_url;
           _this.setState({
             updated: updatedProfile,
-            buttonText: "Update Profile Picture"
+            showNevermind: true
           });
         });
       },
@@ -102,7 +98,9 @@ var Account = (function (Component) {
     render: {
       value: function render() {
         var profile = this.props.user;
-        var image = profile.image == null ? "" : ImageHelper.profile(profile.image, 400, 360);
+
+        // displaying and updating image
+        var image = profile.image == null ? "" : ImageHelper.profile(profile.image, 300);
         var newImage = this.state.updated.image == "" ? "" : ImageHelper.preview(this.state.updated.image, 325, 300);
 
         var updateImage = undefined;
@@ -110,15 +108,25 @@ var Account = (function (Component) {
         if (this.state.updateImage == true) {
           updateImage = React.createElement(
             "div",
-            null,
+            { className: "update-profile-image" },
             React.createElement(Dropzone, { onDrop: this.uploadImage.bind(this) }),
             React.createElement("br", null),
-            React.createElement("img", { src: newImage }),
+            React.createElement("img", { className: "image-preview", src: newImage }),
             React.createElement("br", null),
             React.createElement(
               "button",
-              { onClick: this.updatePhoto.bind(this) },
-              this.state.buttonText
+              { className: "btn", onClick: this.updatePhoto.bind(this) },
+              "Update"
+            ),
+            React.createElement(
+              "span",
+              null,
+              "  "
+            ),
+            React.createElement(
+              "button",
+              { className: "btn", onClick: this.toggleImageUploader.bind(this) },
+              "Nevermind"
             )
           );
         } else {
@@ -127,15 +135,19 @@ var Account = (function (Component) {
             null,
             React.createElement(
               "button",
-              { onClick: this.toggleImageUploader.bind(this) },
-              "Update Profile picture"
+              { className: "btn change", onClick: this.toggleImageUploader.bind(this) },
+              "Change profile picture"
             )
           );
         }
 
+        // displaying user's hike reviews
+
+
+
         return React.createElement(
           "div",
-          { className: "container" },
+          { className: "container-fluid" },
           React.createElement(
             "h2",
             null,
@@ -150,25 +162,30 @@ var Account = (function (Component) {
               { className: "col-md-6" },
               React.createElement(
                 "div",
-                { className: "account-image" },
-                React.createElement("img", { src: image })
-              ),
-              React.createElement("br", null),
-              updateImage
+                { className: "account-image-box" },
+                React.createElement("img", { className: "account-image", src: image }),
+                React.createElement("br", null),
+                updateImage
+              )
             ),
             React.createElement(
               "div",
               { className: "col-md-6" },
               React.createElement(
                 "div",
-                { className: "account-info" },
+                { className: "bio-block" },
                 React.createElement(AccountEditor, {
                   profile: profile,
                   onUpdate: this.submitUpdate.bind(this) })
               )
             )
           ),
-          React.createElement("div", { className: "row" })
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            { className: "row" },
+            React.createElement(UserReviews, null)
+          )
         );
       },
       writable: true,
@@ -181,12 +198,14 @@ var Account = (function (Component) {
 
 var stateToProps = function (state) {
   return {
-    user: state.account.user
+    user: state.account.user,
+    reviews: state.review.reviewMap
   };
 };
 
 var dispatchToProps = function (dispatch) {
   return {
+    // getCurrentUserReviews: (user) => dispath(actions.getCurrentUserReviews(user)),
     profileUpdated: function (user, profile) {
       return dispatch(actions.profileUpdated(user, profile));
     }

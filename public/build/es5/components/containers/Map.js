@@ -64,7 +64,6 @@ var Map = (function (Component) {
               lat: lat,
               lng: lng }
           });
-
           //  Pass to props for "CreateHike" component
           _this.props.userLocationReceived({ center: { lat: lat, lng: lng } });
         }, function (error) {
@@ -89,7 +88,7 @@ var Map = (function (Component) {
         this.setState({
           newHike: clicked
         });
-        // Set app state location to where user clicks
+        // Set app state location to where user clicks (for user adding hike based on map location)
         this.props.locationAdded(clicked);
       },
       writable: true,
@@ -140,6 +139,7 @@ var Map = (function (Component) {
           }));
         });
 
+
         return React.createElement(GoogleMapLoader, {
           containerElement: this.props.mapContainer,
           googleMapElement: React.createElement(
@@ -165,6 +165,7 @@ var Map = (function (Component) {
 var stateToProps = function (state) {
   return {
     hikes: state.map.list,
+    newHikeLocation: state.map.hikeLocation,
     userLocation: state.hike.center };
 };
 

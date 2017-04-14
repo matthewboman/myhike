@@ -29,7 +29,8 @@ var CreateReview = (function (Component) {
         pictures: [],
         plants: "",
         user: props.user,
-        hikeId: props.hike.id
+        hikeId: props.hike.id,
+        userId: props.user.id
       }
     };
   }

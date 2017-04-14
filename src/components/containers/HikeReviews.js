@@ -6,7 +6,7 @@ import store from '../../store/store'
 import { APIManager } from '../../utils'
 import { Review } from '../presentation'
 
-class Reviews extends Component {
+class HikeReviews extends Component {
   constructor() {
     super()
     this.checkForReviews = this.checkForReviews.bind(this)
@@ -92,4 +92,4 @@ const dispatchToProps = (dispatch) => {
 	}
 }
 
-export default connect(stateToProps, dispatchToProps)(Reviews)
+export default connect(stateToProps, dispatchToProps)(HikeReviews)

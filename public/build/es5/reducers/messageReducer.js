@@ -2,10 +2,13 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+/*
+For displaying front- and back-end errors to user
+*/
 var constants = _interopRequire(require("../constants"));
 
 var initialState = {
-  user: null
+  message: ""
 };
 
 module.exports = function (_x, action) {
@@ -14,15 +17,9 @@ module.exports = function (_x, action) {
 
   switch (action.type) {
 
-    // Assign 'currentUser' property when new user signs up
-    case constants.PROFILE_CREATED:
-      updatedState.user = action.profile;
-      return updatedState;
-
-    // Assign 'currentUser' property when returning user logs in
-    case constants.CURRENT_USER_RECEIVED:
-      // console.log('CURRENT_USER_RECEIVED: ' + JSON.stringify(action.user))
-      updatedState.user = action.user;
+    case constants.MESSAGE_RECEIVED:
+      console.log("MESSAGE RECEIVED: " + JSON.stringify(action.message));
+      updatedState.message = action.message;
       return updatedState;
 
     default:

@@ -37,8 +37,9 @@ class Profile extends Component {
 
   render() {
     let profile = this.props.profiles[this.props.id]
-    let header = null
+    let page = null
 
+    // Make sure we have everything, then get reviews user has made
     if (profile != null) {
       const reviews = (this.props.reviews[profile.id]) ? this.props.reviews[profile.id] : []
       const list = reviews.map((review, i) => {
@@ -63,23 +64,35 @@ class Profile extends Component {
           </li>
         )
       })
-      header = (
-        <div>
-          <img src={ImageHelper.thumbnail(profile.image, 200)} />
-          <br />
-          <h3>{profile.username}</h3>
-          <p>city: {profile.city}</p>
-          <h3>Reviews</h3>
-          <ul  className="reviews">
-            {list}
-          </ul>
+      page = (
+        <div className="row">
+
+          <div className="col-md-4">
+            <h3>{profile.username}</h3>
+            <div className="account-image-box">
+              <img className="account-image" src={ImageHelper.profile(profile.image, 300)} />
+            </div>
+            <br />
+            <div className="bio-block">
+              <span className="profile-city">{profile.city}</span>
+              <p className="bio" >{profile.bio}</p>
+            </div>
+          </div>
+
+          <div className="col-md-8">
+            <h3>Reviews</h3>
+            <ul  className="reviews">
+              {list}
+            </ul>
+          </div>
+
         </div>
       )
     }
 
     return (
-      <div>
-        {header}
+      <div className="container">
+        {page}
       </div>
     )
   }

@@ -1,7 +1,7 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 
-import { accountReducer, hikeReducer, mapReducer, profileReducer, reviewReducer } from '../reducers'
+import { accountReducer, hikeReducer, mapReducer, messageReducer, profileReducer, reviewReducer } from '../reducers'
 
 var store;
 
@@ -13,6 +13,7 @@ export default {
       account: accountReducer,
       hike: hikeReducer,
       map: mapReducer,
+      message: messageReducer,
       profile: profileReducer,
       review: reviewReducer,
     })

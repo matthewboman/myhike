@@ -51,18 +51,21 @@ class AccountEditor extends Component {
     if (this.state.isEditing == true) {
       content = (
         <div>
+          First name:
           <input
             className="form-control"
             id="firstName"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.firstName} />
           <br />
+          Last name:
           <input
             className="form-control"
             id="lastName"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.lastName} />
           <br />
+          City:
           <input
             className="form-control"
             id="city"
@@ -75,14 +78,17 @@ class AccountEditor extends Component {
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.email} />
           <br /> */}
+          Bio:
           <textarea
-            className="form-control"
+            className="form-control edit-bio"
             id="bio"
+            rows="8"
             onChange={this.updateProfile.bind(this)}
             defaultValue={profile.bio} />
           <br />
-          <button onClick={this.submitUpdate.bind(this)}>Update</button>
-          <button onClick={this.toggleEdit.bind(this)}>Nevermind</button>
+          <button className="btn" onClick={this.submitUpdate.bind(this)}>Update</button>
+          <span>  </span>
+          <button className="btn" onClick={this.toggleEdit.bind(this)}>Nevermind</button>
 
         </div>
       )
@@ -91,12 +97,15 @@ class AccountEditor extends Component {
         <div>
           <h4>Name: </h4>
           <span>{profile.firstName}</span>
-          <span>{profile.lastName}</span><br/>
+          <span>{profile.lastName}</span>
+          <br/>
           <h4>City: </h4>
-          <span>{profile.city}</span><br/>
+          <span>{profile.city}</span>
+          <br/>
           <h4>Bio :</h4>
-          <p>{profile.bio}</p><br />
-          <button onClick={this.toggleEdit.bind(this)}>Edit</button>
+          <p>{profile.bio}</p>
+          <br />
+          <button className="btn" onClick={this.toggleEdit.bind(this)}>Edit</button>
         </div>
       )
     }

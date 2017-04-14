@@ -16,13 +16,22 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var Link = require("react-router").Link;
+var Modal = _interopRequire(require("react-modal"));
+
 var Images = require("../presentation").Images;
 var ImageHelper = require("../../utils").ImageHelper;
 
 
-/*
-TODO: get to work with textbox instead of input
-*/
+var customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)"
+  }
+};
 
 var CreateHike = (function (Component) {
   function CreateHike(props) {
@@ -31,8 +40,9 @@ var CreateHike = (function (Component) {
     _get(Object.getPrototypeOf(CreateHike.prototype), "constructor", this).call(this, props);
     this.state = {
       isEditing: false,
-      review: props.review
-    };
+      review: props.review,
+      currentPicture: "",
+      modalIsOpen: false }, this.closeModal = this.closeModal.bind(this);
   }
 
   _inherits(CreateHike, Component);
@@ -75,13 +85,46 @@ var CreateHike = (function (Component) {
       writable: true,
       configurable: true
     },
+    displayPicture: {
+      value: function displayPicture(event, picture, id) {
+        console.log(event);
+        // BUG: for some reason picture is the first and not second argument?
+        this.setState({
+          currentPicture: event,
+          modalIsOpen: true });
+      },
+      writable: true,
+      configurable: true
+    },
+    closeModal: {
+      value: function closeModal() {
+        this.setState({
+          modalIsOpen: false });
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
+        var _this = this;
         var review = this.props.review;
         var reviewDate = review.timestamp.slice(0, review.timestamp.indexOf("T"));
 
         var author = review.user;
+        var authorImage = author.image ? author.image : "/images/default-user-sm.png";
         var editable = this.props.isEditable ? this.props.isEditable : false;
+        var photos = this.props.review.pictures.map(function (picture, id) {
+          return React.createElement(
+            "li",
+            { key: id },
+            React.createElement("img", {
+              className: "hike-review-photo",
+              src: ImageHelper.preview(picture, 150, 200),
+              onClick: _this.displayPicture.bind(_this, picture, id) })
+          );
+        });
+
+        var modalPicture = React.createElement("img", { src: this.state.currentPicture });
 
         var content = null;
 
@@ -95,8 +138,9 @@ var CreateHike = (function (Component) {
               { className: "review-header" },
               "Review/description: "
             ),
-            React.createElement("input", {
+            React.createElement("textarea", {
               id: "description",
+              className: "form-control",
               onChange: this.updateReview.bind(this),
               defaultValue: review.description }),
             React.createElement(
@@ -106,6 +150,7 @@ var CreateHike = (function (Component) {
             ),
             React.createElement("input", {
               id: "animals",
+              className: "form-control",
               onChange: this.updateReview.bind(this),
               defaultValue: review.animals }),
             React.createElement(
@@ -115,6 +160,7 @@ var CreateHike = (function (Component) {
             ),
             React.createElement("input", {
               id: "plants",
+              className: "form-control",
               onChange: this.updateReview.bind(this),
               defaultValue: review.plants }),
             React.createElement(
@@ -124,11 +170,13 @@ var CreateHike = (function (Component) {
             ),
             React.createElement("input", {
               id: "fungi",
+              className: "form-control",
               onChange: this.updateReview.bind(this),
               defaultValue: review.fungi }),
+            React.createElement("br", null),
             React.createElement(
               "button",
-              { onClick: this.submitUpdate.bind(this) },
+              { className: "btn review-edit-button", onClick: this.submitUpdate.bind(this) },
               "Update Review"
             )
           );
@@ -136,6 +184,11 @@ var CreateHike = (function (Component) {
           content = React.createElement(
             "div",
             { className: "review-block" },
+            React.createElement(
+              "ul",
+              { className: "hike-review-photos" },
+              photos
+            ),
             React.createElement(
               "h4",
               { className: "review-header" },
@@ -176,7 +229,7 @@ var CreateHike = (function (Component) {
               { className: "review-fungi" },
               review.fungi
             ),
-            React.createElement("img", { className: "icon-image", src: ImageHelper.thumbnail(author.image, 40) }),
+            React.createElement("img", { className: "icon-image", src: ImageHelper.thumbnail(authorImage, 40) }),
             React.createElement(
               "span",
               null,
@@ -198,7 +251,7 @@ var CreateHike = (function (Component) {
             ),
             editable ? React.createElement(
               "button",
-              { className: "review-edit-button", onClick: this.toggleEdit.bind(this) },
+              { className: "btn review-edit-button", onClick: this.toggleEdit.bind(this) },
               "Edit Review"
             ) : null
           );
@@ -207,7 +260,22 @@ var CreateHike = (function (Component) {
         return React.createElement(
           "div",
           null,
-          content
+          content,
+          React.createElement(
+            Modal,
+            {
+              isOpen: this.state.modalIsOpen,
+              onRequestClose: this.closeModal,
+              style: customStyles,
+              contentLabel: "Picture Modal"
+            },
+            React.createElement(
+              "button",
+              { className: "x-button", onClick: this.closeModal },
+              "X"
+            ),
+            modalPicture
+          )
         );
       },
       writable: true,

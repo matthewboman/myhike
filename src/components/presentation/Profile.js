@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
 
-/*
-not currently implemented
-*/
-
 class Profile extends Component {
   constructor() {
     super()

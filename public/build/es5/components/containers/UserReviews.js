@@ -18,57 +18,94 @@ var Component = _react.Component;
 var connect = require("react-redux").connect;
 var actions = _interopRequire(require("../../actions"));
 
-var ImageHelper = require("../../utils").ImageHelper;
-var Profile = (function (Component) {
-  function Profile() {
-    _classCallCheck(this, Profile);
+var store = _interopRequire(require("../../store/store"));
 
-    _get(Object.getPrototypeOf(Profile.prototype), "constructor", this).call(this);
+var APIManager = require("../../utils").APIManager;
+var Review = require("../presentation").Review;
+var UserReviews = (function (Component) {
+  function UserReviews() {
+    _classCallCheck(this, UserReviews);
+
+    _get(Object.getPrototypeOf(UserReviews.prototype), "constructor", this).call(this);
+    this.checkForReviews = this.checkForReviews.bind(this);
     this.state = {};
   }
 
-  _inherits(Profile, Component);
+  _inherits(UserReviews, Component);
 
-  _prototypeProperties(Profile, null, {
+  _prototypeProperties(UserReviews, null, {
+    checkForReviews: {
+
+      // Get hike and reviews up and loaded before component renders
+      value: function checkForReviews() {
+        // Account and Profile will pass down whether we want current or
+        // clicked on user
+        // let current = this.props.current
+        // if (current == false) {
+        //   return
+        // }
+        var user = this.props.user;
+        if (user == null) {
+          return;
+        }
+        var reviewsArray = this.props.reviews[user.id];
+        if (reviewsArray != null) {
+          return;
+        }
+        this.props.fetchReviews({ user: user.id });
+      },
+      writable: true,
+      configurable: true
+    },
+    updateReview: {
+
+      // Allow user to edit their hike review
+      value: function updateReview(review) {
+        this.props.reviewUpdated(review);
+      },
+      writable: true,
+      configurable: true
+    },
     componentDidMount: {
       value: function componentDidMount() {
-        var profile = this.props.profiles[this.props.id];
-
-        if (profile == null) {
-          this.props.fetchProfile(this.props.id);
-          return;
-        }
-        if (this.props.reviews[profile.id] != null) {
-          return;
-        }
-        this.props.fetchReviews({ "user.id": profile.id });
+        this.checkForReviews();
       },
       writable: true,
       configurable: true
     },
     componentDidUpdate: {
       value: function componentDidUpdate() {
-        var profile = this.props.profiles[this.props.id];
-        if (profile == null) {
-          return;
-        }
-        if (this.props.reviews[profile.id] != null) {
-          return;
-        }
-        this.props.fetchReviews({ "user.id": profile.id });
+        this.checkForReviews();
       },
       writable: true,
       configurable: true
     },
     render: {
       value: function render() {
-        var profile = this.props.profiles[this.props.id];
-        var page = null;
+        // Make sure component has what it needs to display reviews
+        // const hike = this.props.hike
+        var currentUser = this.props.user;
+        var reviewList = null;
 
-        // Make sure we have everything, then get reviews user has made
-        if (profile != null) {
-          var reviews = this.props.reviews[profile.id] ? this.props.reviews[profile.id] : [];
-          var list = reviews.map(function (review, i) {
+        // if (currentUser != null) {
+        //   let userReviews = this.props.reviews[currentUser.id]
+        //   if (userReviews != null) {
+        //     reviewList = userReviews.map((review, i) => {
+        //       return (
+        //         <li key={i}>
+        //           <Review
+        //             onUpdate={this.updateReview.bind(this)}
+        //             isEditable={true}
+        //             review={review} />
+        //         </li>
+        //       )
+        //     })
+        //   }
+        // }
+        var list = [];
+        if (currentUser != null) {
+          var reviews = this.props.reviews[currentUser.id] ? this.props.reviews[currentUser.id] : [];
+          list = reviews.map(function (review, i) {
             return React.createElement(
               "li",
               { key: i, className: "review-block" },
@@ -114,59 +151,12 @@ var Profile = (function (Component) {
               )
             );
           });
-          page = React.createElement(
-            "div",
-            { className: "row" },
-            React.createElement(
-              "div",
-              { className: "col-md-4" },
-              React.createElement(
-                "h3",
-                null,
-                profile.username
-              ),
-              React.createElement(
-                "div",
-                { className: "account-image-box" },
-                React.createElement("img", { className: "account-image", src: ImageHelper.profile(profile.image, 300) })
-              ),
-              React.createElement("br", null),
-              React.createElement(
-                "div",
-                { className: "bio-block" },
-                React.createElement(
-                  "span",
-                  { className: "profile-city" },
-                  profile.city
-                ),
-                React.createElement(
-                  "p",
-                  { className: "bio" },
-                  profile.bio
-                )
-              )
-            ),
-            React.createElement(
-              "div",
-              { className: "col-md-8" },
-              React.createElement(
-                "h3",
-                null,
-                "Reviews"
-              ),
-              React.createElement(
-                "ul",
-                { className: "reviews" },
-                list
-              )
-            )
-          );
         }
 
         return React.createElement(
-          "div",
-          { className: "container" },
-          page
+          "ul",
+          { className: "reviews" },
+          list
         );
       },
       writable: true,
@@ -174,13 +164,13 @@ var Profile = (function (Component) {
     }
   });
 
-  return Profile;
+  return UserReviews;
 })(Component);
 
 var stateToProps = function (state) {
   return {
     reviews: state.review.reviewMap,
-    profiles: state.profile.profileMap };
+    user: state.account.user };
 };
 
 var dispatchToProps = function (dispatch) {
@@ -188,9 +178,9 @@ var dispatchToProps = function (dispatch) {
     fetchReviews: function (params) {
       return dispatch(actions.fetchReviews(params));
     },
-    fetchProfile: function (id) {
-      return dispatch(actions.fetchProfile(id));
+    reviewUpdated: function (review) {
+      return dispatch(actions.reviewUpdated(review));
     } };
 };
 
-module.exports = connect(stateToProps, dispatchToProps)(Profile);
+module.exports = connect(stateToProps, dispatchToProps)(UserReviews);

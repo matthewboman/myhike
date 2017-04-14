@@ -7,6 +7,7 @@ import { APIManager } from '../../utils'
 import { Images } from '../presentation'
 
 /*
+  TODO: Place marker on map if user uses current location or address
   TODO: Hike can be submitted only if user is logged in and location is selected
 */
 
@@ -40,9 +41,10 @@ class CreateHike extends Component {
   // Set hike location to user's GPS coordinates
   useCurrentLocation(event) {
     let updatedHike = Object.assign({}, this.state.hike)
-    console.log(JSON.stringify(this.props.userLocation.center))
+    // console.log(JSON.stringify(this.props.userLocation.center))
     updatedHike['position'] = this.props.userLocation.center
     updatedHike['useAddress'] = false
+    this.props.locationAdded(this.props.userLocation.center)
     this.setState({
       hike: updatedHike
     })
@@ -82,10 +84,16 @@ class CreateHike extends Component {
 
   // Add new hike to database
   submitHike(hike) {
-    console.log('submitting ' + JSON.stringify(this.state.hike))
     // check if user is logged in
     if (this.props.user == null) {
-      alert('You must be signed up')
+      let message = 'You must be logged in to add hikes'
+      this.props.displayMessage(message)
+      return
+    }
+    // check for location
+    if (this.state.hike.location == null) {
+      let message = 'Add a hike location before submitting'
+      this.props.displayMessage(message)
       return
     }
     let newHike = this.state.hike
@@ -96,7 +104,7 @@ class CreateHike extends Component {
     // Allow user to choose hike by map or current location
     let lat
     let lng
-    if (this.state.position != null) {
+    if (this.state.hike.position != null) {
       lat = this.state.hike.position.lat
       lng = this.state.hike.position.lng
     }
@@ -117,11 +125,18 @@ class CreateHike extends Component {
       )
     }
 
+    let errorMessage = this.props.message
+
     return (
       <div className="sidebar">
+        <span className="error">{errorMessage}</span>
         <h3>Add a New Hike</h3>
+        <span>Hike Name:</span>
+        < br/>
         <input onChange={this.updateHike.bind(this)} id="name"
-          className="form-control" type="text" placeholder="Hike Name" />
+          className="form-control" type="text" placeholder="ex. Graveyard Fields" />
+        <br />
+        <span>I want to:</span>
         <br />
         <button className="btn btn-change" onClick={this.useCurrentLocation.bind(this)}>Use current location</button>
         <button className="btn btn-change" onClick={this.useAddress.bind(this)}>Enter an address</button>
@@ -140,6 +155,7 @@ class CreateHike extends Component {
 const stateToProps = (state) => {
   return {
     location: state.hike.hikeLocation,
+    message: state.message.message,
     user: state.account.user,
     userLocation: state.hike.center,
   }
@@ -147,6 +163,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
 	return {
+    displayMessage: (message) => dispatch(actions.displayMessage(message)),
     hikeCreated: (newHike) => dispatch(actions.hikeCreated(newHike)),
 		locationAdded: (location) => dispatch(actions.locationAdded(location)),
 	}

@@ -21,6 +21,18 @@ gulp.task('es6-es5', function() {
   .pipe(gulp.dest('./public/build/es5')) // React code for server
 });
 
+// gulp.task('css', function() {
+//   return gulp.src(
+//     [
+//       './src/components/layout/Home.scss'
+//     ]
+//   )
+//   .pipe(minifyCSS())
+//   .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
+//   .pipe(concat('style.min.css'))
+//   .pipe(gulp.dest('./public/build/css/'))
+// })
+
 // Re-run when a file is updated
 gulp.task('watch', function() {
   gulp.watch([
@@ -35,5 +47,6 @@ gulp.task('watch', function() {
 // Default task
 gulp.task('default', [
   'es6-es5',
-  'watch'
+  'watch',
+  // 'css'
 ], function(){});

@@ -31,7 +31,7 @@ var Navigation = (function (_React$Component) {
       value: function render() {
         return React.createElement(
           "nav",
-          { className: "navbar navbar-default" },
+          { className: "navbar navbar-inverse" },
           React.createElement(
             "div",
             { className: "container-fluid" },

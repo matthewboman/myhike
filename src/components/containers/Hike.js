@@ -4,7 +4,7 @@ import { browserHistory } from 'react-router'
 
 import actions from '../../actions'
 import { APIManager } from '../../utils'
-import Reviews from './Reviews'
+import HikeReviews from './HikeReviews'
 import { CreateReview } from '../presentation'
 
 class Hike extends Component {
@@ -68,7 +68,7 @@ class Hike extends Component {
     } else {
       newReview = (
         <div>
-          <button onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</button>
+          <button className="btn" onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</button>
         </div>
       )
     }
@@ -76,7 +76,7 @@ class Hike extends Component {
     return (
       <div className="sidebar">
         {header}
-        <Reviews />
+        <HikeReviews />
         {newReview}
       </div>
     )
