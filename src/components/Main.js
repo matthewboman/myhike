@@ -3,7 +3,7 @@ For server-side rendering.
 Master layout to render child routes
 */
 import React, { Component } from 'react'
-import { Navbar } from './layout'
+import { Navbar } from './containers'
 
 class Main extends Component {
 

@@ -3,13 +3,12 @@ import ReactDOM from 'react-dom'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { Provider } from 'react-redux'
 
-import mobileRoutes from './mobileRoutes'
 import routes from './routes'
 import store from './store/store'
 
 import Main from './components/Main'
-import { CreateContainer, HikeContainer, Home, ProfileInfo } from './components/layout'
-import { Account, CreateHike, Hike, Profile } from './components/containers'
+import { AccountContainer, CreateHikeContainer, HikeContainer, HomeContainer,
+         ProfileContainer } from './components/containers'
 
 /*
 // NOTE: path="../profile/:id"
@@ -27,12 +26,12 @@ const app = (
     <Router history={browserHistory}>
       <Route path="/" component={Main}>
 
-        <IndexRoute component={Home}></IndexRoute>
+        <IndexRoute component={HomeContainer}></IndexRoute>
         <Route path="/hike/:id" component={HikeContainer}></Route>
-        <Route path="/create-hike" component={CreateContainer}></Route>
-        <Route path="/currentuser" component={Account}></Route>
-        <Route path="../profile/:id" component={ProfileInfo}></Route>
-        <Route path="/profile/:id" component={ProfileInfo}></Route>
+        <Route path="/create-hike" component={CreateHikeContainer}></Route>
+        <Route path="/currentuser" component={AccountContainer}></Route>
+        <Route path="../profile/:id" component={ProfileContainer}></Route>
+        <Route path="/profile/:id" component={ProfileContainer}></Route>
 
 
       </Route>
@@ -41,34 +40,3 @@ const app = (
 )
 
 ReactDOM.render(app, document.getElementById('root'))
-
-
-/*
-PRE-server-side rendering
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import { Provider } from 'react-redux'
-
-import mobileRoutes from './mobileRoutes'
-import routes from './routes'
-import store from './stores'
-
-
-class App extends Component {
-  render() {
-    const deviceWidth = window.innerWidth
-    return (
-      <Provider store={store.configureStore()}>
-        {
-          (deviceWidth >= 768) ? <Router routes={routes} history={browserHistory} />
-          : <Router routes={mobileRoutes} history={browserHistory} />
-        }
-      </Provider>
-    )
-  }
-}
-
-ReactDOM.render(
-  <App />, document.getElementById('root'))
-*/

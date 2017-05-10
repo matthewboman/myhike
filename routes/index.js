@@ -10,11 +10,11 @@ var controllers = require('../controllers')
 
 var serverapp = require('../public/build/es5/serverapp')
 var store = require('../public/build/es5/store/store')
-var Account = require('../public/build/es5/components/containers/Account')
-var CreateContainer = require('../public/build/es5/components/layout/CreateContainer')
-var HikeContainer = require('../public/build/es5/components/layout/HikeContainer')
-var Home = require('../public/build/es5/components/layout/Home')
-var ProfileInfo = require('../public/build/es5/components/layout/ProfileInfo')
+var AccountContainer = require('../public/build/es5/components/containers/AccountContainer')
+var CreateHikeContainer = require('../public/build/es5/components/containers/CreateHikeContainer')
+var HikeContainer = require('../public/build/es5/components/containers/HikeContainer')
+var HomeContainer = require('../public/build/es5/components/containers/HomeContainer')
+var ProfileContainer = require('../public/build/es5/components/containers/ProfileContainer')
 
 /*
 TODO: Write general routes for pages.
@@ -74,7 +74,7 @@ router.get('/', function(req, res, next) {
         component: serverapp,
         initial: initialStore,
         indexRoute: {
-          component: Home
+          component: HomeContainer
         }
       }
       return matchRoutes(req, routes)
@@ -124,7 +124,7 @@ router.get('/:page', function(req, res, next) {
           component: serverapp,
           initial: initialStore,
           indexRoute: {
-            component: CreateContainer
+            component: CreateHikeContainer
           }
         }
         return matchRoutes(req, routes)
@@ -155,7 +155,7 @@ router.get('/:page', function(req, res, next) {
           component: serverapp,
           initial: initialStore,
           indexRoute: {
-            component: Account
+            component: AccountContainer
           }
         }
         return matchRoutes(req, routes)
@@ -211,7 +211,7 @@ router.get('/:page/:slug', function(req, res, next) {
           component: serverapp,
           initial: initialStore,
           indexRoute: {
-            component: ProfileInfo
+            component: ProfileContainer
           }
         }
         return matchRoutes(req, routes)

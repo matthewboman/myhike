@@ -2,33 +2,24 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-var Account = _interopRequire(require("./Account"));
+var AccountContainer = _interopRequire(require("./AccountContainer"));
 
-var CreateHike = _interopRequire(require("./CreateHike"));
+var CreateHikeContainer = _interopRequire(require("./CreateHikeContainer"));
 
-var Hike = _interopRequire(require("./Hike"));
+var HikeContainer = _interopRequire(require("./HikeContainer"));
 
-var HikeReviews = _interopRequire(require("./HikeReviews"));
+var HomeContainer = _interopRequire(require("./HomeContainer"));
 
-var Map = _interopRequire(require("./Map"));
+var Navbar = _interopRequire(require("./Navbar"));
 
-var NavAdmin = _interopRequire(require("./NavAdmin"));
+var ProfileContainer = _interopRequire(require("./ProfileContainer"));
 
-var Profile = _interopRequire(require("./Profile"));
-
-var Register = _interopRequire(require("./Register"));
-
-var UserReviews = _interopRequire(require("./UserReviews"));
-
-exports.Account = Account;
-exports.CreateHike = CreateHike;
-exports.Hike = Hike;
-exports.HikeReviews = HikeReviews;
-exports.Map = Map;
-exports.NavAdmin = NavAdmin;
-exports.Profile = Profile;
-exports.Register = Register;
-exports.UserReviews = UserReviews;
+exports.AccountContainer = AccountContainer;
+exports.CreateHikeContainer = CreateHikeContainer;
+exports.HikeContainer = HikeContainer;
+exports.HomeContainer = HomeContainer;
+exports.Navbar = Navbar;
+exports.ProfileContainer = ProfileContainer;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });

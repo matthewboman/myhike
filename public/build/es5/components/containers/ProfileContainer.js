@@ -8,39 +8,31 @@ var _inherits = function (subClass, superClass) { if (typeof superClass !== "fun
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
 
-/*
-For server-side rendering.
-Master layout to render child routes
-*/
 var _react = require("react");
 
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var Navbar = require("./containers").Navbar;
-var Main = (function (Component) {
-  function Main() {
-    _classCallCheck(this, Main);
+var Profile = require("../User").Profile;
+var Navbar = require("./").Navbar;
+var ProfileContainer = (function (Component) {
+  function ProfileContainer() {
+    _classCallCheck(this, ProfileContainer);
 
     if (Component != null) {
       Component.apply(this, arguments);
     }
   }
 
-  _inherits(Main, Component);
+  _inherits(ProfileContainer, Component);
 
-  _prototypeProperties(Main, null, {
+  _prototypeProperties(ProfileContainer, null, {
     render: {
       value: function render() {
         return React.createElement(
           "div",
           null,
-          React.createElement(
-            "div",
-            { className: "nav" },
-            React.createElement(Navbar, null)
-          ),
-          this.props.children
+          React.createElement(Profile, { id: this.props.params.id })
         );
       },
       writable: true,
@@ -48,7 +40,7 @@ var Main = (function (Component) {
     }
   });
 
-  return Main;
+  return ProfileContainer;
 })(Component);
 
-module.exports = Main;
+module.exports = ProfileContainer;
