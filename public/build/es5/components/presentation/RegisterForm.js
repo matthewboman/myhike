@@ -152,22 +152,12 @@ var RegisterForm = (function (Component) {
           Validation.components.Form,
           null,
           React.createElement(
-            "h3",
-            null,
-            "Sign up"
-          ),
-          React.createElement(
             "div",
             null,
-            React.createElement(
-              "label",
-              null,
-              "Username"
-            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
-              value: "",
-              className: "form-control",
+              value: "username",
+              className: "form-control register-field",
               name: "username", id: "username",
               validations: ["required"] })
           ),
@@ -175,15 +165,10 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
-            React.createElement(
-              "label",
-              null,
-              "Email"
-            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
-              value: "",
-              className: "form-control",
+              value: "email",
+              className: "form-control register-field",
               name: "email", id: "email",
               validations: ["required", "email"] })
           ),
@@ -191,16 +176,11 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
-            React.createElement(
-              "label",
-              null,
-              "Password"
-            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
               type: "password",
-              value: "",
-              className: "form-control",
+              value: "password",
+              className: "form-control register-field",
               name: "password", id: "password",
               validations: ["length", "required", "password"] })
           ),
@@ -208,16 +188,11 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
-            React.createElement(
-              "label",
-              null,
-              "Confirm Password"
-            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
               type: "password",
-              value: "",
-              className: "form-control",
+              value: "password",
+              className: "form-control register-field",
               name: "passwordConfirm", id: "passwordConfirm",
               validations: ["length", "required", "password"] })
           ),
@@ -229,7 +204,7 @@ var RegisterForm = (function (Component) {
               Validation.components.Button,
               {
                 onClick: this.register.bind(this),
-                className: "btn btn-info btn-block" },
+                className: "btn btn-block btn-register" },
               "Join now!"
             )
           )

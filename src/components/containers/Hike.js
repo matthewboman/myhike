@@ -17,6 +17,10 @@ class Hike extends Component {
 
   // Show/hide CreateReview component
   displayCreateReviewComponent(event) {
+    if (!this.props.user) {
+      console.log('you must be logged in to add a review')
+      return
+    }
     this.setState({
       addReview: !this.state.addReview
     })
@@ -67,17 +71,17 @@ class Hike extends Component {
       )
     } else {
       newReview = (
-        <div>
-          <button className="btn" onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</button>
+        <div className="review-block">
+          <span className="add-review" onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</span>
         </div>
       )
     }
 
     return (
-      <div className="sidebar">
+      <div className="hike-component-container">
         {header}
-        <HikeReviews />
         {newReview}
+        <HikeReviews />
       </div>
     )
   }

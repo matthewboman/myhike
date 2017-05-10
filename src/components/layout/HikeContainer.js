@@ -16,7 +16,7 @@ class HikeContainer extends Component {
       <div>
 
       <div className="col-md-4">
-        <section style={{height: '100%'}} className="map-section">
+        <section className="map-section">
         <Map
           mapContainer={mapContainer}
           />

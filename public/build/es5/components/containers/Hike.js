@@ -40,6 +40,10 @@ var Hike = (function (Component) {
 
       // Show/hide CreateReview component
       value: function displayCreateReviewComponent(event) {
+        if (!this.props.user) {
+          console.log("you must be logged in to add a review");
+          return;
+        }
         this.setState({
           addReview: !this.state.addReview
         });
@@ -106,10 +110,10 @@ var Hike = (function (Component) {
         } else {
           newReview = React.createElement(
             "div",
-            null,
+            { className: "review-block" },
             React.createElement(
-              "button",
-              { className: "btn", onClick: this.displayCreateReviewComponent.bind(this) },
+              "span",
+              { className: "add-review", onClick: this.displayCreateReviewComponent.bind(this) },
               "Add a Review"
             )
           );
@@ -117,10 +121,10 @@ var Hike = (function (Component) {
 
         return React.createElement(
           "div",
-          { className: "sidebar" },
+          { className: "hike-component-container" },
           header,
-          React.createElement(HikeReviews, null),
-          newReview
+          newReview,
+          React.createElement(HikeReviews, null)
         );
       },
       writable: true,

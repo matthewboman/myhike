@@ -31,31 +31,47 @@ var HomePage = (function (Component) {
           "div",
           { className: "homepage" },
           React.createElement(
-            "h2",
-            null,
-            "Welcome"
-          ),
-          React.createElement(
             "div",
-            { className: "" },
+            { className: "about" },
             React.createElement(
-              "p",
-              null,
-              "My Hike is sort of like a social network meets wikipedia meets public database. This site allows nature enthusiasts to share their favorite spots and foragers their best finds, as well as provide a public database of species dispersal to measure the effects of climate change on different ecosystems."
+              "div",
+              { className: "home-section-title" },
+              "Hikers!"
             ),
             React.createElement(
-              "p",
-              null,
-              "If you have hikes to share, you can register and start posting. If youre just here to look around, everything is public and free--just click on a marker to get a hikes details."
+              "div",
+              { className: "home-section-content" },
+              "Do you have so many good places you just can't remember them all? Or maybe you are traveling, have just moved somewhere new, or are just out of new ideas? Myhike allows you to post locations and reviews of your hikes and search for hikes others have added based on location."
+            ),
+            React.createElement(
+              "div",
+              { className: "home-section-title" },
+              "Foragers!"
+            ),
+            React.createElement(
+              "div",
+              { className: "home-section-content" },
+              "Ever forget to mark that one spot with that really sweet find? Aside from allowing users to leave hike reviews and descriptions, there are also fields specifically for plants and mushrooms you find."
+            ),
+            React.createElement(
+              "div",
+              { className: "home-section-title" },
+              "Ecologists!"
+            ),
+            React.createElement(
+              "div",
+              { className: "home-section-content" },
+              "Myhike strives to serve as a public database of species dispersal. On top of photo-uploading capabilities, Myhike also allows users to share where they've seen different animals, plants, and fungi. Any details you want can be found making requests to our public API at '[sitename]/api/reviews'"
             )
           ),
+          React.createElement("div", { className: "line" }),
           React.createElement(
             "div",
-            { className: "" },
+            { className: "dev" },
             React.createElement(
               "p",
               null,
-              "My Hike is currently in development phase. Here are some things we could use help with: allowing users to edit their own hikes but not others, enabling photo-sharing capability, making hikes searchable by description or wildlife."
+              "My Hike is always evolving. Feel free to contact us with feature suggestions or check out our Github to see how you can contribute."
             )
           )
         );

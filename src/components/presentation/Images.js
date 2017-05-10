@@ -104,7 +104,7 @@ class Images extends Component {
         {pixx}
         </ul>
         <button onClick={this.submitImages.bind(this)}
-          className="btn btn-info btn-block">Submit Images</button>
+          className="btn image-submit-btn">Submit Images</button>
       </div>
     )
   }

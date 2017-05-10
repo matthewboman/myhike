@@ -157,7 +157,7 @@ var Images = (function (Component) {
           React.createElement(
             "button",
             { onClick: this.submitImages.bind(this),
-              className: "btn btn-info btn-block" },
+              className: "btn image-submit-btn" },
             "Submit Images"
           )
         );

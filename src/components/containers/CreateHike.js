@@ -27,7 +27,6 @@ class CreateHike extends Component {
     }
   }
 
-
   updateHike(event) {
     let updatedHike = Object.assign({}, this.state.hike)
     let updatedAddress = Object.assign({}, updatedHike.address)
@@ -128,25 +127,24 @@ class CreateHike extends Component {
     let errorMessage = this.props.message
 
     return (
-      <div className="sidebar">
+      <div className="create-hike-sidebar">
         <span className="error">{errorMessage}</span>
         <h3>Add a New Hike</h3>
-        <span>Hike Name:</span>
-        < br/>
         <input onChange={this.updateHike.bind(this)} id="name"
-          className="form-control" type="text" placeholder="ex. Graveyard Fields" />
+          className="form-control" type="text" placeholder="Hike name" />
         <br />
-        <span>I want to:</span>
-        <br />
-        <button className="btn btn-change" onClick={this.useCurrentLocation.bind(this)}>Use current location</button>
-        <button className="btn btn-change" onClick={this.useAddress.bind(this)}>Enter an address</button>
-        <button className="btn btn-change" onClick={this.useMap.bind(this)}>Select Map Location</button>
+        <div className="add-hike-how">
+          <span>I want to:</span>
+          <span className="location-type" onClick={this.useCurrentLocation.bind(this)}>Use current location</span>
+          <span className="location-type" onClick={this.useAddress.bind(this)}>Enter an address</span>
+          <span className="location-type" onClick={this.useMap.bind(this)}>Select Map Location</span>
+        </div>
         <br/>
         <br />
         {display}
         <br />
         <button onClick={this.submitHike.bind(this)}
-          className="btn btn-block">Add it</button>
+          className="btn">Add it</button>
       </div>
     )
   }

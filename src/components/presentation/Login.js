@@ -40,21 +40,17 @@ class Login extends Component {
     return (
       <div>
       <form>
-        <h3>Log in</h3>
-
-        <div>
-          <label>Username</label>
+        <div className="login">
           <input
-            className="form-control"
+            className="form-control login-field"
             onChange={this.updateVisitor.bind(this)}
             type="text" id="username"
             placeholder="username" />
         </div>
         <br />
         <div>
-          <label>Password</label>
           <input
-            className="form-control"
+            className="form-control login-field"
             onChange={this.updateVisitor.bind(this)}
             type="password" id="password"
             placeholder="password" />
@@ -62,7 +58,7 @@ class Login extends Component {
         <br />
         <div>
           <button
-            className="btn btn-info btn-block"
+            className="btn btn-block btn-login login-field"
             onClick={this.login.bind(this)}>
             Log in
           </button>

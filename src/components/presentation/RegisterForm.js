@@ -96,46 +96,40 @@ class RegisterForm extends Component {
   render () {
     return (
       <Validation.components.Form>
-      <h3>Sign up</h3>
-
         <div>
-          <label>Username</label>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
-            value=""
-            className="form-control"
+            value="username"
+            className="form-control register-field"
             name="username" id="username"
             validations={["required"]} />
         </div>
         <br />
         <div>
-          <label>Email</label>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
-            value=""
-            className="form-control"
+            value="email"
+            className="form-control register-field"
             name="email" id="email"
             validations={["required", "email"]} />
         </div>
         <br />
         <div>
-          <label>Password</label>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
             type="password"
-            value=""
-            className="form-control"
+            value="password"
+            className="form-control register-field"
             name="password" id="password"
             validations={["length", "required", "password"]} />
         </div>
         <br />
         <div>
-          <label>Confirm Password</label>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
             type="password"
-            value=""
-            className="form-control"
+            value="password"
+            className="form-control register-field"
             name="passwordConfirm" id="passwordConfirm"
             validations={["length", "required", "password"]} />
         </div>
@@ -143,7 +137,7 @@ class RegisterForm extends Component {
         <div>
           <Validation.components.Button
             onClick={this.register.bind(this)}
-            className="btn btn-info btn-block" >
+            className="btn btn-block btn-register" >
             Join now!
           </Validation.components.Button>
         </div>

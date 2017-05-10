@@ -24,13 +24,15 @@ gulp.task('es6-es5', function() {
 // gulp.task('css', function() {
 //   return gulp.src(
 //     [
-//       './src/components/layout/Home.scss'
+//       './src/components/**.scss',
+//       './src/components/*/**.scss'
 //     ]
 //   )
-//   .pipe(minifyCSS())
-//   .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
-//   .pipe(concat('style.min.css'))
-//   .pipe(gulp.dest('./public/build/css/'))
+  // .pipe(minifyCSS())
+  // .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
+  // .pipe(concat('style.min.css'))
+  // .pipe(gulp.dest('./public/build/css/'))
+//   .pipe(gulp.dest('./public/build/es5'))
 // })
 
 // Re-run when a file is updated

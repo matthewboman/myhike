@@ -43,7 +43,7 @@ var HikeContainer = (function (Component) {
             { className: "col-md-4" },
             React.createElement(
               "section",
-              { style: { height: "100%" }, className: "map-section" },
+              { className: "map-section" },
               React.createElement(Map, {
                 mapContainer: mapContainer
               })

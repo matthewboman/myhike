@@ -45,11 +45,21 @@ var Account = (function (Component) {
   _inherits(Account, Component);
 
   _prototypeProperties(Account, null, {
+    componentDidMount: {
+      value: function componentDidMount() {
+        this.getCurrentUserReviews(user);
+      },
+      writable: true,
+      configurable: true
+    },
+    componentDidUpdate: {
+      value: function componentDidUpdate() {
+        console.log(JSON.stringify(this.props.reviews));
+      },
+      writable: true,
+      configurable: true
+    },
     toggleImageUploader: {
-
-      // componentDidMount() {
-      //   this.getCurrentUserReviews(user)
-      // }
 
       // Show/hide editing capabilities
       value: function toggleImageUploader() {
@@ -132,7 +142,7 @@ var Account = (function (Component) {
         } else {
           updateImage = React.createElement(
             "div",
-            null,
+            { className: "change-button" },
             React.createElement(
               "button",
               { className: "btn change", onClick: this.toggleImageUploader.bind(this) },
@@ -159,32 +169,27 @@ var Account = (function (Component) {
             { className: "row" },
             React.createElement(
               "div",
-              { className: "col-md-6" },
+              { className: "col-md-4" },
               React.createElement(
                 "div",
                 { className: "account-image-box" },
                 React.createElement("img", { className: "account-image", src: image }),
                 React.createElement("br", null),
-                updateImage
+                updateImage,
+                React.createElement(
+                  "div",
+                  { className: "bio-block" },
+                  React.createElement(AccountEditor, {
+                    profile: profile,
+                    onUpdate: this.submitUpdate.bind(this) })
+                )
               )
             ),
             React.createElement(
               "div",
-              { className: "col-md-6" },
-              React.createElement(
-                "div",
-                { className: "bio-block" },
-                React.createElement(AccountEditor, {
-                  profile: profile,
-                  onUpdate: this.submitUpdate.bind(this) })
-              )
+              { className: "col-md-8" },
+              React.createElement(UserReviews, null)
             )
-          ),
-          React.createElement("br", null),
-          React.createElement(
-            "div",
-            { className: "row" },
-            React.createElement(UserReviews, null)
           )
         );
       },
@@ -205,7 +210,9 @@ var stateToProps = function (state) {
 
 var dispatchToProps = function (dispatch) {
   return {
-    // getCurrentUserReviews: (user) => dispath(actions.getCurrentUserReviews(user)),
+    getCurrentUserReviews: function (user) {
+      return dispath(actions.getCurrentUserReviews(user));
+    },
     profileUpdated: function (user, profile) {
       return dispatch(actions.profileUpdated(user, profile));
     }

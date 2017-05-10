@@ -72,20 +72,10 @@ var Login = (function (Component) {
             "form",
             null,
             React.createElement(
-              "h3",
-              null,
-              "Log in"
-            ),
-            React.createElement(
               "div",
-              null,
-              React.createElement(
-                "label",
-                null,
-                "Username"
-              ),
+              { className: "login" },
               React.createElement("input", {
-                className: "form-control",
+                className: "form-control login-field",
                 onChange: this.updateVisitor.bind(this),
                 type: "text", id: "username",
                 placeholder: "username" })
@@ -94,13 +84,8 @@ var Login = (function (Component) {
             React.createElement(
               "div",
               null,
-              React.createElement(
-                "label",
-                null,
-                "Password"
-              ),
               React.createElement("input", {
-                className: "form-control",
+                className: "form-control login-field",
                 onChange: this.updateVisitor.bind(this),
                 type: "password", id: "password",
                 placeholder: "password" })
@@ -112,7 +97,7 @@ var Login = (function (Component) {
               React.createElement(
                 "button",
                 {
-                  className: "btn btn-info btn-block",
+                  className: "btn btn-block btn-login login-field",
                   onClick: this.login.bind(this) },
                 "Log in"
               )

@@ -17,7 +17,10 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    height                : '450px',
+    width                 : '330px',
+    padding               : '0px'
   }
 };
 
@@ -76,14 +79,14 @@ class NavAdmin extends Component {
     let modal = null
     if (this.state.isRegister) {
       modal = (
-        <div>
+        <div className="modal-register">
           <Register onClose={this.closeModal}/>
         </div>
       )
     }
     if (this.state.isLogin) {
       modal = (
-        <div>
+        <div className="modal-login">
           <Login onLogin={this.login.bind(this)} />
         </div>
       )
@@ -130,14 +133,20 @@ class NavAdmin extends Component {
       <div>
         {content}
         <Modal
+          // className="account-modal"
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
           contentLabel="Example Modal"
         >
-          <button className="x-button" onClick={this.closeModal}>X</button>
-          {modal}
+          {/*<button className="x-button" onClick={this.closeModal}><div className="x"></div></button>*/}
+          <div onClick={this.closeModal} className="x"></div>
+          <div className="modal-header">
+
+              {modal}
+          </div>
+
         </Modal>
       </div>
     )

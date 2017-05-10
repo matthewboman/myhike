@@ -36,7 +36,10 @@ var customStyles = {
     right: "auto",
     bottom: "auto",
     marginRight: "-50%",
-    transform: "translate(-50%, -50%)"
+    transform: "translate(-50%, -50%)",
+    height: "450px",
+    width: "330px",
+    padding: "0px"
   }
 };
 
@@ -116,14 +119,14 @@ var NavAdmin = (function (Component) {
         if (this.state.isRegister) {
           modal = React.createElement(
             "div",
-            null,
+            { className: "modal-register" },
             React.createElement(Register, { onClose: this.closeModal })
           );
         }
         if (this.state.isLogin) {
           modal = React.createElement(
             "div",
-            null,
+            { className: "modal-login" },
             React.createElement(Login, { onLogin: this.login.bind(this) })
           );
         }
@@ -214,12 +217,12 @@ var NavAdmin = (function (Component) {
               style: customStyles,
               contentLabel: "Example Modal"
             },
+            React.createElement("div", { onClick: this.closeModal, className: "x" }),
             React.createElement(
-              "button",
-              { className: "x-button", onClick: this.closeModal },
-              "X"
-            ),
-            modal
+              "div",
+              { className: "modal-header" },
+              modal
+            )
           )
         );
       },
@@ -248,3 +251,5 @@ var dispatchToProps = function (dispatch) {
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(NavAdmin);
+// className="account-modal"
+/*<button className="x-button" onClick={this.closeModal}><div className="x"></div></button>*/

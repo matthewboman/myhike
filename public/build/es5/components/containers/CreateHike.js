@@ -173,7 +173,7 @@ var CreateHike = (function (Component) {
 
         return React.createElement(
           "div",
-          { className: "sidebar" },
+          { className: "create-hike-sidebar" },
           React.createElement(
             "span",
             { className: "error" },
@@ -184,35 +184,32 @@ var CreateHike = (function (Component) {
             null,
             "Add a New Hike"
           ),
-          React.createElement(
-            "span",
-            null,
-            "Hike Name:"
-          ),
-          React.createElement("br", null),
           React.createElement("input", { onChange: this.updateHike.bind(this), id: "name",
-            className: "form-control", type: "text", placeholder: "ex. Graveyard Fields" }),
+            className: "form-control", type: "text", placeholder: "Hike name" }),
           React.createElement("br", null),
           React.createElement(
-            "span",
-            null,
-            "I want to:"
-          ),
-          React.createElement("br", null),
-          React.createElement(
-            "button",
-            { className: "btn btn-change", onClick: this.useCurrentLocation.bind(this) },
-            "Use current location"
-          ),
-          React.createElement(
-            "button",
-            { className: "btn btn-change", onClick: this.useAddress.bind(this) },
-            "Enter an address"
-          ),
-          React.createElement(
-            "button",
-            { className: "btn btn-change", onClick: this.useMap.bind(this) },
-            "Select Map Location"
+            "div",
+            { className: "add-hike-how" },
+            React.createElement(
+              "span",
+              null,
+              "I want to:"
+            ),
+            React.createElement(
+              "span",
+              { className: "location-type", onClick: this.useCurrentLocation.bind(this) },
+              "Use current location"
+            ),
+            React.createElement(
+              "span",
+              { className: "location-type", onClick: this.useAddress.bind(this) },
+              "Enter an address"
+            ),
+            React.createElement(
+              "span",
+              { className: "location-type", onClick: this.useMap.bind(this) },
+              "Select Map Location"
+            )
           ),
           React.createElement("br", null),
           React.createElement("br", null),
@@ -221,7 +218,7 @@ var CreateHike = (function (Component) {
           React.createElement(
             "button",
             { onClick: this.submitHike.bind(this),
-              className: "btn btn-block" },
+              className: "btn" },
             "Add it"
           )
         );

@@ -31,10 +31,10 @@ var Navigation = (function (_React$Component) {
       value: function render() {
         return React.createElement(
           "nav",
-          { className: "navbar navbar-inverse" },
+          { className: "navbar navbar-inverse navbar-fixed-top" },
           React.createElement(
             "div",
-            { className: "container-fluid" },
+            { className: "container" },
             React.createElement(
               "div",
               { className: "navbar-header" },

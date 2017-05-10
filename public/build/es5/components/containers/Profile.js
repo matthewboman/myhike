@@ -64,6 +64,7 @@ var Profile = (function (Component) {
       value: function render() {
         var profile = this.props.profiles[this.props.id];
         var page = null;
+        console.log("profile is " + JSON.stringify(profile));
 
         // Make sure we have everything, then get reviews user has made
         if (profile != null) {
@@ -121,28 +122,28 @@ var Profile = (function (Component) {
               "div",
               { className: "col-md-4" },
               React.createElement(
-                "h3",
-                null,
-                profile.username
-              ),
-              React.createElement(
                 "div",
                 { className: "account-image-box" },
-                React.createElement("img", { className: "account-image", src: ImageHelper.profile(profile.image, 300) })
-              ),
-              React.createElement("br", null),
-              React.createElement(
-                "div",
-                { className: "bio-block" },
                 React.createElement(
-                  "span",
-                  { className: "profile-city" },
-                  profile.city
+                  "h3",
+                  null,
+                  profile.username
                 ),
+                React.createElement("img", { className: "account-image", src: ImageHelper.profile(profile.image, 300) }),
+                React.createElement("br", null),
                 React.createElement(
-                  "p",
-                  { className: "bio" },
-                  profile.bio
+                  "div",
+                  { className: "bio-block" },
+                  React.createElement(
+                    "span",
+                    { className: "profile-city" },
+                    profile.city
+                  ),
+                  React.createElement(
+                    "p",
+                    { className: "bio" },
+                    profile.bio
+                  )
                 )
               )
             ),
@@ -165,7 +166,7 @@ var Profile = (function (Component) {
 
         return React.createElement(
           "div",
-          { className: "container" },
+          { className: "container-fluid" },
           page
         );
       },

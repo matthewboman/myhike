@@ -21,9 +21,13 @@ class Account extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   this.getCurrentUserReviews(user)
-  // }
+  componentDidMount() {
+    this.getCurrentUserReviews(user)
+  }
+
+  componentDidUpdate() {
+    console.log(JSON.stringify(this.props.reviews))
+  }
 
   // Show/hide editing capabilities
   toggleImageUploader() {
@@ -80,7 +84,7 @@ class Account extends Component {
       )
     } else {
       updateImage = (
-        <div>
+        <div className="change-button">
           <button className="btn change" onClick={this.toggleImageUploader.bind(this)}>Change profile picture</button>
         </div>
       )
@@ -95,26 +99,26 @@ class Account extends Component {
         <h2>Welcome {profile.username}</h2>
 
         <div className="row">
-          <div className="col-md-6">
+          
+          <div className="col-md-4">
             <div className="account-image-box">
               <img className="account-image" src={image} />
               <br />
               {updateImage}
+
+              <div className="bio-block">
+                <AccountEditor
+                  profile={profile}
+                  onUpdate={this.submitUpdate.bind(this)} />
+              </div>
+
             </div>
           </div>
 
-          <div className="col-md-6">
-            <div className="bio-block">
-              <AccountEditor
-                profile={profile}
-                onUpdate={this.submitUpdate.bind(this)} />
-            </div>
+          <div className="col-md-8">
+            <UserReviews />
           </div>
 
-        </div>
-        <br />
-        <div className="row">
-          <UserReviews />
         </div>
 
       </div>
@@ -131,7 +135,7 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
   return {
-    // getCurrentUserReviews: (user) => dispath(actions.getCurrentUserReviews(user)),
+    getCurrentUserReviews: (user) => dispath(actions.getCurrentUserReviews(user)),
     profileUpdated: (user, profile) => dispatch(actions.profileUpdated(user, profile))
   }
 }

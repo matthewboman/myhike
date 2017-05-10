@@ -38,21 +38,22 @@ var UserReviews = (function (Component) {
 
       // Get hike and reviews up and loaded before component renders
       value: function checkForReviews() {
-        // Account and Profile will pass down whether we want current or
-        // clicked on user
-        // let current = this.props.current
-        // if (current == false) {
+        if (!this.props.user) {
+          console.log("no user");
+          return;
+        }
+        // let user = this.props.user
+        // let reviewsArray = this.props.reviews[user.id]
+        // if (reviewsArray != null) {
         //   return
         // }
-        var user = this.props.user;
-        if (user == null) {
+        // this.props.fetchReviews({user: user.id})
+        var profile = this.props.user;
+
+        if (this.props.reviews[profile.id] != null) {
           return;
         }
-        var reviewsArray = this.props.reviews[user.id];
-        if (reviewsArray != null) {
-          return;
-        }
-        this.props.fetchReviews({ user: user.id });
+        this.props.fetchReviews({ "user.id": profile.id });
       },
       writable: true,
       configurable: true
@@ -85,6 +86,7 @@ var UserReviews = (function (Component) {
         // Make sure component has what it needs to display reviews
         // const hike = this.props.hike
         var currentUser = this.props.user;
+
         var reviewList = null;
 
         // if (currentUser != null) {

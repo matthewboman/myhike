@@ -38,6 +38,7 @@ class Profile extends Component {
   render() {
     let profile = this.props.profiles[this.props.id]
     let page = null
+    console.log('profile is '+JSON.stringify(profile))
 
     // Make sure we have everything, then get reviews user has made
     if (profile != null) {
@@ -68,14 +69,14 @@ class Profile extends Component {
         <div className="row">
 
           <div className="col-md-4">
-            <h3>{profile.username}</h3>
             <div className="account-image-box">
+              <h3>{profile.username}</h3>
               <img className="account-image" src={ImageHelper.profile(profile.image, 300)} />
-            </div>
-            <br />
-            <div className="bio-block">
-              <span className="profile-city">{profile.city}</span>
-              <p className="bio" >{profile.bio}</p>
+              <br />
+              <div className="bio-block">
+                <span className="profile-city">{profile.city}</span>
+                <p className="bio" >{profile.bio}</p>
+              </div>
             </div>
           </div>
 
@@ -91,7 +92,7 @@ class Profile extends Component {
     }
 
     return (
-      <div className="container">
+      <div className="container-fluid">
         {page}
       </div>
     )
