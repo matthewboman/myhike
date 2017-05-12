@@ -17,7 +17,7 @@ class HikeMap extends Component {
   constructor() {
     super()
     this.state = {
-      center: {
+      mapCenter: {
         lat: 0,
         lng: 0
       }
@@ -26,18 +26,17 @@ class HikeMap extends Component {
 
   componentDidMount() {
     // Center map on user's location (or 0,0 if user doesn't want to share)
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        let lat = position.coords.latitude
-        let lng = position.coords.longitude
-        this.setState({
-          center: {
-            lat: lat,
-            lng: lng,
-          }
-        })
+    navigator.geolocation.getCurrentPosition((position) => {
+      let lat = position.coords.latitude
+      let lng = position.coords.longitude
+      this.setState({
+        mapCenter: {
+          lat: lat,
+          lng: lng,
+        }
+      })
       //  Pass to props for "CreateHike" component
-      this.props.userLocationReceived({center: {lat: lat, lng: lng} })
+      this.props.userLocationReceived({lat: lat, lng: lng})
       },
       (error) => {
         this.props.displayError("Error dectecting your location");
@@ -51,16 +50,10 @@ class HikeMap extends Component {
 
   // Add marker to map where user clicks
   addMarker(event) {
-    console.log('marker added')
-    // Display marker where user clicks
     let clicked = Object.assign({}, this.state.newHike)
     clicked.lat = event.latLng.lat()
     clicked.lng = event.latLng.lng()
-    this.setState({
-      newHike: clicked
-    })
-    // Set app state location to where user clicks (for user adding hike based on map location)
-    this.props.locationAdded(clicked)
+    this.props.markHikeLocation(clicked)
   }
 
   // Set currentHike to whichever hike user clicks on and change route
@@ -72,12 +65,11 @@ class HikeMap extends Component {
 
   render() {
     // Set map center to user location (component state version)
-    const center = this.state.center
-    if (center.lat == 0 && center.lng ==0) { return null }
+    const mapCenter = this.state.mapCenter
+    if (mapCenter.lat == 0 && mapCenter.lng == 0) { return null }
 
-    // Place newHike marker where user clicks
     const marker = {
-      position: this.state.newHike
+      position: this.props.hikeLocation
     }
 
     // Mount hike markers to map
@@ -105,10 +97,10 @@ class HikeMap extends Component {
         googleMapElement = {
           <GoogleMap
             defaultZoom={10}
-            defaultCenter={this.state.center}
+            defaultCenter={this.state.mapCenter}
             options={{streetViewControl: false, mapTypeControl: false}}
             onClick={this.addMarker.bind(this)} >
-              <Marker
+            <Marker
                 {...marker}
               />
               {hikes}
@@ -122,8 +114,9 @@ class HikeMap extends Component {
 const stateToProps = (state) => {
   return {
     hikes: state.map.list,
-    newHikeLocation: state.map.hikeLocation,
-    userLocation: state.hike.center,
+    clickedLocation: state.map.clickedLocation,
+    userLocation: state.hike.userLocation,
+    hikeLocation: state.hike.hikeLocation
 
   }
 }
@@ -133,8 +126,8 @@ const dispatchToProps = (dispatch) => {
     currentHikeReceived: (hike) => dispatch(actions.currentHikeReceived(hike)),
     fetchHikes: (params) => dispatch(actions.fetchHikes(params)),
     hikeSelected: (id) => dispatch(actions.hikeSelected(id)),
-		locationAdded: (location) => dispatch(actions.locationAdded(location)),
-    userLocationReceived: (center) => dispatch(actions.userLocationReceived(center)),
+    markHikeLocation: (location) => dispatch(actions.markHikeLocation(location)),
+    userLocationReceived: (position) => dispatch(actions.userLocationReceived(position)),
 	}
 }
 

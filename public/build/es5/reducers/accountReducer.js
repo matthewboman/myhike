@@ -16,6 +16,7 @@ module.exports = function (_x, action) {
 
     // Assign 'currentUser' property when new user signs up
     case constants.PROFILE_CREATED:
+      // console.log('PROFILE_CREATED: ' + JSON.stringify(action.profile))
       updatedState.user = action.profile;
       return updatedState;
 

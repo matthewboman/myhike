@@ -42,7 +42,7 @@ var HikeMap = (function (Component) {
 
     _get(Object.getPrototypeOf(HikeMap.prototype), "constructor", this).call(this);
     this.state = {
-      center: {
+      mapCenter: {
         lat: 0,
         lng: 0
       }
@@ -60,12 +60,12 @@ var HikeMap = (function (Component) {
           var lat = position.coords.latitude;
           var lng = position.coords.longitude;
           _this.setState({
-            center: {
+            mapCenter: {
               lat: lat,
               lng: lng }
           });
           //  Pass to props for "CreateHike" component
-          _this.props.userLocationReceived({ center: { lat: lat, lng: lng } });
+          _this.props.userLocationReceived({ lat: lat, lng: lng });
         }, function (error) {
           _this.props.displayError("Error dectecting your location");
           console.error(JSON.stringify(error));
@@ -80,16 +80,10 @@ var HikeMap = (function (Component) {
 
       // Add marker to map where user clicks
       value: function addMarker(event) {
-        console.log("marker added");
-        // Display marker where user clicks
         var clicked = Object.assign({}, this.state.newHike);
         clicked.lat = event.latLng.lat();
         clicked.lng = event.latLng.lng();
-        this.setState({
-          newHike: clicked
-        });
-        // Set app state location to where user clicks (for user adding hike based on map location)
-        this.props.locationAdded(clicked);
+        this.props.markHikeLocation(clicked);
       },
       writable: true,
       configurable: true
@@ -109,14 +103,13 @@ var HikeMap = (function (Component) {
       value: function render() {
         var _this = this;
         // Set map center to user location (component state version)
-        var center = this.state.center;
-        if (center.lat == 0 && center.lng == 0) {
+        var mapCenter = this.state.mapCenter;
+        if (mapCenter.lat == 0 && mapCenter.lng == 0) {
           return null;
         }
 
-        // Place newHike marker where user clicks
         var marker = {
-          position: this.state.newHike
+          position: this.props.hikeLocation
         };
 
         // Mount hike markers to map
@@ -146,7 +139,7 @@ var HikeMap = (function (Component) {
             GoogleMap,
             {
               defaultZoom: 10,
-              defaultCenter: this.state.center,
+              defaultCenter: this.state.mapCenter,
               options: { streetViewControl: false, mapTypeControl: false },
               onClick: this.addMarker.bind(this) },
             React.createElement(Marker, marker),
@@ -165,8 +158,11 @@ var HikeMap = (function (Component) {
 var stateToProps = function (state) {
   return {
     hikes: state.map.list,
-    newHikeLocation: state.map.hikeLocation,
-    userLocation: state.hike.center };
+    clickedLocation: state.map.clickedLocation,
+    userLocation: state.hike.userLocation,
+    hikeLocation: state.hike.hikeLocation
+
+  };
 };
 
 var dispatchToProps = function (dispatch) {
@@ -180,11 +176,11 @@ var dispatchToProps = function (dispatch) {
     hikeSelected: function (id) {
       return dispatch(actions.hikeSelected(id));
     },
-    locationAdded: function (location) {
-      return dispatch(actions.locationAdded(location));
+    markHikeLocation: function (location) {
+      return dispatch(actions.markHikeLocation(location));
     },
-    userLocationReceived: function (center) {
-      return dispatch(actions.userLocationReceived(center));
+    userLocationReceived: function (position) {
+      return dispatch(actions.userLocationReceived(position));
     } };
 };
 

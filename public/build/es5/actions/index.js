@@ -10,21 +10,31 @@ module.exports = {
   /* ======================== General =================================== */
 
   displayMessage: function (message) {
-    console.log("action " + message);
     return {
       type: constants.MESSAGE_RECEIVED,
       message: message };
   },
 
+  displayError: function (message) {
+    return {
+      type: constants.ERROR_RECEIVED,
+      message: message
+    };
+  },
+
   /* ======================== User data ================================= */
 
-  // Check if user is logged in
+  // Log user in
   currentUserReceived: function (credentials) {
     return function (dispatch) {
       APIManager.post("/account/login", credentials, function (err, response) {
         if (err) {
           var msg = err.message || err;
           console.error(msg);
+          dispatch({
+            type: constants.ERROR_RECEIVED,
+            message: msg
+          });
           return;
         }
         var user = response.profile;
@@ -180,19 +190,19 @@ module.exports = {
     };
   },
 
-  // Add a hike location by clicking on the map
-  locationAdded: function (location) {
+  // Get user location (for using current location as hike location)
+  userLocationReceived: function (position) {
     return {
-      type: constants.LOCATION_ADDED,
-      location: location
+      type: constants.USER_LOCATION_RECEIVED,
+      position: position
     };
   },
 
-  // Get user location (for using current location as hike location)
-  userLocationReceived: function (center) {
+  // Mark hike location on map
+  markHikeLocation: function (location) {
     return {
-      type: constants.USER_LOCATION_RECEIVED,
-      center: center
+      type: constants.MARK_HIKE_LOCATION,
+      location: location
     };
   },
 

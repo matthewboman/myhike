@@ -28723,6 +28723,7 @@
 	
 	    // Assign 'currentUser' property when new user signs up
 	    case _constants2.default.PROFILE_CREATED:
+	      // console.log('PROFILE_CREATED: ' + JSON.stringify(action.profile))
 	      updatedState['user'] = action.profile;
 	      return updatedState;
 	
@@ -28750,6 +28751,7 @@
 	
 	  // General
 	  APPLICATION_STATE: 'APPLICATION_STATE',
+	  ERROR_RECEIVED: 'ERROR_RECEIVED',
 	  MESSAGE_RECEIVED: 'MESSAGE_RECEIVED',
 	
 	  // Account
@@ -28761,6 +28763,7 @@
 	  HIKE_ADDED: 'HIKE_ADDED',
 	  HIKE_CREATED: 'HIKE_CREATED',
 	  HIKES_RECEIVED: 'HIKES_RECEIVED',
+	  MARK_HIKE_LOCATION: 'MARK_HIKE_LOCATION',
 	  USER_LOCATION_RECEIVED: 'USER_LOCATION_RECEIVED',
 	
 	  // Profile
@@ -28770,10 +28773,7 @@
 	  REVIEW_UPDATED: 'REVIEW_UPDATED',
 	  REVIEW_ADDED: 'REVIEW_ADDED',
 	  REVIEW_RECEIVED: 'REVIEW_RECEIVED',
-	  REVIEWS_RECEIVED: 'REVIEWS_RECEIVED',
-	
-	  HIKE_SELECTED: 'HIKE_SELECTED',
-	  LOCATION_ADDED: 'LOCATION_ADDED'
+	  REVIEWS_RECEIVED: 'REVIEWS_RECEIVED'
 	
 	};
 
@@ -28794,13 +28794,13 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var initialState = {
-	  hikeLocation: null,
-	  list: [],
-	  selectedHike: 0,
 	  currentHike: null,
-	  center: null,
+	  userLocation: null,
+	  hikeLocation: null,
+	  // not sure if below are used
 	  reviewMap: {},
-	  hikeMap: {}
+	  hikeMap: {},
+	  list: []
 	};
 	
 	exports.default = function () {
@@ -28810,28 +28810,22 @@
 	  var updated = Object.assign({}, state);
 	
 	  switch (action.type) {
-	    // Set hike location on map click
+	    // Opens clicked-on hike in new window
 	    case _constants2.default.CURRENT_HIKE_RECEIVED:
 	      // console.log('CURRENT_HIKE_RECEIVED ' + JSON.stringify(action.currentHike))
 	      updated['currentHike'] = action.currentHike;
 	      return updated;
 	
-	    // Hike marker on map clicked
-	    case _constants2.default.HIKE_SELECTED:
-	      // console.log('HIKE_SELECTED ' + JSON.stringify(action.hike))
-	      updated['selectedHike'] = action.hike;
-	      return updated;
-	
-	    // (For adding a new hike) set location to where user clicks on map
-	    case _constants2.default.LOCATION_ADDED:
-	      // console.log('LOCATION_ADDED ' + JSON.stringify(action.location))
-	      updated['hikeLocation'] = action.location;
-	      return updated;
-	
-	    // User location gotten from browser
+	    // Handles user location from browser 
 	    case _constants2.default.USER_LOCATION_RECEIVED:
-	      console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.center));
-	      updated['center'] = action.center;
+	      // console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.position))
+	      updated['userLocation'] = action.position;
+	      return updated;
+	
+	    // Controls new hike marker on map
+	    case _constants2.default.MARK_HIKE_LOCATION:
+	      // console.log('MARK_HIKE_LOCATION ' + JSON.stringify(action.location))
+	      updated['hikeLocation'] = action.location;
 	      return updated;
 	
 	    default:
@@ -28908,7 +28902,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var initialState = {
-	  message: ''
+	  message: '',
+	  error: ''
 	}; /*
 	   For displaying front- and back-end errors to user
 	   */
@@ -28924,6 +28919,11 @@
 	    case _constants2.default.MESSAGE_RECEIVED:
 	      console.log("MESSAGE RECEIVED: " + JSON.stringify(action.message));
 	      updatedState['message'] = action.message;
+	      return updatedState;
+	
+	    case _constants2.default.ERROR_RECEIVED:
+	      console.log("ERROR_RECEIVED: " + action.message);
+	      updatedState['error'] = action.message;
 	      return updatedState;
 	
 	    default:
@@ -28983,8 +28983,6 @@
 	  value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
 	var _constants = __webpack_require__(274);
 	
 	var _constants2 = _interopRequireDefault(_constants);
@@ -29002,53 +29000,43 @@
 	  var updatedState = Object.assign({}, state);
 	  var updatedMap = Object.assign({}, updatedState.reviewMap);
 	
-	  var _ret = function () {
-	    switch (action.type) {
+	  switch (action.type) {
 	
-	      case _constants2.default.REVIEWS_RECEIVED:
-	        // console.log("REVIEWS_RECEIVED " + JSON.stringify(action.reviews))
-	        var keys = Object.keys(action.params);
-	        var key = keys[0];
-	        var value = action.params[key];
-	        var array = updatedMap[value] ? updatedMap[value] : [];
+	    case _constants2.default.REVIEWS_RECEIVED:
+	      // console.log("REVIEWS_RECEIVED " + JSON.stringify(action.reviews))
+	      var keys = Object.keys(action.params);
+	      var key = keys[0];
+	      var value = action.params[key];
+	      var array = updatedMap[value] ? updatedMap[value] : [];
 	
-	        action.reviews.forEach(function (review, i) {
-	          array.push(review);
-	        });
-	        updatedMap[value] = array;
-	        updatedState['reviewMap'] = updatedMap;
+	      action.reviews.forEach(function (review, i) {
+	        array.push(review);
+	      });
+	      updatedMap[value] = array;
+	      updatedState['reviewMap'] = updatedMap;
 	
-	        return {
-	          v: updatedState
-	        };
+	      return updatedState;
 	
-	      case _constants2.default.REVIEW_UPDATED:
-	        // console.log('REVIEW_UPDATED: ' + JSON.stringify(action.review))
-	        var list = updatedMap[action.review.hikeId];
-	        var newList = [];
-	        list.forEach(function (review, i) {
-	          if (review.id == action.review.id) {
-	            newList.push(action.review);
-	          } else {
-	            newList.push(review);
-	          }
-	        });
+	    case _constants2.default.REVIEW_UPDATED:
+	      // console.log('REVIEW_UPDATED: ' + JSON.stringify(action.review))
+	      var list = updatedMap[action.review.hikeId];
+	      var newList = [];
+	      list.forEach(function (review, i) {
+	        if (review.id == action.review.id) {
+	          newList.push(action.review);
+	        } else {
+	          newList.push(review);
+	        }
+	      });
 	
-	        updatedMap[action.review.hikeId] = newList;
-	        updatedState['reviewMap'] = updatedMap;
-	        console.log(JSON.stringify(updatedState));
-	        return {
-	          v: updatedState
-	        };
+	      updatedMap[action.review.hikeId] = newList;
+	      updatedState['reviewMap'] = updatedMap;
+	      console.log(JSON.stringify(updatedState));
+	      return updatedState;
 	
-	      default:
-	        return {
-	          v: state
-	        };
-	    }
-	  }();
-	
-	  if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	    default:
+	      return state;
+	  }
 	};
 
 /***/ },
@@ -29904,22 +29892,32 @@
 	  /* ======================== General =================================== */
 	
 	  displayMessage: function displayMessage(message) {
-	    console.log('action ' + message);
 	    return {
 	      type: _constants2.default.MESSAGE_RECEIVED,
 	      message: message
 	    };
 	  },
 	
+	  displayError: function displayError(message) {
+	    return {
+	      type: _constants2.default.ERROR_RECEIVED,
+	      message: message
+	    };
+	  },
+	
 	  /* ======================== User data ================================= */
 	
-	  // Check if user is logged in
+	  // Log user in
 	  currentUserReceived: function currentUserReceived(credentials) {
 	    return function (dispatch) {
 	      _utils.APIManager.post('/account/login', credentials, function (err, response) {
 	        if (err) {
 	          var msg = err.message || err;
 	          console.error(msg);
+	          dispatch({
+	            type: _constants2.default.ERROR_RECEIVED,
+	            message: msg
+	          });
 	          return;
 	        }
 	        var user = response.profile;
@@ -30075,19 +30073,19 @@
 	    };
 	  },
 	
-	  // Add a hike location by clicking on the map
-	  locationAdded: function locationAdded(location) {
+	  // Get user location (for using current location as hike location)
+	  userLocationReceived: function userLocationReceived(position) {
 	    return {
-	      type: _constants2.default.LOCATION_ADDED,
-	      location: location
+	      type: _constants2.default.USER_LOCATION_RECEIVED,
+	      position: position
 	    };
 	  },
 	
-	  // Get user location (for using current location as hike location)
-	  userLocationReceived: function userLocationReceived(center) {
+	  // Mark hike location on map
+	  markHikeLocation: function markHikeLocation(location) {
 	    return {
-	      type: _constants2.default.USER_LOCATION_RECEIVED,
-	      center: center
+	      type: _constants2.default.MARK_HIKE_LOCATION,
+	      location: location
 	    };
 	  },
 	
@@ -39438,11 +39436,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	/*
-	  TODO: Place marker on map if user uses current location or address
-	  TODO: Hike can be submitted only if user is logged in and location is selected
-	*/
-	
 	var CreateHike = function (_Component) {
 	  _inherits(CreateHike, _Component);
 	
@@ -39454,7 +39447,7 @@
 	    _this.state = {
 	      hike: {
 	        name: '',
-	        position: null,
+	        position: {},
 	        useAddress: false,
 	        address: '',
 	        city: '',
@@ -39476,24 +39469,16 @@
 	        hike: updatedHike
 	      });
 	    }
-	
-	    // Set hike location to user's GPS coordinates
-	
 	  }, {
 	    key: 'useCurrentLocation',
 	    value: function useCurrentLocation(event) {
 	      var updatedHike = Object.assign({}, this.state.hike);
-	      // console.log(JSON.stringify(this.props.userLocation.center))
-	      updatedHike['position'] = this.props.userLocation.center;
-	      updatedHike['useAddress'] = false;
-	      this.props.locationAdded(this.props.userLocation.center);
+	      updatedHike['position'] = this.props.userLocation;
 	      this.setState({
 	        hike: updatedHike
 	      });
+	      this.props.markHikeLocation(this.props.userLocation);
 	    }
-	
-	    // Set hike location to address user enters in
-	
 	  }, {
 	    key: 'useAddress',
 	    value: function useAddress(event) {
@@ -39503,22 +39488,20 @@
 	        hike: updatedHike
 	      });
 	    }
-	
-	    // Set hike location to where user clicks on map
-	
 	  }, {
 	    key: 'useMap',
 	    value: function useMap(event) {
 	      var updatedHike = Object.assign({}, this.state.hike);
-	      if (!this.props.location) {
-	        console.error('please click on the map');
+	      if (!this.props.hikeLocation) {
+	        this.props.displayError('please click on the map');
 	        return;
 	      }
-	      updatedHike['position'] = this.props.location;
+	      updatedHike['position'] = this.props.hikeLocation;
 	      updatedHike['useAddress'] = false;
 	      this.setState({
 	        hike: updatedHike
 	      });
+	      this.props.markHikeLocation(this.state.hike.position);
 	    }
 	  }, {
 	    key: 'updateAddress',
@@ -39529,27 +39512,22 @@
 	      this.setState({
 	        hike: updatedHike
 	      });
+	      this.props.markHikeLocation(this.state.hike.position);
 	    }
-	
-	    // Add new hike to database
-	
 	  }, {
 	    key: 'submitHike',
 	    value: function submitHike(hike) {
-	      // check if user is logged in
 	      if (this.props.user == null) {
-	        var message = 'You must be logged in to add hikes';
-	        this.props.displayMessage(message);
+	        this.props.displayError('You must be logged in to add hikes');
 	        return;
 	      }
-	      // check for location
 	      if (this.state.hike.location == null) {
-	        var _message = 'Add a hike location before submitting';
-	        this.props.displayMessage(_message);
+	        this.props.displayError('Add a hike location before submitting');
 	        return;
 	      }
 	      var newHike = this.state.hike;
 	      this.props.hikeCreated(newHike);
+	      // console.log('submitting ' + JSON.stringify(this.state.hike))
 	    }
 	  }, {
 	    key: 'render',
@@ -39578,7 +39556,7 @@
 	        );
 	      }
 	
-	      var errorMessage = this.props.message;
+	      var errorMessage = this.props.error;
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -39639,23 +39617,23 @@
 	
 	var stateToProps = function stateToProps(state) {
 	  return {
-	    location: state.hike.hikeLocation,
-	    message: state.message.message,
+	    hikeLocation: state.hike.hikeLocation,
+	    error: state.message.error,
 	    user: state.account.user,
-	    userLocation: state.hike.center
+	    userLocation: state.hike.userLocation
 	  };
 	};
 	
 	var dispatchToProps = function dispatchToProps(dispatch) {
 	  return {
-	    displayMessage: function displayMessage(message) {
-	      return dispatch(_actions2.default.displayMessage(message));
+	    displayError: function displayError(message) {
+	      return dispatch(_actions2.default.displayError(message));
 	    },
 	    hikeCreated: function hikeCreated(newHike) {
 	      return dispatch(_actions2.default.hikeCreated(newHike));
 	    },
-	    locationAdded: function locationAdded(location) {
-	      return dispatch(_actions2.default.locationAdded(location));
+	    markHikeLocation: function markHikeLocation(location) {
+	      return dispatch(_actions2.default.markHikeLocation(location));
 	    }
 	  };
 	};
@@ -39927,7 +39905,7 @@
 	    var _this = _possibleConstructorReturn(this, (HikeMap.__proto__ || Object.getPrototypeOf(HikeMap)).call(this));
 	
 	    _this.state = {
-	      center: {
+	      mapCenter: {
 	        lat: 0,
 	        lng: 0
 	      }
@@ -39945,13 +39923,13 @@
 	        var lat = position.coords.latitude;
 	        var lng = position.coords.longitude;
 	        _this2.setState({
-	          center: {
+	          mapCenter: {
 	            lat: lat,
 	            lng: lng
 	          }
 	        });
 	        //  Pass to props for "CreateHike" component
-	        _this2.props.userLocationReceived({ center: { lat: lat, lng: lng } });
+	        _this2.props.userLocationReceived({ lat: lat, lng: lng });
 	      }, function (error) {
 	        _this2.props.displayError("Error dectecting your location");
 	        console.error(JSON.stringify(error));
@@ -39965,16 +39943,10 @@
 	  }, {
 	    key: 'addMarker',
 	    value: function addMarker(event) {
-	      console.log('marker added');
-	      // Display marker where user clicks
 	      var clicked = Object.assign({}, this.state.newHike);
 	      clicked.lat = event.latLng.lat();
 	      clicked.lng = event.latLng.lng();
-	      this.setState({
-	        newHike: clicked
-	      });
-	      // Set app state location to where user clicks (for user adding hike based on map location)
-	      this.props.locationAdded(clicked);
+	      this.props.markHikeLocation(clicked);
 	    }
 	
 	    // Set currentHike to whichever hike user clicks on and change route
@@ -39992,14 +39964,13 @@
 	      var _this3 = this;
 	
 	      // Set map center to user location (component state version)
-	      var center = this.state.center;
-	      if (center.lat == 0 && center.lng == 0) {
+	      var mapCenter = this.state.mapCenter;
+	      if (mapCenter.lat == 0 && mapCenter.lng == 0) {
 	        return null;
 	      }
 	
-	      // Place newHike marker where user clicks
 	      var marker = {
-	        position: this.state.newHike
+	        position: this.props.hikeLocation
 	      };
 	
 	      // Mount hike markers to map
@@ -40028,7 +39999,7 @@
 	          _reactGoogleMaps.GoogleMap,
 	          {
 	            defaultZoom: 10,
-	            defaultCenter: this.state.center,
+	            defaultCenter: this.state.mapCenter,
 	            options: { streetViewControl: false, mapTypeControl: false },
 	            onClick: this.addMarker.bind(this) },
 	          _react2.default.createElement(_reactGoogleMaps.Marker, marker),
@@ -40044,8 +40015,9 @@
 	var stateToProps = function stateToProps(state) {
 	  return {
 	    hikes: state.map.list,
-	    newHikeLocation: state.map.hikeLocation,
-	    userLocation: state.hike.center
+	    clickedLocation: state.map.clickedLocation,
+	    userLocation: state.hike.userLocation,
+	    hikeLocation: state.hike.hikeLocation
 	
 	  };
 	};
@@ -40061,11 +40033,11 @@
 	    hikeSelected: function hikeSelected(id) {
 	      return dispatch(_actions2.default.hikeSelected(id));
 	    },
-	    locationAdded: function locationAdded(location) {
-	      return dispatch(_actions2.default.locationAdded(location));
+	    markHikeLocation: function markHikeLocation(location) {
+	      return dispatch(_actions2.default.markHikeLocation(location));
 	    },
-	    userLocationReceived: function userLocationReceived(center) {
-	      return dispatch(_actions2.default.userLocationReceived(center));
+	    userLocationReceived: function userLocationReceived(position) {
+	      return dispatch(_actions2.default.userLocationReceived(position));
 	    }
 	  };
 	};
@@ -68615,7 +68587,8 @@
 	        modal = _react2.default.createElement(
 	          'div',
 	          { className: 'modal-login' },
-	          _react2.default.createElement(_User.Login, { onLogin: this.login.bind(this) })
+	          _react2.default.createElement(_User.Login, { onLogin: this.login.bind(this),
+	            error: this.props.error })
 	        );
 	      }
 	
@@ -68722,7 +68695,8 @@
 	
 	var stateToProps = function stateToProps(state) {
 	  return {
-	    user: state.account.user
+	    user: state.account.user,
+	    error: state.message.error
 	  };
 	};
 	

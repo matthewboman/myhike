@@ -6,18 +6,13 @@ import actions from '../../actions'
 import { APIManager } from '../../utils'
 import { Images } from '../common'
 
-/*
-  TODO: Place marker on map if user uses current location or address
-  TODO: Hike can be submitted only if user is logged in and location is selected
-*/
-
 class CreateHike extends Component {
   constructor() {
     super()
     this.state = {
       hike: {
         name: '',
-        position: null,
+        position: {},
         useAddress: false,
         address: '',
         city: '',
@@ -37,19 +32,15 @@ class CreateHike extends Component {
     })
   }
 
-  // Set hike location to user's GPS coordinates
   useCurrentLocation(event) {
     let updatedHike = Object.assign({}, this.state.hike)
-    // console.log(JSON.stringify(this.props.userLocation.center))
-    updatedHike['position'] = this.props.userLocation.center
-    updatedHike['useAddress'] = false
-    this.props.locationAdded(this.props.userLocation.center)
+    updatedHike['position'] = this.props.userLocation
     this.setState({
       hike: updatedHike
     })
+    this.props.markHikeLocation(this.props.userLocation)
   }
 
-  // Set hike location to address user enters in
   useAddress(event) {
     let updatedHike = Object.assign({}, this.state.hike)
     updatedHike['useAddress'] = true
@@ -58,18 +49,18 @@ class CreateHike extends Component {
     })
   }
 
-  // Set hike location to where user clicks on map
   useMap(event) {
     let updatedHike = Object.assign({}, this.state.hike)
-    if (!this.props.location) {
-      console.error('please click on the map')
+    if (!this.props.hikeLocation) {
+      this.props.displayError('please click on the map')
       return
     }
-    updatedHike['position'] = this.props.location
+    updatedHike['position'] = this.props.hikeLocation
     updatedHike['useAddress'] = false
     this.setState({
       hike: updatedHike
     })
+    this.props.markHikeLocation(this.state.hike.position)
   }
 
   updateAddress(event) {
@@ -79,24 +70,21 @@ class CreateHike extends Component {
     this.setState({
       hike: updatedHike
     })
+    this.props.markHikeLocation(this.state.hike.position)
   }
 
-  // Add new hike to database
   submitHike(hike) {
-    // check if user is logged in
     if (this.props.user == null) {
-      let message = 'You must be logged in to add hikes'
-      this.props.displayMessage(message)
+      this.props.displayError('You must be logged in to add hikes')
       return
     }
-    // check for location
     if (this.state.hike.location == null) {
-      let message = 'Add a hike location before submitting'
-      this.props.displayMessage(message)
+      this.props.displayError('Add a hike location before submitting')
       return
     }
     let newHike = this.state.hike
     this.props.hikeCreated(newHike)
+    // console.log('submitting ' + JSON.stringify(this.state.hike))
   }
 
   render() {
@@ -124,7 +112,7 @@ class CreateHike extends Component {
       )
     }
 
-    let errorMessage = this.props.message
+    let errorMessage = this.props.error
 
     return (
       <div className="create-hike-sidebar">
@@ -152,18 +140,18 @@ class CreateHike extends Component {
 
 const stateToProps = (state) => {
   return {
-    location: state.hike.hikeLocation,
-    message: state.message.message,
+    hikeLocation: state.hike.hikeLocation,
+    error: state.message.error,
     user: state.account.user,
-    userLocation: state.hike.center,
+    userLocation: state.hike.userLocation,
   }
 }
 
 const dispatchToProps = (dispatch) => {
 	return {
-    displayMessage: (message) => dispatch(actions.displayMessage(message)),
+    displayError: (message) => dispatch(actions.displayError(message)),
     hikeCreated: (newHike) => dispatch(actions.hikeCreated(newHike)),
-		locationAdded: (location) => dispatch(actions.locationAdded(location)),
+    markHikeLocation: (location) => dispatch(actions.markHikeLocation(location)),
 	}
 }
 

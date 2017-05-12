@@ -22,13 +22,6 @@ var actions = _interopRequire(require("../../actions"));
 
 var APIManager = require("../../utils").APIManager;
 var Images = require("../common").Images;
-
-
-/*
-  TODO: Place marker on map if user uses current location or address
-  TODO: Hike can be submitted only if user is logged in and location is selected
-*/
-
 var CreateHike = (function (Component) {
   function CreateHike() {
     _classCallCheck(this, CreateHike);
@@ -37,7 +30,7 @@ var CreateHike = (function (Component) {
     this.state = {
       hike: {
         name: "",
-        position: null,
+        position: {},
         useAddress: false,
         address: "",
         city: "",
@@ -63,24 +56,18 @@ var CreateHike = (function (Component) {
       configurable: true
     },
     useCurrentLocation: {
-
-      // Set hike location to user's GPS coordinates
       value: function useCurrentLocation(event) {
         var updatedHike = Object.assign({}, this.state.hike);
-        // console.log(JSON.stringify(this.props.userLocation.center))
-        updatedHike.position = this.props.userLocation.center;
-        updatedHike.useAddress = false;
-        this.props.locationAdded(this.props.userLocation.center);
+        updatedHike.position = this.props.userLocation;
         this.setState({
           hike: updatedHike
         });
+        this.props.markHikeLocation(this.props.userLocation);
       },
       writable: true,
       configurable: true
     },
     useAddress: {
-
-      // Set hike location to address user enters in
       value: function useAddress(event) {
         var updatedHike = Object.assign({}, this.state.hike);
         updatedHike.useAddress = true;
@@ -92,19 +79,18 @@ var CreateHike = (function (Component) {
       configurable: true
     },
     useMap: {
-
-      // Set hike location to where user clicks on map
       value: function useMap(event) {
         var updatedHike = Object.assign({}, this.state.hike);
-        if (!this.props.location) {
-          console.error("please click on the map");
+        if (!this.props.hikeLocation) {
+          this.props.displayError("please click on the map");
           return;
         }
-        updatedHike.position = this.props.location;
+        updatedHike.position = this.props.hikeLocation;
         updatedHike.useAddress = false;
         this.setState({
           hike: updatedHike
         });
+        this.props.markHikeLocation(this.state.hike.position);
       },
       writable: true,
       configurable: true
@@ -117,24 +103,19 @@ var CreateHike = (function (Component) {
         this.setState({
           hike: updatedHike
         });
+        this.props.markHikeLocation(this.state.hike.position);
       },
       writable: true,
       configurable: true
     },
     submitHike: {
-
-      // Add new hike to database
       value: function submitHike(hike) {
-        // check if user is logged in
         if (this.props.user == null) {
-          var message = "You must be logged in to add hikes";
-          this.props.displayMessage(message);
+          this.props.displayError("You must be logged in to add hikes");
           return;
         }
-        // check for location
         if (this.state.hike.location == null) {
-          var message = "Add a hike location before submitting";
-          this.props.displayMessage(message);
+          this.props.displayError("Add a hike location before submitting");
           return;
         }
         var newHike = this.state.hike;
@@ -169,7 +150,7 @@ var CreateHike = (function (Component) {
           );
         }
 
-        var errorMessage = this.props.message;
+        var errorMessage = this.props.error;
 
         return React.createElement(
           "div",
@@ -233,23 +214,24 @@ var CreateHike = (function (Component) {
 
 var stateToProps = function (state) {
   return {
-    location: state.hike.hikeLocation,
-    message: state.message.message,
+    hikeLocation: state.hike.hikeLocation,
+    error: state.message.error,
     user: state.account.user,
-    userLocation: state.hike.center };
+    userLocation: state.hike.userLocation };
 };
 
 var dispatchToProps = function (dispatch) {
   return {
-    displayMessage: function (message) {
-      return dispatch(actions.displayMessage(message));
+    displayError: function (message) {
+      return dispatch(actions.displayError(message));
     },
     hikeCreated: function (newHike) {
       return dispatch(actions.hikeCreated(newHike));
     },
-    locationAdded: function (location) {
-      return dispatch(actions.locationAdded(location));
+    markHikeLocation: function (location) {
+      return dispatch(actions.markHikeLocation(location));
     } };
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(CreateHike);
+// console.log('submitting ' + JSON.stringify(this.state.hike))

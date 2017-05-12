@@ -128,7 +128,8 @@ var NavAdmin = (function (Component) {
           modal = React.createElement(
             "div",
             { className: "modal-login" },
-            React.createElement(Login, { onLogin: this.login.bind(this) })
+            React.createElement(Login, { onLogin: this.login.bind(this),
+              error: this.props.error })
           );
         }
 
@@ -237,7 +238,8 @@ var NavAdmin = (function (Component) {
 
 var stateToProps = function (state) {
   return {
-    user: state.account.user
+    user: state.account.user,
+    error: state.message.error
   };
 };
 

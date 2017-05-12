@@ -86,7 +86,8 @@ class NavAdmin extends Component {
     if (this.state.isLogin) {
       modal = (
         <div className="modal-login">
-          <Login onLogin={this.login.bind(this)} />
+          <Login onLogin={this.login.bind(this)}
+                 error={this.props.error} />
         </div>
       )
     }
@@ -154,7 +155,8 @@ class NavAdmin extends Component {
 
 const stateToProps = (state) => {
   return {
-    user: state.account.user
+    user: state.account.user,
+    error: state.message.error
   }
 }
 

@@ -1,13 +1,13 @@
 import constants from '../constants'
 
 var initialState = {
-  hikeLocation: null,
-  list: [],
-  selectedHike: 0,
   currentHike: null,
-  center: null,
+  userLocation: null,
+  hikeLocation: null,
+  // not sure if below are used
   reviewMap: {},
-  hikeMap: {}
+  hikeMap: {},
+  list: [],
 }
 
 
@@ -15,28 +15,22 @@ export default (state = initialState, action) => {
   let updated = Object.assign({}, state)
 
   switch (action.type) {
-    // Set hike location on map click
+    // Opens clicked-on hike in new window
     case constants.CURRENT_HIKE_RECEIVED:
       // console.log('CURRENT_HIKE_RECEIVED ' + JSON.stringify(action.currentHike))
       updated['currentHike'] = action.currentHike
       return updated
 
-    // Hike marker on map clicked
-    case constants.HIKE_SELECTED:
-      // console.log('HIKE_SELECTED ' + JSON.stringify(action.hike))
-      updated['selectedHike'] = action.hike
-      return updated
-
-    // (For adding a new hike) set location to where user clicks on map
-    case constants.LOCATION_ADDED:
-      // console.log('LOCATION_ADDED ' + JSON.stringify(action.location))
-      updated['hikeLocation'] = action.location
-      return updated
-
-    // User location gotten from browser
+    // Handles user location from browser 
     case constants.USER_LOCATION_RECEIVED:
-      console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.center))
-      updated['center'] = action.center
+      // console.log('USER_LOCATION_RECEIVED ' + JSON.stringify(action.position))
+      updated['userLocation'] = action.position
+      return updated
+
+    // Controls new hike marker on map
+    case constants.MARK_HIKE_LOCATION:
+      // console.log('MARK_HIKE_LOCATION ' + JSON.stringify(action.location))
+      updated['hikeLocation'] = action.location
       return updated
 
     default:
