@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
       })
       updatedMap[value] = array
       updatedState['reviewMap'] = updatedMap
-      // console.log(JSON.stringify(updatedState))
+
       return updatedState
 
     case constants.REVIEW_UPDATED:

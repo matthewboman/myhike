@@ -3,15 +3,35 @@ import { APIManager } from '../utils'
 
 export default {
 
+/* ======================== General =================================== */
+
+    displayMessage: (message) => {
+      return {
+        type: constants.MESSAGE_RECEIVED,
+        message: message,
+      }
+    },
+
+    displayError: (message) => {
+      return {
+        type: constants.ERROR_RECEIVED,
+        message: message
+      }
+    },
+
 /* ======================== User data ================================= */
 
-  // Check if user is logged in
+  // Log user in
   currentUserReceived: (credentials) => {
     return (dispatch) => {
       APIManager.post('/account/login', credentials, (err, response) => {
         if (err) {
           let msg = err.message || err
           console.error(msg)
+          dispatch({
+            type: constants.ERROR_RECEIVED,
+            message: msg
+          })
           return
         }
         const user = response.profile
@@ -98,6 +118,7 @@ export default {
     }
   },
 
+
 /* ======================== Hike and Map data ============================== */
   currentHikeReceived: (hike) => {
     return {
@@ -167,19 +188,19 @@ export default {
     }
   },
 
-  // Add a hike location by clicking on the map
-  locationAdded: (location) => {
+  // Get user location (for using current location as hike location)
+  userLocationReceived: (position) => {
     return {
-      type: constants.LOCATION_ADDED,
-      location: location
+      type: constants.USER_LOCATION_RECEIVED,
+      position: position
     }
   },
 
-  // Get user location (for using current location as hike location)
-  userLocationReceived: (center) => {
+  // Mark hike location on map
+  markHikeLocation: (location) => {
     return {
-      type: constants.USER_LOCATION_RECEIVED,
-      center: center
+      type: constants.MARK_HIKE_LOCATION,
+      location: location
     }
   },
 

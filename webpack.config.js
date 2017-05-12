@@ -21,9 +21,14 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel',
         query: {
-          presets: ['react', 'es2015']
+          presets: ['es2015', 'stage-2', 'react']
         }
-      }
+      },
+      {
+        test: /\.scss$/,
+        exclude: /(node_modules)/,
+        loaders: ['style', 'css', 'sass']
+      },
     ]
   }
 

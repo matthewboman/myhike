@@ -17,7 +17,6 @@ module.exports = {
 
       // session w/o user (good for shopping carts, tracking user on site)
       if (req.session.user == null) {
-        console.log('no user')
         resolve(null)
         return
       }

@@ -1,21 +1,18 @@
-import Account from './Account'
-import CreateHike from './CreateHike'
-import Hike from './Hike'
-import Map from './Map'
-import NavAdmin from './NavAdmin'
-import Profile from './Profile'
-import Register from './Register'
-import Reviews from './Reviews'
+import AccountContainer from './AccountContainer'
+import CreateHikeContainer from './CreateHikeContainer'
+import HikeContainer from './HikeContainer'
+import HomeContainer from './HomeContainer'
+import Navbar from './Navbar'
+import ProfileContainer from './ProfileContainer'
+
 
 export {
 
-  Account,
-  CreateHike,
-  Hike,
-  Map,
-  NavAdmin,
-  Profile,
-  Register,
-  Reviews
+  AccountContainer,
+  CreateHikeContainer,
+  HikeContainer,
+  HomeContainer,
+  Navbar,
+  ProfileContainer
 
 }
