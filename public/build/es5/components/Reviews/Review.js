@@ -49,27 +49,19 @@ var Review = (function (Component) {
 
   _prototypeProperties(Review, null, {
     toggleEdit: {
-
-      // Show/hide review editing capabilities
       value: function toggleEdit(event) {
         event.preventDefault();
-        this.setState({
-          isEditing: !this.state.isEditing
-        });
+        this.setState({ isEditing: !this.state.isEditing });
       },
       writable: true,
       configurable: true
     },
     updateReview: {
-
-      // Update only the fields that the user edited
       value: function updateReview(event) {
         var updatedReview = Object.assign({}, this.state.review);
         var value = !event.target.value ? event.target.defaultValue : event.target.value;
         updatedReview[event.target.id] = value;
-        this.setState({
-          review: updatedReview
-        });
+        this.setState({ review: updatedReview });
       },
       writable: true,
       configurable: true
@@ -78,9 +70,7 @@ var Review = (function (Component) {
       value: function submitUpdate(event) {
         event.preventDefault();
         this.props.onUpdate(this.state.review);
-        this.setState({
-          isEditing: !this.state.isEditing
-        });
+        this.setState({ isEditing: !this.state.isEditing });
       },
       writable: true,
       configurable: true
@@ -98,183 +88,180 @@ var Review = (function (Component) {
     },
     closeModal: {
       value: function closeModal() {
-        this.setState({
-          modalIsOpen: false });
+        this.setState({ modalIsOpen: false });
+      },
+      writable: true,
+      configurable: true
+    },
+    renderPhotos: {
+      value: function renderPhotos() {
+        var _this = this;
+        return this.props.review.pictures.map(function (picture, id) {
+          return React.createElement("img", { key: id,
+            className: "hike-review-photo",
+            src: ImageHelper.preview(picture, 150, 200),
+            onClick: _this.displayPicture.bind(_this, picture, id) });
+        });
+      },
+      writable: true,
+      configurable: true
+    },
+    renderReview: {
+      value: function renderReview() {
+        return React.createElement(
+          "div",
+          { className: "review-block" },
+          React.createElement(
+            "div",
+            { className: "hike-review-photos" },
+            this.renderPhotos()
+          ),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Review/description: "
+          ),
+          React.createElement(
+            "p",
+            { className: "review-description" },
+            this.props.review.description
+          ),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Animals spotted: "
+          ),
+          React.createElement(
+            "p",
+            { className: "review-animals" },
+            this.props.review.animals
+          ),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Plants identified: "
+          ),
+          React.createElement(
+            "p",
+            { className: "review-plants" },
+            this.props.review.plants
+          ),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Mushrooms and other fungi: "
+          ),
+          React.createElement(
+            "p",
+            { className: "review-fungi" },
+            this.props.review.fungi
+          ),
+          React.createElement("img", { className: "icon-image",
+            src: ImageHelper.thumbnail(this.props.review.user.image ? this.props.review.user.image : "/images/default-user-sm.png", 40) }),
+          React.createElement(
+            "span",
+            null,
+            React.createElement(
+              Link,
+              { to: "../profile/" + this.props.review.user.id },
+              this.props.review.user.username
+            )
+          ),
+          React.createElement(
+            "span",
+            null,
+            " | "
+          ),
+          React.createElement(
+            "span",
+            null,
+            this.props.review.timestamp.slice(0, this.props.review.timestamp.indexOf("T"))
+          ),
+          (this.props.isEditable ? this.props.isEditable : false) ? React.createElement(
+            "button",
+            { className: "btn review-edit-button", onClick: this.toggleEdit.bind(this) },
+            "Edit Review"
+          ) : null
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderEditableReview: {
+      value: function renderEditableReview() {
+        return React.createElement(
+          "div",
+          { className: "review-block editable-review" },
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Review/description: "
+          ),
+          React.createElement("textarea", {
+            id: "description",
+            className: "form-control",
+            onChange: this.updateReview.bind(this),
+            defaultValue: this.props.review.description }),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Animals spotted: "
+          ),
+          React.createElement("input", {
+            id: "animals",
+            className: "form-control",
+            onChange: this.updateReview.bind(this),
+            defaultValue: this.props.review.animals }),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Plants identified: "
+          ),
+          React.createElement("input", {
+            id: "plants",
+            className: "form-control",
+            onChange: this.updateReview.bind(this),
+            defaultValue: this.props.review.plants }),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Mushrooms and other fungi: "
+          ),
+          React.createElement("input", {
+            id: "fungi",
+            className: "form-control",
+            onChange: this.updateReview.bind(this),
+            defaultValue: this.props.review.fungi }),
+          React.createElement("br", null),
+          React.createElement(
+            "button",
+            { className: "btn review-edit-button", onClick: this.submitUpdate.bind(this) },
+            "Update Review"
+          )
+        );
       },
       writable: true,
       configurable: true
     },
     render: {
       value: function render() {
-        var _this = this;
-        var review = this.props.review;
-        var reviewDate = review.timestamp.slice(0, review.timestamp.indexOf("T"));
-
-        var author = review.user;
-        var authorImage = author.image ? author.image : "/images/default-user-sm.png";
-        var editable = this.props.isEditable ? this.props.isEditable : false;
-        var photos = this.props.review.pictures.map(function (picture, id) {
-          return React.createElement(
-            "li",
-            { key: id },
-            React.createElement("img", {
-              className: "hike-review-photo",
-              src: ImageHelper.preview(picture, 150, 200),
-              onClick: _this.displayPicture.bind(_this, picture, id) })
-          );
-        });
-
-        var modalPicture = React.createElement("img", { src: this.state.currentPicture });
-
-        var content = null;
-
-        // Render review or editing mode
-        if (this.state.isEditing == true) {
-          content = React.createElement(
-            "div",
-            { className: "review-block" },
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Review/description: "
-            ),
-            React.createElement("textarea", {
-              id: "description",
-              className: "form-control",
-              onChange: this.updateReview.bind(this),
-              defaultValue: review.description }),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Animals spotted: "
-            ),
-            React.createElement("input", {
-              id: "animals",
-              className: "form-control",
-              onChange: this.updateReview.bind(this),
-              defaultValue: review.animals }),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Plants identified: "
-            ),
-            React.createElement("input", {
-              id: "plants",
-              className: "form-control",
-              onChange: this.updateReview.bind(this),
-              defaultValue: review.plants }),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Mushrooms and other fungi: "
-            ),
-            React.createElement("input", {
-              id: "fungi",
-              className: "form-control",
-              onChange: this.updateReview.bind(this),
-              defaultValue: review.fungi }),
-            React.createElement("br", null),
-            React.createElement(
-              "button",
-              { className: "btn review-edit-button", onClick: this.submitUpdate.bind(this) },
-              "Update Review"
-            )
-          );
-        } else {
-          content = React.createElement(
-            "div",
-            { className: "review-block" },
-            React.createElement(
-              "ul",
-              { className: "hike-review-photos" },
-              photos
-            ),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Review/description: "
-            ),
-            React.createElement(
-              "p",
-              { className: "review-description" },
-              review.description
-            ),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Animals spotted: "
-            ),
-            React.createElement(
-              "p",
-              { className: "review-animals" },
-              review.animals
-            ),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Plants identified: "
-            ),
-            React.createElement(
-              "p",
-              { className: "review-plants" },
-              review.plants
-            ),
-            React.createElement(
-              "h4",
-              { className: "review-header" },
-              "Mushrooms and other fungi: "
-            ),
-            React.createElement(
-              "p",
-              { className: "review-fungi" },
-              review.fungi
-            ),
-            React.createElement("img", { className: "icon-image", src: ImageHelper.thumbnail(authorImage, 40) }),
-            React.createElement(
-              "span",
-              null,
-              React.createElement(
-                Link,
-                { to: "../profile/" + author.id },
-                author.username
-              )
-            ),
-            React.createElement(
-              "span",
-              null,
-              " | "
-            ),
-            React.createElement(
-              "span",
-              null,
-              reviewDate
-            ),
-            editable ? React.createElement(
-              "button",
-              { className: "btn review-edit-button", onClick: this.toggleEdit.bind(this) },
-              "Edit Review"
-            ) : null
-          );
-        }
-
         return React.createElement(
           "div",
           null,
-          content,
+          this.state.isEditing ? this.renderEditableReview() : this.renderReview(),
           React.createElement(
             Modal,
             {
               isOpen: this.state.modalIsOpen,
               onRequestClose: this.closeModal,
               style: customStyles,
-              contentLabel: "Picture Modal"
-            },
+              contentLabel: "Picture Modal" },
             React.createElement(
               "button",
               { className: "x-button", onClick: this.closeModal },
               "X"
             ),
-            modalPicture
+            React.createElement("img", { src: this.state.currentPicture, className: "large-review-image" })
           )
         );
       },

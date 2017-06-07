@@ -27,11 +27,7 @@ export default {
       APIManager.post('/account/login', credentials, (err, response) => {
         if (err) {
           let msg = err.message || err
-          console.error(msg)
-          dispatch({
-            type: constants.ERROR_RECEIVED,
-            message: msg
-          })
+          dispatch({ type: constants.ERROR_RECEIVED, message: msg })
           return
         }
         const user = response.profile
@@ -46,14 +42,13 @@ export default {
   // Get a profile for other users to see
   fetchProfile: (id) => {
     return (dispatch) => {
-      const endpoint = '/api/profile/' + id
-      APIManager.get(endpoint, null, (err, response) => {
+      APIManager.get(`/api/profile/${id}`, null, (err, response) => {
         if (err) {
-          console.error(err)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
         if (response.result.length == 0 ) {
-          console.error('Profile not found')
+          dispatch ({ type: constants.ERROR_RECEIVED, message:'Profile not found' })
           return
         }
         const profile = response.result
@@ -70,7 +65,7 @@ export default {
     return (dispatch) => {
       APIManager.get('/account/logout', null, (err, response) => {
         if (err) {
-          console.error(err.message)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
         dispatch({
@@ -86,15 +81,13 @@ export default {
     return (dispatch) => {
       APIManager.post('/account/register', profile, (err, response) => {
         if (err) {
-          // let msg = err.message || err
-          console.error(err)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
-        const user = response.profile
 
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
-          user: user
+          user: response.profile
         })
       })
     }
@@ -103,16 +96,14 @@ export default {
   // Update Profile
   profileUpdated: (user, profile) => {
     return (dispatch) => {
-      const endpoint = '/api/profile/' + user.id
-      APIManager.put(endpoint, profile, (err, response) => {
+      APIManager.put(`/api/profile/${user.id}`, profile, (err, response) => {
         if (err) {
-          console.log(err)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
-        const user = response.result
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
-          user: user
+          user: response.result
         })
       })
     }
@@ -138,14 +129,12 @@ export default {
 
       APIManager.get('/api/hike', params, (err, response) => {
         if (err) {
-          console.error(err)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
-        const hikes = response.results
-
         dispatch({
           type: constants.HIKES_RECEIVED,
-          hikes: hikes
+          hikes: response.results
         })
       })
     }
@@ -156,13 +145,12 @@ export default {
     return (dispatch) => {
       APIManager.post('/api/hike', hike, (err, response) => {
         if (err) {
-          console.error('ERROR: ' + err.message)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
+          return
         }
-        const newHike = response.result
-
         dispatch({
           type: constants.HIKE_ADDED,
-          hike: newHike
+          hike: response.result
         })
       })
     }
@@ -170,19 +158,17 @@ export default {
 
   // Select a hike
   hikeSelected: (id) => {
-    let hike = id.toString()
-    let endpoint = '/api/hike/' + hike
+    const hike = id.toString()
     return (dispatch) => {
       // GET hike details
-      APIManager.get(endpoint, null, (err, response) => {
+      APIManager.get(`/api/hike/${hike}`, null, (err, response) => {
         if (err) {
-          console.error('ERROR: ' + err.message)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
+          return
         }
-        const selectedHike = response.result
-
         dispatch({
           type: constants.CURRENT_HIKE_RECEIVED,
-          currentHike: selectedHike
+          currentHike: response.result
         })
       })
     }
@@ -196,11 +182,21 @@ export default {
     }
   },
 
+  // Mark location clicked on map
+  markClickedLocation: (location, usingMap) => {
+    return {
+      type: constants.MARK_CLICKED_LOCATION,
+      location: location,
+      usingMap: usingMap
+    }
+  },
+
   // Mark hike location on map
-  markHikeLocation: (location) => {
+  markHikeLocation: (location, usingMap) => {
     return {
       type: constants.MARK_HIKE_LOCATION,
-      location: location
+      location: location,
+      usingMap: usingMap
     }
   },
 
@@ -211,14 +207,13 @@ export default {
     return (dispatch) => {
       APIManager.get('/api/review', params, (err, response) => {
         if (err) {
-          console.error(err)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
-        const reviews = response.results
         dispatch({
           type: constants.REVIEWS_RECEIVED,
           params: params,
-          reviews: reviews
+          reviews: response.results
         })
       })
     }
@@ -229,9 +224,10 @@ export default {
     return (dispatch) => {
       APIManager.post('/api/review', review, (err, response) => {
         if (err) {
-          console.error('Error: ' + err.message)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
+          return
         }
-        const reviews = [response.result]
+        const reviews = [response.result] // <------? figure this out
 
         dispatch({
           type: constants.REVIEWS_RECEIVED,
@@ -245,16 +241,14 @@ export default {
   // Update a user's review of a hike
   reviewUpdated: (review) => {
     return (dispatch) => {
-      const endpoint = '/api/review/' + review.id
-      APIManager.put(endpoint, review, (err, response) => {
+      APIManager.put(`/api/review/${review.id}`, review, (err, response) => {
         if (err) {
-          console.error(err)
+          dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
-        const updatedReview = response.result
         dispatch({
           type: constants.REVIEW_UPDATED,
-          review: updatedReview
+          review: response.result
         })
       })
     }

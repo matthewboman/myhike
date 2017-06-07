@@ -6,7 +6,7 @@ class HomePage extends Component {
       <div className="homepage">
       <div className="about">
         <div className="home-section-title">
-          Hikers!
+          Hikers
         </div>
         <div className="home-section-content">
           Do you have so many good places you just can't remember them all?
@@ -16,7 +16,7 @@ class HomePage extends Component {
         </div>
 
         <div className="home-section-title">
-          Foragers!
+          Foragers
         </div>
         <div className="home-section-content">
           Ever forget to mark that one spot with that really sweet find?
@@ -25,7 +25,7 @@ class HomePage extends Component {
         </div>
 
         <div className="home-section-title">
-          Ecologists!
+          Ecologists
         </div>
         <div className="home-section-content">
           Myhike strives to serve as a public database of species dispersal.

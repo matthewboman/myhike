@@ -28,8 +28,6 @@ var Login = _User.Login;
 var Register = _User.Register;
 
 
-// const appElement = document.getElementById('your-app-element');
-
 var customStyles = {
   content: {
     top: "50%",
@@ -111,105 +109,111 @@ var NavAdmin = (function (Component) {
       writable: true,
       configurable: true
     },
-    render: {
-      value: function render() {
-        /*
-          Populate modal with Login or Register
-        */
-        var modal = null;
+    renderModalType: {
+      value: function renderModalType() {
+        var _this = this;
         if (this.state.isRegister) {
-          modal = React.createElement(
+          return React.createElement(
             "div",
             { className: "modal-register" },
             React.createElement(Register, { onClose: this.closeModal })
           );
-        }
-        if (this.state.isLogin) {
-          modal = React.createElement(
+        } else if (this.state.isLogin) {
+          return React.createElement(
             "div",
             { className: "modal-login" },
             React.createElement(Login, { onLogin: this.login.bind(this),
-              error: this.props.error })
+              displayError: function (error) {
+                return _this.props.displayError(error);
+              },
+              error: this.props.error
+            })
           );
         }
-
-        /*
-          Display login/signup if user is not logged in.
-          If user is logged in, display profile link and logout.
-        */
-        var user = this.props.user;
-        var content = null;
-
-        if (user == null) {
-          content = React.createElement(
-            "ul",
-            { className: "nav navbar-nav navbar-right" },
+      },
+      writable: true,
+      configurable: true
+    },
+    renderIfNoUser: {
+      value: function renderIfNoUser() {
+        return React.createElement(
+          "ul",
+          { className: "nav navbar-nav navbar-right" },
+          React.createElement(
+            "li",
+            null,
             React.createElement(
-              "li",
-              null,
-              React.createElement(
-                Link,
-                { to: "/create-hike" },
-                "Create Hike"
-              )
-            ),
-            React.createElement(
-              "li",
-              null,
-              React.createElement(
-                "a",
-                { onClick: this.openLogin },
-                "Login"
-              )
-            ),
-            React.createElement(
-              "li",
-              null,
-              React.createElement(
-                "a",
-                { onClick: this.openRegister },
-                "Register"
-              )
+              Link,
+              { to: "/create-hike" },
+              "Create Hike"
             )
-          );
-        } else {
-          content = React.createElement(
-            "ul",
-            { className: "nav navbar-nav navbar-right" },
+          ),
+          React.createElement(
+            "li",
+            null,
             React.createElement(
-              "li",
-              null,
-              React.createElement(
-                Link,
-                { to: "/create-hike" },
-                "Create Hike"
-              )
-            ),
-            React.createElement(
-              "li",
-              null,
-              React.createElement(
-                Link,
-                { to: "/currentuser" },
-                "Account"
-              )
-            ),
-            React.createElement(
-              "li",
-              null,
-              React.createElement(
-                "a",
-                { onClick: this.logout.bind(this) },
-                "Log out"
-              )
+              "a",
+              { onClick: this.openLogin },
+              "Login"
             )
-          );
-        }
-
+          ),
+          React.createElement(
+            "li",
+            null,
+            React.createElement(
+              "a",
+              { onClick: this.openRegister },
+              "Register"
+            )
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderIfUser: {
+      value: function renderIfUser() {
+        return React.createElement(
+          "ul",
+          { className: "nav navbar-nav navbar-right" },
+          React.createElement(
+            "li",
+            null,
+            React.createElement(
+              Link,
+              { to: "/create-hike" },
+              "Create Hike"
+            )
+          ),
+          React.createElement(
+            "li",
+            null,
+            React.createElement(
+              Link,
+              { to: "/currentuser" },
+              "Account"
+            )
+          ),
+          React.createElement(
+            "li",
+            null,
+            React.createElement(
+              "a",
+              { onClick: this.logout.bind(this) },
+              "Log out"
+            )
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    render: {
+      value: function render() {
         return React.createElement(
           "div",
-          null,
-          content,
+          { className: "nav-admin" },
+          this.props.user ? this.renderIfUser() : this.renderIfNoUser(),
           React.createElement(
             Modal,
             {
@@ -217,13 +221,13 @@ var NavAdmin = (function (Component) {
               onAfterOpen: this.afterOpenModal,
               onRequestClose: this.closeModal,
               style: customStyles,
-              contentLabel: "Example Modal"
+              contentLabel: "account modal"
             },
             React.createElement("div", { onClick: this.closeModal, className: "x" }),
             React.createElement(
               "div",
               { className: "modal-header" },
-              modal
+              this.renderModalType()
             )
           )
         );
@@ -248,6 +252,9 @@ var dispatchToProps = function (dispatch) {
     currentUserReceived: function (user) {
       return dispatch(actions.currentUserReceived(user));
     },
+    displayError: function (error) {
+      return dispatch(actions.displayError(error));
+    },
     logoutUser: function (user) {
       return dispatch(actions.logoutUser(user));
     } };
@@ -255,4 +262,3 @@ var dispatchToProps = function (dispatch) {
 
 module.exports = connect(stateToProps, dispatchToProps)(NavAdmin);
 // className="account-modal"
-/*<button className="x-button" onClick={this.closeModal}><div className="x"></div></button>*/

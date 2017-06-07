@@ -39,26 +39,19 @@ var AccountEditor = (function (Component) {
 
   _prototypeProperties(AccountEditor, null, {
     toggleEdit: {
-
-      // Show/hide editing capabilities
       value: function toggleEdit(event) {
         event.preventDefault();
-        this.setState({
-          isEditing: !this.state.isEditing
-        });
+        this.setState({ isEditing: !this.state.isEditing });
       },
       writable: true,
       configurable: true
     },
     updateProfile: {
-
-      // Update profile pieces that user changes
       value: function updateProfile(event) {
         var updatedProfile = Object.assign({}, this.state.profile);
         var value = !event.target.value ? event.target.defaultValue : event.target.value;
         updatedProfile[event.target.id] = value;
-        this.setState({
-          profile: updatedProfile });
+        this.setState({ profile: updatedProfile });
       },
       writable: true,
       configurable: true
@@ -66,122 +59,149 @@ var AccountEditor = (function (Component) {
     submitUpdate: {
       value: function submitUpdate(event) {
         event.preventDefault();
-        this.setState({
-          isEditing: !this.state.isEditing });
+        this.setState({ isEditing: !this.state.isEditing });
         this.props.onUpdate(this.state.profile);
+      },
+      writable: true,
+      configurable: true
+    },
+    renderProfile: {
+      value: function renderProfile() {
+        return React.createElement(
+          "div",
+          { className: "profile-block" },
+          React.createElement(
+            "div",
+            { className: "profile-name-block" },
+            React.createElement(
+              "div",
+              { className: "profile-title" },
+              "Name: "
+            ),
+            React.createElement(
+              "span",
+              { className: "profile-name" },
+              this.props.profile.firstName,
+              " "
+            ),
+            React.createElement(
+              "span",
+              { className: "profile-name" },
+              this.props.profile.lastName
+            )
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            { className: "profile-city-block" },
+            React.createElement(
+              "div",
+              { className: "profile-title" },
+              "City: "
+            ),
+            React.createElement(
+              "span",
+              { className: "profile-city" },
+              this.props.profile.city
+            )
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            { className: "profile-bio-block" },
+            React.createElement(
+              "div",
+              { className: "profile-title" },
+              "Bio :"
+            ),
+            React.createElement(
+              "p",
+              { className: "profile-bio" },
+              this.props.profile.bio
+            )
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "button",
+            { className: "btn", onClick: this.toggleEdit.bind(this) },
+            "Edit"
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderEditingProfile: {
+      value: function renderEditingProfile() {
+        return React.createElement(
+          "div",
+          { className: "edit-profile-block" },
+          React.createElement(
+            "span",
+            { className: "edit-label edit-firstname" },
+            "First name:"
+          ),
+          React.createElement("input", {
+            className: "form-control",
+            id: "firstName",
+            onChange: this.updateProfile.bind(this),
+            defaultValue: this.props.profile.firstName }),
+          React.createElement("br", null),
+          React.createElement(
+            "span",
+            { className: "edit-label edit-lastname" },
+            "Last name:"
+          ),
+          React.createElement("input", {
+            className: "form-control",
+            id: "lastName",
+            onChange: this.updateProfile.bind(this),
+            defaultValue: this.props.profile.lastName }),
+          React.createElement("br", null),
+          React.createElement(
+            "span",
+            { className: "edit-label edit-city" },
+            "City:"
+          ),
+          React.createElement("input", {
+            className: "form-control",
+            id: "city",
+            onChange: this.updateProfile.bind(this),
+            defaultValue: this.props.profile.city }),
+          React.createElement("br", null),
+          React.createElement(
+            "span",
+            { className: "edit-label edit-bio" },
+            "Bio:"
+          ),
+          React.createElement("textarea", {
+            className: "form-control edit-bio",
+            id: "bio",
+            rows: "8",
+            onChange: this.updateProfile.bind(this),
+            defaultValue: this.props.profile.bio }),
+          React.createElement("br", null),
+          React.createElement(
+            "button",
+            { className: "btn", onClick: this.submitUpdate.bind(this) },
+            "Update"
+          ),
+          React.createElement(
+            "button",
+            { className: "btn", onClick: this.toggleEdit.bind(this) },
+            "Nevermind"
+          )
+        );
       },
       writable: true,
       configurable: true
     },
     render: {
       value: function render() {
-        var profile = this.props.profile;
-        var content = null;
-
-        // Display profile or editing view
-        if (this.state.isEditing == true) {
-          content = React.createElement(
-            "div",
-            null,
-            "First name:",
-            React.createElement("input", {
-              className: "form-control",
-              id: "firstName",
-              onChange: this.updateProfile.bind(this),
-              defaultValue: profile.firstName }),
-            React.createElement("br", null),
-            "Last name:",
-            React.createElement("input", {
-              className: "form-control",
-              id: "lastName",
-              onChange: this.updateProfile.bind(this),
-              defaultValue: profile.lastName }),
-            React.createElement("br", null),
-            "City:",
-            React.createElement("input", {
-              className: "form-control",
-              id: "city",
-              onChange: this.updateProfile.bind(this),
-              defaultValue: profile.city }),
-            React.createElement("br", null),
-            "Bio:",
-            React.createElement("textarea", {
-              className: "form-control edit-bio",
-              id: "bio",
-              rows: "8",
-              onChange: this.updateProfile.bind(this),
-              defaultValue: profile.bio }),
-            React.createElement("br", null),
-            React.createElement(
-              "button",
-              { className: "btn", onClick: this.submitUpdate.bind(this) },
-              "Update"
-            ),
-            React.createElement(
-              "span",
-              null,
-              "  "
-            ),
-            React.createElement(
-              "button",
-              { className: "btn", onClick: this.toggleEdit.bind(this) },
-              "Nevermind"
-            )
-          );
-        } else {
-          content = React.createElement(
-            "div",
-            null,
-            React.createElement(
-              "h4",
-              null,
-              "Name: "
-            ),
-            React.createElement(
-              "span",
-              null,
-              profile.firstName
-            ),
-            React.createElement(
-              "span",
-              null,
-              profile.lastName
-            ),
-            React.createElement("br", null),
-            React.createElement(
-              "h4",
-              null,
-              "City: "
-            ),
-            React.createElement(
-              "span",
-              null,
-              profile.city
-            ),
-            React.createElement("br", null),
-            React.createElement(
-              "h4",
-              null,
-              "Bio :"
-            ),
-            React.createElement(
-              "p",
-              null,
-              profile.bio
-            ),
-            React.createElement("br", null),
-            React.createElement(
-              "button",
-              { className: "btn", onClick: this.toggleEdit.bind(this) },
-              "Edit"
-            )
-          );
-        }
-
         return React.createElement(
           "div",
-          null,
-          content
+          { className: "account-editor" },
+          this.state.isEditing == false ? this.renderProfile() : this.renderEditingProfile()
         );
       },
       writable: true,

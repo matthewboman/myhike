@@ -38,13 +38,6 @@ var CreateReview = (function (Component) {
   _inherits(CreateReview, Component);
 
   _prototypeProperties(CreateReview, null, {
-    componentDidMount: {
-      value: function componentDidMount() {
-        console.log(this.props.user.id);
-      },
-      writable: true,
-      configurable: true
-    },
     updateHike: {
       value: function updateHike(event) {
         var updatedReview = Object.assign({}, this.state.review);
@@ -59,17 +52,13 @@ var CreateReview = (function (Component) {
     addImages: {
       value: function addImages(event) {
         var updatedReview = Object.assign({}, this.state.review);
-        // Add images from Image component
         var updatedImages = Object.assign([], this.state.review.pictures);
         for (var _iterator = event[Symbol.iterator](), _step; !(_step = _iterator.next()).done;) {
           var value = _step.value;
           updatedImages.push(value.secure_url);
         }
         updatedReview.pictures = updatedImages;
-
-        this.setState({
-          review: updatedReview
-        });
+        this.setState({ review: updatedReview });
       },
       writable: true,
       configurable: true
@@ -88,8 +77,8 @@ var CreateReview = (function (Component) {
           "div",
           { className: "review-block" },
           React.createElement(
-            "h3",
-            null,
+            "div",
+            { className: "review-header" },
             "Add your own review"
           ),
           React.createElement("input", { onChange: this.updateHike.bind(this), id: "description",

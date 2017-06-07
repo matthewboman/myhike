@@ -30,11 +30,7 @@ module.exports = {
       APIManager.post("/account/login", credentials, function (err, response) {
         if (err) {
           var msg = err.message || err;
-          console.error(msg);
-          dispatch({
-            type: constants.ERROR_RECEIVED,
-            message: msg
-          });
+          dispatch({ type: constants.ERROR_RECEIVED, message: msg });
           return;
         }
         var user = response.profile;
@@ -49,14 +45,13 @@ module.exports = {
   // Get a profile for other users to see
   fetchProfile: function (id) {
     return function (dispatch) {
-      var endpoint = "/api/profile/" + id;
-      APIManager.get(endpoint, null, function (err, response) {
+      APIManager.get("/api/profile/" + id, null, function (err, response) {
         if (err) {
-          console.error(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
         if (response.result.length == 0) {
-          console.error("Profile not found");
+          dispatch({ type: constants.ERROR_RECEIVED, message: "Profile not found" });
           return;
         }
         var profile = response.result;
@@ -73,7 +68,7 @@ module.exports = {
     return function (dispatch) {
       APIManager.get("/account/logout", null, function (err, response) {
         if (err) {
-          console.error(err.message);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
         dispatch({
@@ -89,15 +84,13 @@ module.exports = {
     return function (dispatch) {
       APIManager.post("/account/register", profile, function (err, response) {
         if (err) {
-          // let msg = err.message || err
-          console.error(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
-        var user = response.profile;
 
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
-          user: user
+          user: response.profile
         });
       });
     };
@@ -106,16 +99,14 @@ module.exports = {
   // Update Profile
   profileUpdated: function (user, profile) {
     return function (dispatch) {
-      var endpoint = "/api/profile/" + user.id;
-      APIManager.put(endpoint, profile, function (err, response) {
+      APIManager.put("/api/profile/" + user.id, profile, function (err, response) {
         if (err) {
-          console.log(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
-        var user = response.result;
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
-          user: user
+          user: response.result
         });
       });
     };
@@ -140,14 +131,12 @@ module.exports = {
 
       APIManager.get("/api/hike", params, function (err, response) {
         if (err) {
-          console.error(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
-        var hikes = response.results;
-
         dispatch({
           type: constants.HIKES_RECEIVED,
-          hikes: hikes
+          hikes: response.results
         });
       });
     };
@@ -158,13 +147,12 @@ module.exports = {
     return function (dispatch) {
       APIManager.post("/api/hike", hike, function (err, response) {
         if (err) {
-          console.error("ERROR: " + err.message);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
+          return;
         }
-        var newHike = response.result;
-
         dispatch({
           type: constants.HIKE_ADDED,
-          hike: newHike
+          hike: response.result
         });
       });
     };
@@ -173,18 +161,16 @@ module.exports = {
   // Select a hike
   hikeSelected: function (id) {
     var hike = id.toString();
-    var endpoint = "/api/hike/" + hike;
     return function (dispatch) {
       // GET hike details
-      APIManager.get(endpoint, null, function (err, response) {
+      APIManager.get("/api/hike/" + hike, null, function (err, response) {
         if (err) {
-          console.error("ERROR: " + err.message);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
+          return;
         }
-        var selectedHike = response.result;
-
         dispatch({
           type: constants.CURRENT_HIKE_RECEIVED,
-          currentHike: selectedHike
+          currentHike: response.result
         });
       });
     };
@@ -198,11 +184,21 @@ module.exports = {
     };
   },
 
+  // Mark location clicked on map
+  markClickedLocation: function (location, usingMap) {
+    return {
+      type: constants.MARK_CLICKED_LOCATION,
+      location: location,
+      usingMap: usingMap
+    };
+  },
+
   // Mark hike location on map
-  markHikeLocation: function (location) {
+  markHikeLocation: function (location, usingMap) {
     return {
       type: constants.MARK_HIKE_LOCATION,
-      location: location
+      location: location,
+      usingMap: usingMap
     };
   },
 
@@ -213,14 +209,13 @@ module.exports = {
     return function (dispatch) {
       APIManager.get("/api/review", params, function (err, response) {
         if (err) {
-          console.error(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
-        var reviews = response.results;
         dispatch({
           type: constants.REVIEWS_RECEIVED,
           params: params,
-          reviews: reviews
+          reviews: response.results
         });
       });
     };
@@ -231,9 +226,10 @@ module.exports = {
     return function (dispatch) {
       APIManager.post("/api/review", review, function (err, response) {
         if (err) {
-          console.error("Error: " + err.message);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
+          return;
         }
-        var reviews = [response.result];
+        var reviews = [response.result]; // <------? figure this out
 
         dispatch({
           type: constants.REVIEWS_RECEIVED,
@@ -247,16 +243,14 @@ module.exports = {
   // Update a user's review of a hike
   reviewUpdated: function (review) {
     return function (dispatch) {
-      var endpoint = "/api/review/" + review.id;
-      APIManager.put(endpoint, review, function (err, response) {
+      APIManager.put("/api/review/" + review.id, review, function (err, response) {
         if (err) {
-          console.error(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
-        var updatedReview = response.result;
         dispatch({
           type: constants.REVIEW_UPDATED,
-          review: updatedReview
+          review: response.result
         });
       });
     };

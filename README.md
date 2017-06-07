@@ -12,13 +12,17 @@ list of ways anyone interested can help:
       - Email verification and lost password re-submission. I wrote this in AngularJs
         for [Camover](https://crashspringfield.github.io/camover-demo/) so a lot of the backend can be taken from there. The front
         will have to be rewritten in React.
-        
+
       - Server-side routing for all components (some are front-end only). Also, making
         routing more general instead of being controller-specific.
-        
+
       - Aesthetics (everything looks like garbage since I got rid of Bootstap-React
         but I also haven't tried to fix it yet).
-        
+
+      - Inlude hike name in reviews object so that it can be displayed/linked to from user's profile.
+
+      - Database different/better: (how) would a relational database or GraphQL simplify shit?
+
       - Mobile routing and rewriting the Map/Container files.
 
 ## running locally

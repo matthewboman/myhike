@@ -21,18 +21,11 @@ class AccountContainer extends Component {
   }
 
   componentDidMount() {
-    this.getCurrentUserReviews(user)
+    this.props.fetchReviews({'user.id': this.props.user.id})
   }
 
-  componentDidUpdate() {
-    console.log(JSON.stringify(this.props.reviews))
-  }
-
-  // Show/hide editing capabilities
   toggleImageUploader() {
-    this.setState({
-      updateImage: !this.state.updateImage
-    })
+    this.setState({ updateImage: !this.state.updateImage })
   }
 
   uploadImage(files) {
@@ -60,21 +53,14 @@ class AccountContainer extends Component {
     this.props.profileUpdated(this.props.user, profile)
   }
 
-  render() {
-    const profile = this.props.user
-
-    // displaying and updating image
-    const image = (profile.image == null) ? '' : ImageHelper.profile(profile.image, 300)
-    const newImage = (this.state.updated.image == '') ? '' : ImageHelper.preview(this.state.updated.image, 325, 300)
-
-    let updateImage
-
+  updateImage() {
     if (this.state.updateImage == true) {
-      updateImage = (
+      return (
         <div className="update-profile-image">
           <Dropzone onDrop={this.uploadImage.bind(this)} />
           <br />
-          <img className="image-preview" src={newImage} />
+          <img className="image-preview"
+               src={(this.state.updated.image == '') ? '' : ImageHelper.preview(this.state.updated.image, 325, 300)} />
           <br />
           <button className="btn" onClick={this.updatePhoto.bind(this)}>Update</button>
           <span>  </span>
@@ -82,44 +68,49 @@ class AccountContainer extends Component {
         </div>
       )
     } else {
-      updateImage = (
+      return (
         <div className="change-button">
           <button className="btn change" onClick={this.toggleImageUploader.bind(this)}>Change profile picture</button>
         </div>
       )
     }
+  }
 
-    // displaying user's hike reviews
+  renderProfile() {
+    const image = (this.props.user.image == null) ? '' : ImageHelper.profile(this.props.user.image, 300)
+    return (
+      <div className="account-image-box">
+        <img className="account-image" src={image} />
+        <br />
+        {this.updateImage()}
 
+        <div className="bio-block">
+          <AccountEditor
+            profile={this.props.user}
+            onUpdate={this.submitUpdate.bind(this)} />
+        </div>
 
+      </div>
+    )
+  }
 
+  render() {
     return (
       <div className="container-fluid">
-        <h2>Welcome {profile.username}</h2>
-
+        <div className="account-header">Welcome {this.props.user.username}</div>
         <div className="row">
 
           <div className="col-md-4">
-            <div className="account-image-box">
-              <img className="account-image" src={image} />
-              <br />
-              {updateImage}
-
-              <div className="bio-block">
-                <AccountEditor
-                  profile={profile}
-                  onUpdate={this.submitUpdate.bind(this)} />
-              </div>
-
-            </div>
+            {this.renderProfile()}
           </div>
 
           <div className="col-md-8">
-            <UserReviews />
+            <UserReviews user={this.props.user}
+                         reviews={this.props.reviews}
+                         displayIn={'account'} />
           </div>
 
         </div>
-
       </div>
     )
   }
@@ -134,7 +125,8 @@ const stateToProps = (state) => {
 
 const dispatchToProps = (dispatch) => {
   return {
-    getCurrentUserReviews: (user) => dispath(actions.getCurrentUserReviews(user)),
+    fetchReviews: (params) => dispatch(actions.fetchReviews(params)),
+    getCurrentUserReviews: (user) => dispatch(actions.getCurrentUserReviews(user)),
     profileUpdated: (user, profile) => dispatch(actions.profileUpdated(user, profile))
   }
 }

@@ -12,14 +12,14 @@ class Register extends Component {
   }
 
   register(profile) {
-      console.log('register profile ' + JSON.stringify(profile))
-      this.props.profileCreated(profile)
-      this.props.onClose()
+    this.props.profileCreated(profile)
+    this.props.onClose()
   }
 
   render() {
     return (
-      <div>
+      <div className="register">
+        {(this.props.error) ? this.props.error : ''}
         <RegisterForm onRegister={this.register.bind(this)}/>
       </div>
     )
@@ -28,7 +28,7 @@ class Register extends Component {
 
 const stateToProps = (state) => {
   return {
-    // component breaks if this isn't in it
+    error: state.message.error
   }
 }
 

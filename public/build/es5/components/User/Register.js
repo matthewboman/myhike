@@ -33,7 +33,6 @@ var Register = (function (Component) {
   _prototypeProperties(Register, null, {
     register: {
       value: function register(profile) {
-        console.log("register profile " + JSON.stringify(profile));
         this.props.profileCreated(profile);
         this.props.onClose();
       },
@@ -44,7 +43,8 @@ var Register = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          null,
+          { className: "register" },
+          this.props.error ? this.props.error : "",
           React.createElement(RegisterForm, { onRegister: this.register.bind(this) })
         );
       },
@@ -57,7 +57,9 @@ var Register = (function (Component) {
 })(Component);
 
 var stateToProps = function (state) {
-  return {};
+  return {
+    error: state.message.error
+  };
 };
 
 var dispatchToProps = function (dispatch) {
@@ -68,4 +70,3 @@ var dispatchToProps = function (dispatch) {
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(Register);
-// component breaks if this isn't in it

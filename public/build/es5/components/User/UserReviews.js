@@ -21,144 +21,47 @@ var actions = _interopRequire(require("../../actions"));
 var store = _interopRequire(require("../../store/store"));
 
 var APIManager = require("../../utils").APIManager;
-var Review = require("./").Review;
+var Review = require("../Reviews").Review;
 var UserReviews = (function (Component) {
   function UserReviews() {
     _classCallCheck(this, UserReviews);
 
     _get(Object.getPrototypeOf(UserReviews.prototype), "constructor", this).call(this);
-    this.checkForReviews = this.checkForReviews.bind(this);
     this.state = {};
   }
 
   _inherits(UserReviews, Component);
 
   _prototypeProperties(UserReviews, null, {
-    checkForReviews: {
-
-      // Get hike and reviews up and loaded before component renders
-      value: function checkForReviews() {
-        if (!this.props.user) {
-          console.log("no user");
-          return;
-        }
-        // let user = this.props.user
-        // let reviewsArray = this.props.reviews[user.id]
-        // if (reviewsArray != null) {
-        //   return
-        // }
-        // this.props.fetchReviews({user: user.id})
-        var profile = this.props.user;
-
-        if (this.props.reviews[profile.id] != null) {
-          return;
-        }
-        this.props.fetchReviews({ "user.id": profile.id });
-      },
-      writable: true,
-      configurable: true
-    },
     updateReview: {
-
-      // Allow user to edit their hike review
       value: function updateReview(review) {
         this.props.reviewUpdated(review);
       },
       writable: true,
       configurable: true
     },
-    componentDidMount: {
-      value: function componentDidMount() {
-        this.checkForReviews();
-      },
-      writable: true,
-      configurable: true
-    },
-    componentDidUpdate: {
-      value: function componentDidUpdate() {
-        this.checkForReviews();
+    renderReviews: {
+      value: function renderReviews() {
+        var _this = this;
+        var person = this.props.displayIn == "account" ? this.props.user : this.props.profile;
+        if (this.props.reviews[person.id]) {
+          return this.props.reviews[person.id].map(function (review, i) {
+            return React.createElement(Review, { key: i,
+              onUpdate: _this.updateReview.bind(_this),
+              isEditable: _this.props.user ? _this.props.user.id == review.user.id : false,
+              review: review });
+          });
+        }
       },
       writable: true,
       configurable: true
     },
     render: {
       value: function render() {
-        // Make sure component has what it needs to display reviews
-        // const hike = this.props.hike
-        var currentUser = this.props.user;
-
-        var reviewList = null;
-
-        // if (currentUser != null) {
-        //   let userReviews = this.props.reviews[currentUser.id]
-        //   if (userReviews != null) {
-        //     reviewList = userReviews.map((review, i) => {
-        //       return (
-        //         <li key={i}>
-        //           <Review
-        //             onUpdate={this.updateReview.bind(this)}
-        //             isEditable={true}
-        //             review={review} />
-        //         </li>
-        //       )
-        //     })
-        //   }
-        // }
-        var list = [];
-        if (currentUser != null) {
-          var reviews = this.props.reviews[currentUser.id] ? this.props.reviews[currentUser.id] : [];
-          list = reviews.map(function (review, i) {
-            return React.createElement(
-              "li",
-              { key: i, className: "review-block" },
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Review/description: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-description" },
-                review.description
-              ),
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Animals spotted: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-animals" },
-                review.animals
-              ),
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Plants identified: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-plants" },
-                review.plants
-              ),
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Mushrooms and other fungi: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-fungi" },
-                review.fungi
-              )
-            );
-          });
-        }
-
         return React.createElement(
-          "ul",
+          "div",
           { className: "reviews" },
-          list
+          this.renderReviews()
         );
       },
       writable: true,

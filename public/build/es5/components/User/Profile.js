@@ -19,6 +19,7 @@ var connect = require("react-redux").connect;
 var actions = _interopRequire(require("../../actions"));
 
 var ImageHelper = require("../../utils").ImageHelper;
+var Review = require("../Reviews").Review;
 var Profile = (function (Component) {
   function Profile() {
     _classCallCheck(this, Profile);
@@ -61,6 +62,20 @@ var Profile = (function (Component) {
       configurable: true
     },
     render: {
+
+      // renderReviews() {
+      //   if (this.props.reviews[this.props.profiles[this.props.id].id]) {
+      //     return this.props.reviews[this.props.user.id].map((review, i) => {
+      //       return (
+      //         <Review key={i}
+      //           onUpdate={this.updateReview.bind(this)}
+      //           isEditable={(this.props.user) ? (this.props.user.id == review.user.id) : false}
+      //           review={review} />
+      //       )
+      //     })
+      //   }
+      // }
+
       value: function render() {
         var profile = this.props.profiles[this.props.id];
         var page = null;
@@ -167,7 +182,7 @@ var Profile = (function (Component) {
         return React.createElement(
           "div",
           { className: "container-fluid" },
-          page
+          this.renderReviews()
         );
       },
       writable: true,

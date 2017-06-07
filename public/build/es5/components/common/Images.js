@@ -46,7 +46,6 @@ var Images = (function (Component) {
     uploadFile: {
       value: function uploadFile(files) {
         var _this = this;
-        // Select first image
         var image = files[0];
         // Prepare request for Cloudinary
         var cloudName = "dotkbdwdw";
@@ -74,12 +73,9 @@ var Images = (function (Component) {
             callback(err, null);
             return;
           }
-          var uploaded = res.body;
-
           // Set state with what I get back from Cloudinary
           var updatedImages = Object.assign([], _this.state.images);
-          updatedImages.push(uploaded);
-
+          updatedImages.push(res.body);
           _this.setState({
             images: updatedImages
           });
@@ -109,10 +105,10 @@ var Images = (function (Component) {
       writable: true,
       configurable: true
     },
-    render: {
-      value: function render() {
+    renderPictures: {
+      value: function renderPictures() {
         var _this = this;
-        var pixx = this.state.images.map(function (image, i) {
+        return this.state.images.map(function (image, i) {
           return React.createElement(
             "li",
             { key: i, className: "image-list-preview" },
@@ -128,7 +124,12 @@ var Images = (function (Component) {
             )
           );
         });
-
+      },
+      writable: true,
+      configurable: true
+    },
+    render: {
+      value: function render() {
         return React.createElement(
           "div",
           null,
@@ -152,7 +153,7 @@ var Images = (function (Component) {
                 )
               )
             ),
-            pixx
+            this.renderPictures()
           ),
           React.createElement(
             "button",

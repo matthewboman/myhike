@@ -14,72 +14,57 @@ class Hike extends Component {
     }
   }
 
-  // Show/hide CreateReview component
+  componentDidUpdate() {
+    if (this.props.hike == null)
+      return
+  }
+
   displayCreateReviewComponent(event) {
     if (!this.props.user) {
-      console.log('you must be logged in to add a review')
+      this.props.displayMessage('You must be logged in to add a review')
       return
     }
-    this.setState({
-      addReview: !this.state.addReview
-    })
+    this.setState({ addReview: !this.state.addReview })
   }
 
   submitReview(review) {
-    if (this.props.user == null) {
-      console.log('You must be logged in to post a review')
-      return
-    }
-    console.log(JSON.stringify(review))
     this.props.reviewCreated(review, this.props.hike)
-    this.setState({
-      addReview: !this.state.addReview
-    })
+    this.setState({ addReview: !this.state.addReview })
   }
 
-  componentDidUpdate() {
-    let hike = this.props.hike
-    if (hike == null) {
-      return
+  renderHikeName() {
+    if (!this.props.hike)
+      return null
+    return (
+      <div className="hike-name">{this.props.hike.name}</div>
+    )
+  }
+
+  renderCreateReviewOption() {
+    if (this.state.addReview == true) {
+      return (
+        <CreateReview
+          user={this.props.user}
+          hike={this.props.hike}
+          onReview={this.submitReview.bind(this)} />
+      )
+    } else {
+      return (
+        <div className="review-block">
+          <span className="add-review" onClick={this.displayCreateReviewComponent.bind(this)}>
+            Add a Review
+          </span>
+        </div>
+      )
     }
   }
 
   render() {
-    const hike = this.props.hike
-    const user = this.props.user
-
-    //Make sure we have the hike info before rendering
-    if (hike == null ) {return false}
-    const header = (
-      <div>
-        <h3>{hike.name}</h3>
-      </div>
-    )
-
-    //Show/hide CreateReview component
-    let newReview
-
-    if (this.state.addReview == true) {
-      newReview = (
-        <div>
-        <CreateReview
-          user={user}
-          hike={this.props.hike}
-          onReview={this.submitReview.bind(this)} />
-        </div>
-      )
-    } else {
-      newReview = (
-        <div className="review-block">
-          <span className="add-review" onClick={this.displayCreateReviewComponent.bind(this)}>Add a Review</span>
-        </div>
-      )
-    }
-
     return (
       <div className="hike-component-container">
-        {header}
-        {newReview}
+        {this.renderHikeName()}
+        <span className="error">{this.props.message}</span>
+        {this.renderCreateReviewOption()}
         <HikeReviews />
       </div>
     )
@@ -89,12 +74,14 @@ class Hike extends Component {
 const stateToProps = (state) => {
   return {
     hike: state.hike.currentHike,
+    message: state.message.message,
     user: state.account.user,
   }
 }
 
 const dispatchToProps = (dispatch) => {
   return {
+    displayMessage: (message) => dispatch(actions.displayMessage(message)),
     fetchHike: (params) => dispatch(actions.fetchHike(params)),
     reviewCreated: (review, params) => dispatch(actions.reviewCreated(review, params))
   }

@@ -33,7 +33,6 @@ var APIManager = require("../../utils").APIManager;
   TODO: GET hikes from DB only within certain radius of user. Update API call
     to database as view window changes. That way the app isn't calling every
     hike in DB--only those necessary.
-  TODO: One color marker for hikes, another color marker for where the user clicks.
 */
 
 var HikeMap = (function (Component) {
@@ -42,10 +41,7 @@ var HikeMap = (function (Component) {
 
     _get(Object.getPrototypeOf(HikeMap.prototype), "constructor", this).call(this);
     this.state = {
-      mapCenter: {
-        lat: 0,
-        lng: 0
-      }
+      mapCenter: { lat: 0, lng: 0 }
     };
   }
 
@@ -54,96 +50,95 @@ var HikeMap = (function (Component) {
   _prototypeProperties(HikeMap, null, {
     componentDidMount: {
       value: function componentDidMount() {
-        var _this = this;
-        // Center map on user's location (or 0,0 if user doesn't want to share)
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var lat = position.coords.latitude;
-          var lng = position.coords.longitude;
-          _this.setState({
-            mapCenter: {
-              lat: lat,
-              lng: lng }
-          });
-          //  Pass to props for "CreateHike" component
-          _this.props.userLocationReceived({ lat: lat, lng: lng });
-        }, function (error) {
-          _this.props.displayError("Error dectecting your location");
-          console.error(JSON.stringify(error));
-        }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
-        // GET hikes from database
+        this.centerMapToUserLocation();
         this.props.fetchHikes(null);
       },
       writable: true,
       configurable: true
     },
+    centerMapToUserLocation: {
+      value: function centerMapToUserLocation() {
+        var _this = this;
+        navigator.geolocation.getCurrentPosition(function (position) {
+          _this.setState({
+            mapCenter: {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+          });
+          _this.props.userLocationReceived({ lat: position.coords.latitude, lng: position.coords.longitude });
+        }, function (error) {
+          _this.props.displayError("Error dectecting your location");
+        }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+      },
+      writable: true,
+      configurable: true
+    },
     addMarker: {
-
-      // Add marker to map where user clicks
       value: function addMarker(event) {
         var clicked = Object.assign({}, this.state.newHike);
         clicked.lat = event.latLng.lat();
         clicked.lng = event.latLng.lng();
-        this.props.markHikeLocation(clicked);
+        this.props.markClickedLocation(clicked, true);
       },
       writable: true,
       configurable: true
     },
     selectHike: {
-
-      // Set currentHike to whichever hike user clicks on and change route
       value: function selectHike(id) {
         this.props.hikeSelected(id);
-        var path = "/hike/" + id;
-        browserHistory.push(path);
+        browserHistory.push("/hike/" + id);
+      },
+      writable: true,
+      configurable: true
+    },
+    renderHikeMarkers: {
+      value: function renderHikeMarkers() {
+        var _this = this;
+        if (this.props.hikes == null || undefined) {
+          return false;
+        }return this.props.hikes.map(function (hike, id) {
+          var hikeMarker = {
+            position: { lat: hike.position.lat, lng: hike.position.lng },
+            id: hike.id
+          };
+          return React.createElement(Marker, _extends({ key: id
+          }, hikeMarker, {
+            onClick: _this.selectHike.bind(_this, hike.id),
+            icon: { url: "/images/icon-green.svg", scaledSize: new google.maps.Size(28, 28) }
+          }));
+        });
+      },
+      writable: true,
+      configurable: true
+    },
+    renderNewHikeMarker: {
+      value: function renderNewHikeMarker() {
+        var marker = {
+          position: this.props.usingMap ? this.props.clickedLocation : this.props.hikeLocation
+        };
+        return React.createElement(Marker, _extends({}, marker, {
+          icon: { url: "/images/map-localization.svg", scaledSize: new google.maps.Size(28, 28) }
+        }));
       },
       writable: true,
       configurable: true
     },
     render: {
       value: function render() {
-        var _this = this;
-        // Set map center to user location (component state version)
-        var mapCenter = this.state.mapCenter;
-        if (mapCenter.lat == 0 && mapCenter.lng == 0) {
+        if (this.state.mapCenter.lat == 0 && this.state.mapCenter.lng == 0) {
           return null;
-        }
-
-        var marker = {
-          position: this.props.hikeLocation
-        };
-
-        // Mount hike markers to map
-        if (this.props.hikes == null || undefined) {
-          return false;
-        }
-
-        var hikes = this.props.hikes.map(function (hike, id) {
-          var hikeMarker = {
-            position: {
-              lat: hike.position.lat,
-              lng: hike.position.lng
-            },
-            id: hike.id
-          };
-          return React.createElement(Marker, _extends({
-            key: id
-          }, hikeMarker, {
-            onClick: _this.selectHike.bind(_this, hike.id)
-          }));
-        });
-
-
-        return React.createElement(GoogleMapLoader, {
+        }return React.createElement(GoogleMapLoader, {
           containerElement: this.props.mapContainer,
           googleMapElement: React.createElement(
             GoogleMap,
             {
               defaultZoom: 10,
               defaultCenter: this.state.mapCenter,
-              options: { streetViewControl: false, mapTypeControl: false },
+              options: { streetViewControl: false, mapTypeControl: true },
               onClick: this.addMarker.bind(this) },
-            React.createElement(Marker, marker),
-            hikes
+            this.renderNewHikeMarker(),
+            this.renderHikeMarkers()
           )
         });
       },
@@ -158,10 +153,10 @@ var HikeMap = (function (Component) {
 var stateToProps = function (state) {
   return {
     hikes: state.map.list,
-    clickedLocation: state.map.clickedLocation,
+    clickedLocation: state.hike.clickedLocation,
     userLocation: state.hike.userLocation,
-    hikeLocation: state.hike.hikeLocation
-
+    hikeLocation: state.hike.hikeLocation,
+    usingMap: state.hike.usingMap
   };
 };
 
@@ -175,6 +170,9 @@ var dispatchToProps = function (dispatch) {
     },
     hikeSelected: function (id) {
       return dispatch(actions.hikeSelected(id));
+    },
+    markClickedLocation: function (location, usingMap) {
+      return dispatch(actions.markClickedLocation(location, usingMap));
     },
     markHikeLocation: function (location) {
       return dispatch(actions.markHikeLocation(location));

@@ -48,25 +48,14 @@ var AccountContainer = (function (Component) {
   _prototypeProperties(AccountContainer, null, {
     componentDidMount: {
       value: function componentDidMount() {
-        this.getCurrentUserReviews(user);
-      },
-      writable: true,
-      configurable: true
-    },
-    componentDidUpdate: {
-      value: function componentDidUpdate() {
-        console.log(JSON.stringify(this.props.reviews));
+        this.props.fetchReviews({ "user.id": this.props.user.id });
       },
       writable: true,
       configurable: true
     },
     toggleImageUploader: {
-
-      // Show/hide editing capabilities
       value: function toggleImageUploader() {
-        this.setState({
-          updateImage: !this.state.updateImage
-        });
+        this.setState({ updateImage: !this.state.updateImage });
       },
       writable: true,
       configurable: true
@@ -106,23 +95,16 @@ var AccountContainer = (function (Component) {
       writable: true,
       configurable: true
     },
-    render: {
-      value: function render() {
-        var profile = this.props.user;
-
-        // displaying and updating image
-        var image = profile.image == null ? "" : ImageHelper.profile(profile.image, 300);
-        var newImage = this.state.updated.image == "" ? "" : ImageHelper.preview(this.state.updated.image, 325, 300);
-
-        var updateImage = undefined;
-
+    updateImage: {
+      value: function updateImage() {
         if (this.state.updateImage == true) {
-          updateImage = React.createElement(
+          return React.createElement(
             "div",
             { className: "update-profile-image" },
             React.createElement(Dropzone, { onDrop: this.uploadImage.bind(this) }),
             React.createElement("br", null),
-            React.createElement("img", { className: "image-preview", src: newImage }),
+            React.createElement("img", { className: "image-preview",
+              src: this.state.updated.image == "" ? "" : ImageHelper.preview(this.state.updated.image, 325, 300) }),
             React.createElement("br", null),
             React.createElement(
               "button",
@@ -141,7 +123,7 @@ var AccountContainer = (function (Component) {
             )
           );
         } else {
-          updateImage = React.createElement(
+          return React.createElement(
             "div",
             { className: "change-button" },
             React.createElement(
@@ -151,19 +133,41 @@ var AccountContainer = (function (Component) {
             )
           );
         }
-
-        // displaying user's hike reviews
-
-
-
+      },
+      writable: true,
+      configurable: true
+    },
+    renderProfile: {
+      value: function renderProfile() {
+        var image = this.props.user.image == null ? "" : ImageHelper.profile(this.props.user.image, 300);
+        return React.createElement(
+          "div",
+          { className: "account-image-box" },
+          React.createElement("img", { className: "account-image", src: image }),
+          React.createElement("br", null),
+          this.updateImage(),
+          React.createElement(
+            "div",
+            { className: "bio-block" },
+            React.createElement(AccountEditor, {
+              profile: this.props.user,
+              onUpdate: this.submitUpdate.bind(this) })
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    render: {
+      value: function render() {
         return React.createElement(
           "div",
           { className: "container-fluid" },
           React.createElement(
-            "h2",
-            null,
+            "div",
+            { className: "account-header" },
             "Welcome ",
-            profile.username
+            this.props.user.username
           ),
           React.createElement(
             "div",
@@ -171,25 +175,14 @@ var AccountContainer = (function (Component) {
             React.createElement(
               "div",
               { className: "col-md-4" },
-              React.createElement(
-                "div",
-                { className: "account-image-box" },
-                React.createElement("img", { className: "account-image", src: image }),
-                React.createElement("br", null),
-                updateImage,
-                React.createElement(
-                  "div",
-                  { className: "bio-block" },
-                  React.createElement(AccountEditor, {
-                    profile: profile,
-                    onUpdate: this.submitUpdate.bind(this) })
-                )
-              )
+              this.renderProfile()
             ),
             React.createElement(
               "div",
               { className: "col-md-8" },
-              React.createElement(UserReviews, null)
+              React.createElement(UserReviews, { user: this.props.user,
+                reviews: this.props.reviews,
+                displayIn: "account" })
             )
           )
         );
@@ -211,8 +204,11 @@ var stateToProps = function (state) {
 
 var dispatchToProps = function (dispatch) {
   return {
+    fetchReviews: function (params) {
+      return dispatch(actions.fetchReviews(params));
+    },
     getCurrentUserReviews: function (user) {
-      return dispath(actions.getCurrentUserReviews(user));
+      return dispatch(actions.getCurrentUserReviews(user));
     },
     profileUpdated: function (user, profile) {
       return dispatch(actions.profileUpdated(user, profile));

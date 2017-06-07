@@ -33,29 +33,24 @@ var Login = (function (Component) {
 
   _prototypeProperties(Login, null, {
     updateVisitor: {
-
-      // Set state with what user types into inputs
       value: function updateVisitor(event) {
         var updated = Object.assign({}, this.state.user);
         updated[event.target.id] = event.target.value;
-        this.setState({
-          user: updated
-        });
+        this.setState({ user: updated });
       },
       writable: true,
       configurable: true
     },
     login: {
-
-      // Log user in
       value: function login(event) {
         event.preventDefault();
         if (this.state.user.username == 0) {
           console.log("Please enter your username");
+          this.props.displayError("Please enter your username");
           return;
         }
         if (this.state.user.password.length == 0) {
-          console.log("Please enter your password");
+          this.props.displayError("Please enter your password");
           return;
         }
         this.props.onLogin(this.state.user);
@@ -67,13 +62,14 @@ var Login = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          null,
+          { className: "login" },
+          this.props.error ? this.props.error : "",
           React.createElement(
             "form",
             null,
             React.createElement(
               "div",
-              { className: "login" },
+              { className: "username" },
               React.createElement("input", {
                 className: "form-control login-field",
                 onChange: this.updateVisitor.bind(this),
@@ -83,7 +79,7 @@ var Login = (function (Component) {
             React.createElement("br", null),
             React.createElement(
               "div",
-              null,
+              { className: "password" },
               React.createElement("input", {
                 className: "form-control login-field",
                 onChange: this.updateVisitor.bind(this),

@@ -22,7 +22,6 @@ class Images extends Component {
   }
 
   uploadFile(files) {
-    // Select first image
     const image = files[0]
     // Prepare request for Cloudinary
     const cloudName = "dotkbdwdw"
@@ -50,12 +49,9 @@ class Images extends Component {
         callback(err, null)
         return
       }
-      const uploaded = res.body
-
       // Set state with what I get back from Cloudinary
       let updatedImages = Object.assign([], this.state.images)
-      updatedImages.push(uploaded)
-
+      updatedImages.push(res.body)
       this.setState({
         images: updatedImages
       })
@@ -77,8 +73,8 @@ class Images extends Component {
     this.props.onImageSubmit(this.state.images)
   }
 
-  render() {
-    const pixx = this.state.images.map((image, i) => {
+  renderPictures() {
+    return this.state.images.map((image, i) => {
       return (
         <li key={i} className="image-list-preview">
           <div className="parent">
@@ -88,7 +84,9 @@ class Images extends Component {
         </li>
       )
     })
+  }
 
+  render() {
     return (
       <div>
         <ul className="hike-images">
@@ -101,7 +99,7 @@ class Images extends Component {
             <p className="image-drop-text">Upload image</p>
           </Dropzone>
         </li>
-        {pixx}
+        {this.renderPictures()}
         </ul>
         <button onClick={this.submitImages.bind(this)}
           className="btn image-submit-btn">Submit Images</button>

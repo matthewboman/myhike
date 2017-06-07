@@ -11,7 +11,6 @@ export default (state = intialState, action) => {
 
   switch (action.type) {
 
-    // Link to user profile from comment
     case constants.PROFILE_RECEIVED:
       // console.log("PROFILE_RECEIVED: " + JSON.stringify(action.profile))
       updatedProfileMap[action.profile.id] = action.profile

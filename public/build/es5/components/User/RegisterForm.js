@@ -21,8 +21,6 @@ var validator = _interopRequire(require("validator"));
 
 /*
 TODO: move validation rules to utils
-TODO: get API error (username/email taken) from action.index
-      by creating 'error state' in account reducer
 */
 
 // ================ Validation =========================
@@ -129,9 +127,7 @@ var RegisterForm = (function (Component) {
       value: function updateVisitor(event) {
         var updated = Object.assign({}, this.state.visitor);
         updated[event.target.id] = event.target.value;
-        this.setState({
-          visitor: updated
-        });
+        this.setState({ visitor: updated });
       },
       writable: true,
       configurable: true

@@ -40,7 +40,7 @@ var Navbar = (function (_React$Component) {
               { className: "navbar-header" },
               React.createElement(
                 "button",
-                { type: "button", className: "navbar-toggle collapsed", "data-toggle": "collapse", "data-target": "#bs-example-navbar-collapse-1", "aria-expanded": "false" },
+                { type: "button", className: "navbar-toggle collapsed", "data-toggle": "collapse", "data-target": "#sm-collapse", "aria-expanded": "false" },
                 React.createElement(
                   "span",
                   { className: "sr-only" },
@@ -58,7 +58,7 @@ var Navbar = (function (_React$Component) {
             ),
             React.createElement(
               "div",
-              { className: "collapse navbar-collapse", id: "bs-example-navbar-collapse-1" },
+              { className: "collapse navbar-collapse", id: "sm-collapse" },
               React.createElement(NavAdmin, null)
             )
           )

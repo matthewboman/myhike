@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { Images } from '../common'
 
-
 class CreateReview extends Component {
   constructor(props) {
     super(props)
@@ -20,10 +19,6 @@ class CreateReview extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log(this.props.user.id)
-  }
-
   updateHike(event) {
     let updatedReview = Object.assign({}, this.state.review)
     updatedReview[event.target.id] = event.target.value
@@ -34,16 +29,12 @@ class CreateReview extends Component {
 
   addImages(event) {
     let updatedReview = Object.assign({}, this.state.review)
-    // Add images from Image component
     let updatedImages = Object.assign([], this.state.review.pictures)
     for (let value of event) {
       updatedImages.push(value.secure_url)
     }
     updatedReview["pictures"] = updatedImages
-
-    this.setState({
-      review: updatedReview
-    })
+    this.setState({ review: updatedReview })
   }
 
   submitHike(review) {
@@ -51,12 +42,10 @@ class CreateReview extends Component {
     this.props.onReview(this.state.review)
   }
 
-
   render() {
-
     return (
       <div className="review-block">
-        <h3>Add your own review</h3>
+        <div className="review-header">Add your own review</div>
         <input onChange={this.updateHike.bind(this)} id="description"
           className="form-control" type="text" placeholder="Describe it!" />
         <br />

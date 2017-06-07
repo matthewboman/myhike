@@ -44,7 +44,6 @@ module.exports = function (_x, action) {
 
       updatedMap[action.review.hikeId] = newList;
       updatedState.reviewMap = updatedMap;
-      console.log(JSON.stringify(updatedState));
       return updatedState;
 
     default:

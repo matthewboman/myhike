@@ -27,39 +27,12 @@ var HikeReviews = (function (Component) {
     _classCallCheck(this, HikeReviews);
 
     _get(Object.getPrototypeOf(HikeReviews.prototype), "constructor", this).call(this);
-    this.checkForReviews = this.checkForReviews.bind(this);
     this.state = {};
   }
 
   _inherits(HikeReviews, Component);
 
   _prototypeProperties(HikeReviews, null, {
-    checkForReviews: {
-
-      // Get hike and reviews up and loaded before component renders
-      value: function checkForReviews() {
-        var hike = this.props.hike;
-        if (hike == null) {
-          return;
-        }
-        var reviewsArray = this.props.reviews[hike.id];
-        if (reviewsArray != null) {
-          return;
-        }
-        this.props.fetchReviews({ hikeId: hike.id });
-      },
-      writable: true,
-      configurable: true
-    },
-    updateReview: {
-
-      // Allow user to edit their hike review
-      value: function updateReview(review) {
-        this.props.reviewUpdated(review);
-      },
-      writable: true,
-      configurable: true
-    },
     componentDidMount: {
       value: function componentDidMount() {
         this.checkForReviews();
@@ -74,45 +47,45 @@ var HikeReviews = (function (Component) {
       writable: true,
       configurable: true
     },
+    checkForReviews: {
+      value: function checkForReviews() {
+        if (this.props.hike == null) {
+          return;
+        }if (this.props.reviews[this.props.hike.id] != null) {
+          return;
+        }this.props.fetchReviews({ hikeId: this.props.hike.id });
+      },
+      writable: true,
+      configurable: true
+    },
+    updateReview: {
+      value: function updateReview(review) {
+        this.props.reviewUpdated(review);
+      },
+      writable: true,
+      configurable: true
+    },
+    renderReviews: {
+      value: function renderReviews() {
+        var _this = this;
+        if (this.props.hike && this.props.reviews[this.props.hike.id]) {
+          return this.props.reviews[this.props.hike.id].map(function (review, i) {
+            return React.createElement(Review, { key: i,
+              onUpdate: _this.updateReview.bind(_this),
+              isEditable: _this.props.user ? _this.props.user.id == review.user.id : false,
+              review: review });
+          });
+        }
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
-        var _this = this;
-
-
-        // Make sure component has what it needs to display reviews
-        var hike = this.props.hike;
-        var currentUser = this.props.user;
-        var reviewList = null;
-
-        if (hike != null) {
-          var hikeReviews = this.props.reviews[hike.id];
-
-          if (hikeReviews != null) {
-            reviewList = hikeReviews.map(function (review, i) {
-              var editable = false;
-              if (currentUser != null) {
-                editable = currentUser.id == review.user.id;
-              }
-              return React.createElement(
-                "li",
-                { key: i },
-                React.createElement(Review, {
-                  onUpdate: _this.updateReview.bind(_this),
-                  isEditable: editable,
-                  review: review })
-              );
-            });
-          }
-        }
-
         return React.createElement(
           "div",
-          null,
-          React.createElement(
-            "ul",
-            { className: "reviews" },
-            reviewList
-          )
+          { className: "reviews" },
+          this.renderReviews()
         );
       },
       writable: true,

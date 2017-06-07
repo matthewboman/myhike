@@ -37,79 +37,56 @@ var Hike = (function (Component) {
   _inherits(Hike, Component);
 
   _prototypeProperties(Hike, null, {
-    displayCreateReviewComponent: {
-
-      // Show/hide CreateReview component
-      value: function displayCreateReviewComponent(event) {
-        if (!this.props.user) {
-          console.log("you must be logged in to add a review");
+    componentDidUpdate: {
+      value: function componentDidUpdate() {
+        if (this.props.hike == null) {
           return;
         }
-        this.setState({
-          addReview: !this.state.addReview
-        });
+      },
+      writable: true,
+      configurable: true
+    },
+    displayCreateReviewComponent: {
+      value: function displayCreateReviewComponent(event) {
+        if (!this.props.user) {
+          this.props.displayMessage("You must be logged in to add a review");
+          return;
+        }
+        this.setState({ addReview: !this.state.addReview });
       },
       writable: true,
       configurable: true
     },
     submitReview: {
       value: function submitReview(review) {
-        if (this.props.user == null) {
-          console.log("You must be logged in to post a review");
-          return;
-        }
-        console.log(JSON.stringify(review));
         this.props.reviewCreated(review, this.props.hike);
-        this.setState({
-          addReview: !this.state.addReview
-        });
+        this.setState({ addReview: !this.state.addReview });
       },
       writable: true,
       configurable: true
     },
-    componentDidUpdate: {
-      value: function componentDidUpdate() {
-        var hike = this.props.hike;
-        if (hike == null) {
-          return;
-        }
-      },
-      writable: true,
-      configurable: true
-    },
-    render: {
-      value: function render() {
-        var hike = this.props.hike;
-        var user = this.props.user;
-
-        //Make sure we have the hike info before rendering
-        if (hike == null) {
-          return false;
-        }
-        var header = React.createElement(
+    renderHikeName: {
+      value: function renderHikeName() {
+        if (!this.props.hike) {
+          return null;
+        }return React.createElement(
           "div",
-          null,
-          React.createElement(
-            "h3",
-            null,
-            hike.name
-          )
+          { className: "hike-name" },
+          this.props.hike.name
         );
-
-        //Show/hide CreateReview component
-        var newReview = undefined;
-
+      },
+      writable: true,
+      configurable: true
+    },
+    renderCreateReviewOption: {
+      value: function renderCreateReviewOption() {
         if (this.state.addReview == true) {
-          newReview = React.createElement(
-            "div",
-            null,
-            React.createElement(CreateReview, {
-              user: user,
-              hike: this.props.hike,
-              onReview: this.submitReview.bind(this) })
-          );
+          return React.createElement(CreateReview, {
+            user: this.props.user,
+            hike: this.props.hike,
+            onReview: this.submitReview.bind(this) });
         } else {
-          newReview = React.createElement(
+          return React.createElement(
             "div",
             { className: "review-block" },
             React.createElement(
@@ -119,12 +96,22 @@ var Hike = (function (Component) {
             )
           );
         }
-
+      },
+      writable: true,
+      configurable: true
+    },
+    render: {
+      value: function render() {
         return React.createElement(
           "div",
           { className: "hike-component-container" },
-          header,
-          newReview,
+          this.renderHikeName(),
+          React.createElement(
+            "span",
+            { className: "error" },
+            this.props.message
+          ),
+          this.renderCreateReviewOption(),
           React.createElement(HikeReviews, null)
         );
       },
@@ -139,11 +126,15 @@ var Hike = (function (Component) {
 var stateToProps = function (state) {
   return {
     hike: state.hike.currentHike,
+    message: state.message.message,
     user: state.account.user };
 };
 
 var dispatchToProps = function (dispatch) {
   return {
+    displayMessage: function (message) {
+      return dispatch(actions.displayMessage(message));
+    },
     fetchHike: function (params) {
       return dispatch(actions.fetchHike(params));
     },

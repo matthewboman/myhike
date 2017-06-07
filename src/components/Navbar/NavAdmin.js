@@ -7,8 +7,6 @@ import { APIManager } from '../../utils'
 import actions from '../../actions'
 import { Login, Register } from '../User'
 
-// const appElement = document.getElementById('your-app-element');
-
 const customStyles = {
   content : {
     top                   : '50%',
@@ -70,81 +68,72 @@ class NavAdmin extends Component {
     this.props.logoutUser(null)
   }
 
-
-  render() {
-    /*
-      Populate modal with Login or Register
-    */
-    let modal = null
+  renderModalType() {
     if (this.state.isRegister) {
-      modal = (
+      return (
         <div className="modal-register">
           <Register onClose={this.closeModal}/>
         </div>
       )
-    }
-    if (this.state.isLogin) {
-      modal = (
+    } else if (this.state.isLogin) {
+      return (
         <div className="modal-login">
           <Login onLogin={this.login.bind(this)}
-                 error={this.props.error} />
+                 displayError={(error) => this.props.displayError(error)}
+                 error={this.props.error} 
+            />
         </div>
       )
     }
+  }
 
-    /*
-      Display login/signup if user is not logged in.
-      If user is logged in, display profile link and logout.
-    */
-    const user = this.props.user
-    let content = null
-
-    if (user == null) {
-      content = (
-          <ul className="nav navbar-nav navbar-right">
-            <li>
-              <Link to="/create-hike">Create Hike</Link>
-            </li>
-            <li>
-              <a onClick={this.openLogin}>Login</a>
-            </li>
-            <li>
-              <a onClick={this.openRegister}>Register</a>
-            </li>
-          </ul>
-      )
-    } else {
-      content = (
-        <ul className="nav navbar-nav navbar-right">
-          <li>
-            <Link to="/create-hike">Create Hike</Link>
-          </li>
-          <li>
-            <Link to="/currentuser">Account</Link>
-          </li>
-          <li>
-            <a onClick={this.logout.bind(this)}>Log out</a>
-          </li>
-        </ul>
-      )
-    }
-
+  renderIfNoUser() {
     return (
-      <div>
-        {content}
+      <ul className="nav navbar-nav navbar-right">
+        <li>
+          <Link to="/create-hike">Create Hike</Link>
+        </li>
+        <li>
+          <a onClick={this.openLogin}>Login</a>
+        </li>
+        <li>
+          <a onClick={this.openRegister}>Register</a>
+        </li>
+      </ul>
+    )
+  }
+
+  renderIfUser() {
+    return (
+      <ul className="nav navbar-nav navbar-right">
+        <li>
+          <Link to="/create-hike">Create Hike</Link>
+        </li>
+        <li>
+          <Link to="/currentuser">Account</Link>
+        </li>
+        <li>
+          <a onClick={this.logout.bind(this)}>Log out</a>
+        </li>
+      </ul>
+    )
+  }
+
+  render() {
+    return (
+      <div className="nav-admin">
+        { (this.props.user) ? this.renderIfUser() : this.renderIfNoUser() }
         <Modal
           // className="account-modal"
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
-          contentLabel="Example Modal"
+          contentLabel="account modal"
         >
-          {/*<button className="x-button" onClick={this.closeModal}><div className="x"></div></button>*/}
           <div onClick={this.closeModal} className="x"></div>
           <div className="modal-header">
-
-              {modal}
+            {this.renderModalType()}
           </div>
 
         </Modal>
@@ -163,6 +152,7 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
   return {
     currentUserReceived: (user) => dispatch(actions.currentUserReceived(user)),
+    displayError: (error) => dispatch(actions.displayError(error)),
     logoutUser: (user) => dispatch(actions.logoutUser(user)),
   }
 }

@@ -1,7 +1,7 @@
 import constants from '../constants'
 
 var initialState = {
-  appStatus: 'ready',
+  // appStatus: 'ready',
   list: []
 }
 

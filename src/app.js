@@ -11,11 +11,10 @@ import { AccountContainer, CreateHikeContainer, HikeContainer, HomeContainer,
          ProfileContainer } from './components/containers'
 
 /*
-// NOTE: path="../profile/:id"
-//  It has to go up a directory because, at the moment, profiles
-//  are accessible through clicking on a review on a hike. Without
-//  the preceding '../' path would be '/hike/profile/:id'. The other
-//  option (path="/profile/:id") allows it to work with server-side routing.
+// NOTE:
+//  for client side rendering: path="../profile/:id"
+//  for server-side rendering: path="/profile/:id"
+//  both go tothe same place
 */
 
 // Get initial state as rendered by the server
@@ -32,7 +31,6 @@ const app = (
         <Route path="/currentuser" component={AccountContainer}></Route>
         <Route path="../profile/:id" component={ProfileContainer}></Route>
         <Route path="/profile/:id" component={ProfileContainer}></Route>
-
 
       </Route>
     </Router>

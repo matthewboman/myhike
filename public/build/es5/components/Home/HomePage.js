@@ -36,7 +36,7 @@ var HomePage = (function (Component) {
             React.createElement(
               "div",
               { className: "home-section-title" },
-              "Hikers!"
+              "Hikers"
             ),
             React.createElement(
               "div",
@@ -46,7 +46,7 @@ var HomePage = (function (Component) {
             React.createElement(
               "div",
               { className: "home-section-title" },
-              "Foragers!"
+              "Foragers"
             ),
             React.createElement(
               "div",
@@ -56,7 +56,7 @@ var HomePage = (function (Component) {
             React.createElement(
               "div",
               { className: "home-section-title" },
-              "Ecologists!"
+              "Ecologists"
             ),
             React.createElement(
               "div",

@@ -13,24 +13,21 @@ class Login extends Component {
     }
   }
 
-  // Set state with what user types into inputs
   updateVisitor(event) {
     let updated = Object.assign({}, this.state.user)
     updated[event.target.id] = event.target.value
-    this.setState({
-      user: updated
-    })
+    this.setState({ user: updated })
   }
 
-  // Log user in
   login(event) {
     event.preventDefault()
     if (this.state.user.username == 0) {
       console.log('Please enter your username')
+      this.props.displayError('Please enter your username')
       return
     }
     if (this.state.user.password.length == 0) {
-      console.log('Please enter your password')
+      this.props.displayError('Please enter your password')
       return
     }
     this.props.onLogin(this.state.user)
@@ -38,9 +35,10 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="login">
+        {(this.props.error) ? this.props.error : ''}
       <form>
-        <div className="login">
+        <div className="username">
           <input
             className="form-control login-field"
             onChange={this.updateVisitor.bind(this)}
@@ -48,7 +46,7 @@ class Login extends Component {
             placeholder="username" />
         </div>
         <br />
-        <div>
+        <div className="password">
           <input
             className="form-control login-field"
             onChange={this.updateVisitor.bind(this)}

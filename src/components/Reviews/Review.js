@@ -28,30 +28,22 @@ class Review extends Component {
     this.closeModal = this.closeModal.bind(this)
   }
 
-  // Show/hide review editing capabilities
   toggleEdit(event) {
     event.preventDefault()
-    this.setState({
-      isEditing: !this.state.isEditing
-    })
+    this.setState({ isEditing: !this.state.isEditing })
   }
 
-  // Update only the fields that the user edited
   updateReview(event) {
     let updatedReview = Object.assign({}, this.state.review)
     let value = (!event.target.value) ? event.target.defaultValue : event.target.value
     updatedReview[event.target.id] = value
-    this.setState({
-      review: updatedReview
-    })
+    this.setState({ review: updatedReview })
   }
 
   submitUpdate(event) {
     event.preventDefault()
     this.props.onUpdate(this.state.review)
-    this.setState({
-      isEditing: !this.state.isEditing
-    })
+    this.setState({ isEditing: !this.state.isEditing })
   }
 
   displayPicture(event, picture, id) {
@@ -64,111 +56,101 @@ class Review extends Component {
   }
 
   closeModal() {
-    this.setState({
-      modalIsOpen: false,
-    });
+    this.setState({ modalIsOpen: false })
   }
 
-  render() {
-    let review = this.props.review
-    let reviewDate = review.timestamp.slice(0, review.timestamp.indexOf("T"))
-
-    const author = review.user
-    const authorImage = (author.image) ? author.image : "/images/default-user-sm.png"
-    const editable = (this.props.isEditable) ? this.props.isEditable : false
-    const photos = this.props.review.pictures.map((picture, id) => {
+  renderPhotos() {
+    return this.props.review.pictures.map((picture, id) => {
       return (
-        <li key={id}>
-          <img
-            className="hike-review-photo"
-            src={ImageHelper.preview(picture, 150, 200)}
-            onClick={this.displayPicture.bind(this, picture, id)}/>
-        </li>
+        <img key={id}
+          className="hike-review-photo"
+          src={ImageHelper.preview(picture, 150, 200)}
+          onClick={this.displayPicture.bind(this, picture, id)}/>
       )
     })
+  }
 
-    let modalPicture = <img src={this.state.currentPicture} />
+  renderReview() {
+    return (
+      <div className="review-block">
+        <div className="hike-review-photos">
+          {this.renderPhotos()}
+        </div>
+        <div className="review-header">Review/description: </div>
+        <p className="review-description">
+          {this.props.review.description}
+        </p>
+        <div className="review-header">Animals spotted: </div>
+        <p className="review-animals">
+          {this.props.review.animals}
+        </p>
+        <div className="review-header">Plants identified: </div>
+        <p className="review-plants">
+          {this.props.review.plants}
+        </p>
+        <div className="review-header">Mushrooms and other fungi: </div>
+        <p className="review-fungi">
+          {this.props.review.fungi}
+        </p>
+        <img className="icon-image"
+              src={ImageHelper.thumbnail((this.props.review.user.image) ? this.props.review.user.image : "/images/default-user-sm.png", 40)} />
+        <span>
+          <Link to={"../profile/" + this.props.review.user.id}>{this.props.review.user.username}</Link>
+        </span>
+        <span> | </span>
+        <span>{this.props.review.timestamp.slice(0, this.props.review.timestamp.indexOf("T"))}</span>
+        {
+          ((this.props.isEditable) ? this.props.isEditable : false) ?
+            <button className="btn review-edit-button" onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
+        }
+      </div>
+    )
+  }
 
-    let content = null
-
-    // Render review or editing mode
-    if (this.state.isEditing == true) {
-      content = (
-        <div className="review-block">
-        <h4 className="review-header">Review/description: </h4>
+  renderEditableReview() {
+    return (
+      <div className="review-block editable-review">
+        <div className="review-header">Review/description: </div>
         <textarea
           id="description"
           className="form-control"
           onChange={this.updateReview.bind(this)}
-          defaultValue={review.description} />
-        <h4 className="review-header">Animals spotted: </h4>
+          defaultValue={this.props.review.description} />
+        <div className="review-header">Animals spotted: </div>
         <input
           id="animals"
           className="form-control"
           onChange={this.updateReview.bind(this)}
-          defaultValue={review.animals} />
-        <h4 className="review-header">Plants identified: </h4>
+          defaultValue={this.props.review.animals} />
+        <div className="review-header">Plants identified: </div>
         <input
           id="plants"
           className="form-control"
           onChange={this.updateReview.bind(this)}
-          defaultValue={review.plants} />
-        <h4 className="review-header">Mushrooms and other fungi: </h4>
+          defaultValue={this.props.review.plants} />
+        <div className="review-header">Mushrooms and other fungi: </div>
         <input
           id="fungi"
           className="form-control"
           onChange={this.updateReview.bind(this)}
-          defaultValue={review.fungi} />
+          defaultValue={this.props.review.fungi} />
         <br />
         <button className="btn review-edit-button" onClick={this.submitUpdate.bind(this)}>Update Review</button>
-        </div>
-      )
-    } else {
-      content = (
-        <div className="review-block">
-          <ul className="hike-review-photos">
-          {photos}
-          </ul>
-          <h4 className="review-header">Review/description: </h4>
-          <p className="review-description">
-            {review.description}
-          </p>
-          <h4 className="review-header">Animals spotted: </h4>
-          <p className="review-animals">
-            {review.animals}
-          </p>
-          <h4 className="review-header">Plants identified: </h4>
-          <p className="review-plants">
-            {review.plants}
-          </p>
-          <h4 className="review-header">Mushrooms and other fungi: </h4>
-          <p className="review-fungi">
-            {review.fungi}
-          </p>
-          <img className="icon-image" src={ImageHelper.thumbnail(authorImage, 40)} />
-          <span>
-            <Link to={"../profile/" + author.id}>{author.username}</Link>
-          </span>
-          <span> | </span>
-          <span>{reviewDate}</span>
-          {
-            (editable) ? <button className="btn review-edit-button" onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
-          }
-        </div>
-      )
-    }
+      </div>
+    )
+  }
 
+  render() {
     return (
       <div>
-        {content}
+        {(this.state.isEditing) ? this.renderEditableReview() : this.renderReview()}
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles}
-          contentLabel="Picture Modal"
-        >
+          contentLabel="Picture Modal" >
           <button className="x-button" onClick={this.closeModal}>X</button>
-          {modalPicture}
+          <img src={this.state.currentPicture} className="large-review-image"/>
         </Modal>
       </div>
     )

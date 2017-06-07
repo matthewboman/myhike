@@ -5,7 +5,7 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 var constants = _interopRequire(require("../constants"));
 
 var initialState = {
-  appStatus: "ready",
+  // appStatus: 'ready',
   list: []
 };
 
