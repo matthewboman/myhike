@@ -67131,9 +67131,9 @@
 	      hike: {
 	        name: '',
 	        position: {},
-	        useAddress: false,
 	        address: ''
-	      }
+	      },
+	      use: ''
 	    };
 	    return _this;
 	  }
@@ -67152,15 +67152,13 @@
 	    value: function useCurrentLocation(event) {
 	      var updatedHike = Object.assign({}, this.state.hike);
 	      updatedHike['position'] = this.props.userLocation;
-	      this.setState({ hike: updatedHike });
+	      this.setState({ hike: updatedHike, use: 'currentLocation' });
 	      this.props.markHikeLocation(this.props.userLocation, false);
 	    }
 	  }, {
 	    key: 'useAddress',
 	    value: function useAddress(event) {
-	      var updatedHike = Object.assign({}, this.state.hike);
-	      updatedHike['useAddress'] = true;
-	      this.setState({ hike: updatedHike });
+	      this.setState({ use: 'address' });
 	    }
 	  }, {
 	    key: 'updateAddress',
@@ -67177,33 +67175,48 @@
 	      var updatedHike = Object.assign({}, this.state.hike);
 	      if (!this.props.clickedLocation) {
 	        this.props.displayMessage('please click on the map');
+	        this.setState({ use: 'map' });
 	        return;
 	      }
 	      updatedHike['position'] = this.props.clickedLocation;
-	      updatedHike['useAddress'] = false;
-	      this.setState({
-	        hike: updatedHike
-	      });
+	      this.setState({ hike: updatedHike, use: 'map' });
 	      this.props.markHikeLocation(this.props.clickedLocation, true);
 	    }
 	  }, {
 	    key: 'submitHike',
 	    value: function submitHike(hike) {
+	      var _this2 = this;
+	
 	      if (this.props.user == null) {
 	        this.props.displayError('You must be logged in to add hikes');
 	        return;
 	      }
-	      if (this.state.hike.location == null) {
+	      if (this.state.hike.name = '') {
+	        this.props.displayMessage('You hike must have a name');
+	      }
+	      if (this.state.hike.position == null) {
 	        this.props.displayError('Add a hike location before submitting');
 	        return;
 	      }
-	      var newHike = this.state.hike;
-	      this.props.hikeCreated(newHike);
+	      // if clicking on map, hike's position won't be set yet
+	      if (this.state.use == 'map') {
+	        var updatedHike = Object.assign({}, this.state.hike);
+	        updatedHike['position'] = this.props.clickedLocation;
+	        this.setState({ hike: updatedHike, use: 'map'
+	        }, function () {
+	          _this2.props.hikeCreated(newHike);
+	          console.log('submitting ' + JSON.stringify(_this2.state));
+	        });
+	      } else {
+	        var _newHike = this.state.hike;
+	        this.props.hikeCreated(_newHike);
+	        console.log('submitting ' + JSON.stringify(this.state.hike));
+	      }
 	    }
 	  }, {
 	    key: 'renderAddressSearch',
 	    value: function renderAddressSearch() {
-	      if (this.state.hike.useAddress) return _react2.default.createElement(_reactGoogleAutocomplete2.default, {
+	      if (this.state.use == 'address') return _react2.default.createElement(_reactGoogleAutocomplete2.default, {
 	        className: 'form-control',
 	        style: { width: '90%' },
 	        onPlaceSelected: this.updateAddress.bind(this),

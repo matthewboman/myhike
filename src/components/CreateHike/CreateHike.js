@@ -13,9 +13,9 @@ class CreateHike extends Component {
       hike: {
         name: '',
         position: {},
-        useAddress: false,
         address: ''
-      }
+      },
+      use: ''
     }
   }
 
@@ -30,14 +30,12 @@ class CreateHike extends Component {
   useCurrentLocation(event) {
     let updatedHike = Object.assign({}, this.state.hike)
     updatedHike['position'] = this.props.userLocation
-    this.setState({ hike: updatedHike })
+    this.setState({ hike: updatedHike, use: 'currentLocation' })
     this.props.markHikeLocation(this.props.userLocation, false)
   }
 
   useAddress(event) {
-    let updatedHike = Object.assign({}, this.state.hike)
-    updatedHike['useAddress'] = true
-    this.setState({ hike: updatedHike })
+    this.setState({ use: 'address' })
   }
 
   updateAddress(event) {
@@ -52,13 +50,11 @@ class CreateHike extends Component {
     let updatedHike = Object.assign({}, this.state.hike)
     if (!this.props.clickedLocation) {
       this.props.displayMessage('please click on the map')
+      this.setState({ use: 'map'})
       return
     }
     updatedHike['position'] = this.props.clickedLocation
-    updatedHike['useAddress'] = false
-    this.setState({
-      hike: updatedHike
-    })
+    this.setState({ hike: updatedHike, use: 'map' })
     this.props.markHikeLocation(this.props.clickedLocation, true)
   }
 
@@ -67,16 +63,31 @@ class CreateHike extends Component {
       this.props.displayError('You must be logged in to add hikes')
       return
     }
-    if (this.state.hike.location == null) {
+    if (this.state.hike.name = '') {
+      this.props.displayMessage('You hike must have a name')
+    }
+    if (this.state.hike.position == null) {
       this.props.displayError('Add a hike location before submitting')
       return
     }
-    let newHike = this.state.hike
-    this.props.hikeCreated(newHike)
+    // if clicking on map, hike's position won't be set yet
+    if (this.state.use == 'map') {
+      let updatedHike = Object.assign({}, this.state.hike)
+      updatedHike['position'] = this.props.clickedLocation
+      this.setState({ hike: updatedHike, use: 'map'
+       }, () => {
+         this.props.hikeCreated(newHike)
+         console.log('submitting ' + JSON.stringify(this.state))
+      })
+    } else {
+      let newHike = this.state.hike
+      this.props.hikeCreated(newHike)
+      console.log('submitting ' + JSON.stringify(this.state.hike))
+    }
   }
 
   renderAddressSearch() {
-    if (this.state.hike.useAddress)
+    if (this.state.use == 'address')
       return (
         <Autocomplete
           className="form-control"
