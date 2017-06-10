@@ -21,8 +21,6 @@ class CreateHike extends Component {
 
   updateHike(event) {
     let updatedHike = Object.assign({}, this.state.hike)
-    let updatedAddress = Object.assign({}, updatedHike.address)
-    updatedAddress[event.target.id] = event.target.value
     updatedHike[event.target.id] = event.target.value
     this.setState({ hike: updatedHike })
   }
@@ -63,8 +61,9 @@ class CreateHike extends Component {
       this.props.displayError('You must be logged in to add hikes')
       return
     }
-    if (this.state.hike.name = '') {
+    if (this.state.hike.name == '') {
       this.props.displayMessage('You hike must have a name')
+      return
     }
     if (this.state.hike.position == null) {
       this.props.displayError('Add a hike location before submitting')
@@ -76,13 +75,10 @@ class CreateHike extends Component {
       updatedHike['position'] = this.props.clickedLocation
       this.setState({ hike: updatedHike, use: 'map'
        }, () => {
-         this.props.hikeCreated(newHike)
-         console.log('submitting ' + JSON.stringify(this.state))
+         this.props.hikeCreated(updatedHike)
       })
     } else {
-      let newHike = this.state.hike
-      this.props.hikeCreated(newHike)
-      console.log('submitting ' + JSON.stringify(this.state.hike))
+      this.props.hikeCreated(this.state.hike)
     }
   }
 

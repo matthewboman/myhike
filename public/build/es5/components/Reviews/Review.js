@@ -16,23 +16,14 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var Link = require("react-router").Link;
-var Modal = _interopRequire(require("react-modal"));
+var Lightbox = _interopRequire(require("react-image-lightbox"));
 
 var Images = require("../common").Images;
 var ImageHelper = require("../../utils").ImageHelper;
+var _ = require("./");
 
-
-var customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)"
-  }
-};
-
+var DifficultySelect = _.DifficultySelect;
+var FeatureSelect = _.FeatureSelect;
 var Review = (function (Component) {
   function Review(props) {
     _classCallCheck(this, Review);
@@ -41,13 +32,29 @@ var Review = (function (Component) {
     this.state = {
       isEditing: false,
       review: props.review,
-      currentPicture: "",
-      modalIsOpen: false }, this.closeModal = this.closeModal.bind(this);
+      images: [],
+      isOpen: false,
+      photoIndex: 0 };
   }
 
   _inherits(Review, Component);
 
   _prototypeProperties(Review, null, {
+    componentDidMount: {
+      value: function componentDidMount() {
+        this.createImageList();
+        console.log(this.props.review.hikeName);
+      },
+      writable: true,
+      configurable: true
+    },
+    createImageList: {
+      value: function createImageList() {
+        this.setState({ images: this.props.review.pictures });
+      },
+      writable: true,
+      configurable: true
+    },
     toggleEdit: {
       value: function toggleEdit(event) {
         event.preventDefault();
@@ -76,19 +83,52 @@ var Review = (function (Component) {
       configurable: true
     },
     displayPicture: {
-      value: function displayPicture(event, picture, id) {
-        console.log(event);
-        // BUG: for some reason picture is the first and not second argument?
-        this.setState({
-          currentPicture: event,
-          modalIsOpen: true });
+      value: function displayPicture() {
+        this.setState({ isOpen: true });
       },
       writable: true,
       configurable: true
     },
-    closeModal: {
-      value: function closeModal() {
-        this.setState({ modalIsOpen: false });
+    updateDifficulty: {
+      value: function updateDifficulty(value) {
+        var updatedReview = Object.assign({}, this.state.review);
+        updatedReview.difficulty = value;
+        this.setState({ review: updatedReview });
+      },
+      writable: true,
+      configurable: true
+    },
+    updateFeatures: {
+      value: function updateFeatures(value) {
+        var updatedReview = Object.assign({}, this.state.review);
+        var updatedFeatures = Object.assign([], this.state.review.features);
+        updatedFeatures = value.split(",");
+        updatedReview.features = updatedFeatures;
+        this.setState({ review: updatedReview });
+      },
+      writable: true,
+      configurable: true
+    },
+    renderLightBox: {
+      value: function renderLightBox() {
+        var _this = this;
+        return React.createElement(Lightbox, {
+          mainSrc: this.state.images[this.state.photoIndex],
+          nextSrc: this.state.images[(this.state.photoIndex + 1) % this.state.images.length],
+          prevSrc: this.state.images[(this.state.photoIndex + this.state.images.length - 1) % this.state.images.length],
+
+          onCloseRequest: function () {
+            return _this.setState({ isOpen: false });
+          },
+          onMovePrevRequest: function () {
+            return _this.setState({
+              photoIndex: (_this.state.photoIndex + _this.state.images.length - 1) % _this.state.images.length });
+          },
+          onMoveNextRequest: function () {
+            return _this.setState({
+              photoIndex: (_this.state.photoIndex + 1) % _this.state.images.length });
+          }
+        });
       },
       writable: true,
       configurable: true
@@ -100,62 +140,130 @@ var Review = (function (Component) {
           return React.createElement("img", { key: id,
             className: "hike-review-photo",
             src: ImageHelper.preview(picture, 150, 200),
-            onClick: _this.displayPicture.bind(_this, picture, id) });
+            onClick: _this.displayPicture.bind(_this) });
         });
       },
       writable: true,
       configurable: true
     },
-    renderReview: {
-      value: function renderReview() {
+    renderDescription: {
+      value: function renderDescription() {
         return React.createElement(
           "div",
-          { className: "review-block" },
-          React.createElement(
-            "div",
-            { className: "hike-review-photos" },
-            this.renderPhotos()
-          ),
+          { className: "review-description-block" },
           React.createElement(
             "div",
             { className: "review-header" },
             "Review/description: "
           ),
           React.createElement(
-            "p",
+            "div",
             { className: "review-description" },
             this.props.review.description
-          ),
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderDifficulty: {
+      value: function renderDifficulty() {
+        return React.createElement(
+          "div",
+          { className: "review-difficulty-block" },
           React.createElement(
             "div",
             { className: "review-header" },
-            "Animals spotted: "
+            "Difficulty: "
           ),
           React.createElement(
-            "p",
+            "div",
+            { className: "review-difficulty" },
+            this.props.review.difficulty.value
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderFeatures: {
+      value: function renderFeatures() {
+        return this.props.review.features.map(function (feature, id) {
+          return React.createElement(
+            "span",
+            { key: id, className: "review-feature" },
+            feature
+          );
+        });
+      },
+      writable: true,
+      configurable: true
+    },
+    renderAnimals: {
+      value: function renderAnimals() {
+        return React.createElement(
+          "div",
+          { className: "review-animals-block" },
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Animals: "
+          ),
+          React.createElement(
+            "div",
             { className: "review-animals" },
             this.props.review.animals
-          ),
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderPlants: {
+      value: function renderPlants() {
+        return React.createElement(
+          "div",
+          { className: "review-plants-block" },
           React.createElement(
             "div",
             { className: "review-header" },
-            "Plants identified: "
+            "Plants: "
           ),
           React.createElement(
-            "p",
+            "div",
             { className: "review-plants" },
             this.props.review.plants
-          ),
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderFungi: {
+      value: function renderFungi() {
+        return React.createElement(
+          "div",
+          { className: "review-fungi-block" },
           React.createElement(
             "div",
             { className: "review-header" },
-            "Mushrooms and other fungi: "
+            "Fungi: "
           ),
           React.createElement(
-            "p",
+            "div",
             { className: "review-fungi" },
             this.props.review.fungi
-          ),
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderUser: {
+      value: function renderUser() {
+        return React.createElement(
+          "div",
+          { className: "review-user-block" },
           React.createElement("img", { className: "icon-image",
             src: ImageHelper.thumbnail(this.props.review.user.image ? this.props.review.user.image : "/images/default-user-sm.png", 40) }),
           React.createElement(
@@ -176,7 +284,34 @@ var Review = (function (Component) {
             "span",
             null,
             this.props.review.timestamp.slice(0, this.props.review.timestamp.indexOf("T"))
+          )
+        );
+      },
+      writable: true,
+      configurable: true
+    },
+    renderReview: {
+      value: function renderReview() {
+        return React.createElement(
+          "div",
+          { className: "review-block" },
+          this.props.inUser ? this.renderHikeName() : "",
+          React.createElement(
+            "div",
+            { className: "hike-review-photos" },
+            this.renderPhotos()
           ),
+          this.props.review.description ? this.renderDescription() : "",
+          this.props.review.difficulty ? this.renderDifficulty() : "",
+          React.createElement(
+            "div",
+            { className: "review-feature-block" },
+            this.renderFeatures()
+          ),
+          this.props.review.animals ? this.renderAnimals() : "",
+          this.props.review.plants ? this.renderPlants() : "",
+          this.props.review.fungi ? this.renderFungi() : "",
+          this.renderUser(),
           (this.props.isEditable ? this.props.isEditable : false) ? React.createElement(
             "button",
             { className: "btn review-edit-button", onClick: this.toggleEdit.bind(this) },
@@ -202,6 +337,18 @@ var Review = (function (Component) {
             className: "form-control",
             onChange: this.updateReview.bind(this),
             defaultValue: this.props.review.description }),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Difficulty: "
+          ),
+          React.createElement(DifficultySelect, { addDifficultyToHike: this.updateDifficulty.bind(this) }),
+          React.createElement(
+            "div",
+            { className: "review-header" },
+            "Features: "
+          ),
+          React.createElement(FeatureSelect, { addFeaturesToHike: this.updateFeatures.bind(this) }),
           React.createElement(
             "div",
             { className: "review-header" },
@@ -243,26 +390,24 @@ var Review = (function (Component) {
       writable: true,
       configurable: true
     },
+    renderHikeName: {
+      value: function renderHikeName() {
+        return React.createElement(
+          "div",
+          { className: "hike-name" },
+          this.props.review.hikeName
+        );
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
         return React.createElement(
           "div",
           null,
-          this.state.isEditing ? this.renderEditableReview() : this.renderReview(),
-          React.createElement(
-            Modal,
-            {
-              isOpen: this.state.modalIsOpen,
-              onRequestClose: this.closeModal,
-              style: customStyles,
-              contentLabel: "Picture Modal" },
-            React.createElement(
-              "button",
-              { className: "x-button", onClick: this.closeModal },
-              "X"
-            ),
-            React.createElement("img", { src: this.state.currentPicture, className: "large-review-image" })
-          )
+          this.state.isOpen ? this.renderLightBox() : "",
+          this.state.isEditing ? this.renderEditableReview() : this.renderReview()
         );
       },
       writable: true,

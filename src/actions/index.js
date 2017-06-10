@@ -152,6 +152,10 @@ export default {
           type: constants.HIKE_ADDED,
           hike: response.result
         })
+        dispatch({
+          type: constants.MESSAGE_RECEIVED,
+          message: "hike successfully added"
+        })
       })
     }
   },

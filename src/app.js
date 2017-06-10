@@ -7,7 +7,7 @@ import routes from './routes'
 import store from './store/store'
 
 import Main from './components/Main'
-import { AccountContainer, CreateHikeContainer, HikeContainer, HomeContainer,
+import { About, AccountContainer, CreateHikeContainer, HikeContainer, HomeContainer,
          ProfileContainer } from './components/containers'
 
 /*
@@ -31,6 +31,7 @@ const app = (
         <Route path="/currentuser" component={AccountContainer}></Route>
         <Route path="../profile/:id" component={ProfileContainer}></Route>
         <Route path="/profile/:id" component={ProfileContainer}></Route>
+        <Route path="/about" component={About}></Route>
 
       </Route>
     </Router>

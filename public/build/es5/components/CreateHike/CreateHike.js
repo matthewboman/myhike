@@ -43,8 +43,6 @@ var CreateHike = (function (Component) {
     updateHike: {
       value: function updateHike(event) {
         var updatedHike = Object.assign({}, this.state.hike);
-        var updatedAddress = Object.assign({}, updatedHike.address);
-        updatedAddress[event.target.id] = event.target.value;
         updatedHike[event.target.id] = event.target.value;
         this.setState({ hike: updatedHike });
       },
@@ -101,8 +99,9 @@ var CreateHike = (function (Component) {
           this.props.displayError("You must be logged in to add hikes");
           return;
         }
-        if (this.state.hike.name = "") {
+        if (this.state.hike.name == "") {
           this.props.displayMessage("You hike must have a name");
+          return;
         }
         if (this.state.hike.position == null) {
           this.props.displayError("Add a hike location before submitting");
@@ -110,17 +109,16 @@ var CreateHike = (function (Component) {
         }
         // if clicking on map, hike's position won't be set yet
         if (this.state.use == "map") {
-          var updatedHike = Object.assign({}, this.state.hike);
-          updatedHike.position = this.props.clickedLocation;
-          this.setState({ hike: updatedHike, use: "map"
-          }, function () {
-            _this.props.hikeCreated(newHike);
-            console.log("submitting " + JSON.stringify(_this.state));
-          });
+          (function () {
+            var updatedHike = Object.assign({}, _this.state.hike);
+            updatedHike.position = _this.props.clickedLocation;
+            _this.setState({ hike: updatedHike, use: "map"
+            }, function () {
+              _this.props.hikeCreated(updatedHike);
+            });
+          })();
         } else {
-          var _newHike = this.state.hike;
-          this.props.hikeCreated(_newHike);
-          console.log("submitting " + JSON.stringify(this.state.hike));
+          this.props.hikeCreated(this.state.hike);
         }
       },
       writable: true,

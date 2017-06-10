@@ -1,20 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
-import Modal from 'react-modal'
+import Lightbox from 'react-image-lightbox'
 
 import { Images } from '../common'
 import { ImageHelper } from '../../utils'
-
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
+import { DifficultySelect, FeatureSelect } from './'
 
 class Review extends Component {
   constructor(props) {
@@ -22,10 +12,20 @@ class Review extends Component {
     this.state = {
       isEditing: false,
       review: props.review,
-      currentPicture: '',
-      modalIsOpen: false,
-    },
-    this.closeModal = this.closeModal.bind(this)
+      images: [],
+      isOpen: false,
+      photoIndex: 0,
+
+    }
+  }
+
+  componentDidMount() {
+    this.createImageList()
+    console.log(this.props.review.hikeName)
+  }
+
+  createImageList() {
+    this.setState({ images: this.props.review.pictures })
   }
 
   toggleEdit(event) {
@@ -46,18 +46,42 @@ class Review extends Component {
     this.setState({ isEditing: !this.state.isEditing })
   }
 
-  displayPicture(event, picture, id) {
-    console.log(event)
-    // BUG: for some reason picture is the first and not second argument?
-    this.setState({
-      currentPicture: event,
-      modalIsOpen: true,
-    })
+  displayPicture() {
+    this.setState({ isOpen: true })
   }
 
-  closeModal() {
-    this.setState({ modalIsOpen: false })
+  updateDifficulty(value) {
+    let updatedReview = Object.assign({}, this.state.review)
+    updatedReview['difficulty'] = value
+    this.setState({ review: updatedReview})
   }
+
+  updateFeatures(value) {
+    let updatedReview = Object.assign({}, this.state.review)
+    let updatedFeatures = Object.assign([], this.state.review.features)
+    updatedFeatures = value.split(',')
+    updatedReview['features'] = updatedFeatures
+    this.setState({ review: updatedReview})
+  }
+
+  renderLightBox() {
+    return (
+      <Lightbox
+          mainSrc={this.state.images[this.state.photoIndex]}
+          nextSrc={this.state.images[(this.state.photoIndex + 1) % this.state.images.length]}
+          prevSrc={this.state.images[(this.state.photoIndex + this.state.images.length - 1) % this.state.images.length]}
+
+          onCloseRequest={() => this.setState({ isOpen: false })}
+          onMovePrevRequest={() => this.setState({
+              photoIndex: (this.state.photoIndex + this.state.images.length - 1) % this.state.images.length,
+          })}
+          onMoveNextRequest={() => this.setState({
+              photoIndex: (this.state.photoIndex + 1) % this.state.images.length,
+          })}
+      />
+    )
+  }
+
 
   renderPhotos() {
     return this.props.review.pictures.map((picture, id) => {
@@ -65,33 +89,67 @@ class Review extends Component {
         <img key={id}
           className="hike-review-photo"
           src={ImageHelper.preview(picture, 150, 200)}
-          onClick={this.displayPicture.bind(this, picture, id)}/>
+          onClick={this.displayPicture.bind(this)}/>
       )
     })
   }
 
-  renderReview() {
+  renderDescription() {
     return (
-      <div className="review-block">
-        <div className="hike-review-photos">
-          {this.renderPhotos()}
-        </div>
+      <div className="review-description-block">
         <div className="review-header">Review/description: </div>
-        <p className="review-description">
-          {this.props.review.description}
-        </p>
-        <div className="review-header">Animals spotted: </div>
-        <p className="review-animals">
-          {this.props.review.animals}
-        </p>
-        <div className="review-header">Plants identified: </div>
-        <p className="review-plants">
-          {this.props.review.plants}
-        </p>
-        <div className="review-header">Mushrooms and other fungi: </div>
-        <p className="review-fungi">
-          {this.props.review.fungi}
-        </p>
+        <div className="review-description">{this.props.review.description}</div>
+      </div>
+    )
+  }
+
+  renderDifficulty() {
+    return (
+      <div className="review-difficulty-block">
+        <div className="review-header">Difficulty: </div>
+        <div className="review-difficulty">{this.props.review.difficulty.value}</div>
+      </div>
+    )
+  }
+
+  renderFeatures() {
+    return this.props.review.features.map((feature, id) => {
+      return (
+        <span key={id} className="review-feature">{feature}</span>
+      )
+    })
+  }
+
+  renderAnimals() {
+    return (
+      <div className="review-animals-block">
+        <div className="review-header">Animals: </div>
+        <div className="review-animals">{this.props.review.animals}</div>
+      </div>
+    )
+  }
+
+  renderPlants() {
+    return (
+      <div className="review-plants-block">
+        <div className="review-header">Plants: </div>
+        <div className="review-plants">{this.props.review.plants}</div>
+      </div>
+    )
+  }
+
+  renderFungi() {
+    return (
+      <div className="review-fungi-block">
+        <div className="review-header">Fungi: </div>
+        <div className="review-fungi">{this.props.review.fungi}</div>
+      </div>
+    )
+  }
+
+  renderUser() {
+    return (
+      <div className="review-user-block">
         <img className="icon-image"
               src={ImageHelper.thumbnail((this.props.review.user.image) ? this.props.review.user.image : "/images/default-user-sm.png", 40)} />
         <span>
@@ -99,6 +157,30 @@ class Review extends Component {
         </span>
         <span> | </span>
         <span>{this.props.review.timestamp.slice(0, this.props.review.timestamp.indexOf("T"))}</span>
+      </div>
+    )
+  }
+
+  renderReview() {
+    return (
+      <div className="review-block">
+        {(this.props.inUser) ? this.renderHikeName() : ''}
+
+        <div className="hike-review-photos">
+          {this.renderPhotos()}
+        </div>
+
+        {(this.props.review.description) ? this.renderDescription() : ''}
+        {(this.props.review.difficulty) ? this.renderDifficulty() : ''}
+
+        <div className="review-feature-block">
+          {this.renderFeatures()}
+        </div>
+
+        {(this.props.review.animals) ? this.renderAnimals(): ''}
+        {(this.props.review.plants) ? this.renderPlants() : ''}
+        {(this.props.review.fungi) ? this.renderFungi() : ''}
+        {this.renderUser()}
         {
           ((this.props.isEditable) ? this.props.isEditable : false) ?
             <button className="btn review-edit-button" onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
@@ -116,6 +198,13 @@ class Review extends Component {
           className="form-control"
           onChange={this.updateReview.bind(this)}
           defaultValue={this.props.review.description} />
+
+        <div className="review-header">Difficulty: </div>
+        <DifficultySelect addDifficultyToHike={this.updateDifficulty.bind(this)} />
+
+        <div className="review-header">Features: </div>
+        <FeatureSelect addFeaturesToHike={this.updateFeatures.bind(this)}/>
+
         <div className="review-header">Animals spotted: </div>
         <input
           id="animals"
@@ -140,18 +229,19 @@ class Review extends Component {
     )
   }
 
+  renderHikeName() {
+    return (
+      <div className="hike-name">
+        {this.props.review.hikeName}
+      </div>
+    )
+  }
+
   render() {
     return (
       <div>
+        {(this.state.isOpen) ? this.renderLightBox() : ''}
         {(this.state.isEditing) ? this.renderEditableReview() : this.renderReview()}
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Picture Modal" >
-          <button className="x-button" onClick={this.closeModal}>X</button>
-          <img src={this.state.currentPicture} className="large-review-image"/>
-        </Modal>
       </div>
     )
   }
