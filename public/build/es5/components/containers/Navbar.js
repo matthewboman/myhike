@@ -15,6 +15,7 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var Link = require("react-router").Link;
 var NavAdmin = require("../Navbar").NavAdmin;
 var Navbar = (function (_React$Component) {
   function Navbar() {
@@ -59,6 +60,19 @@ var Navbar = (function (_React$Component) {
             React.createElement(
               "div",
               { className: "collapse navbar-collapse", id: "sm-collapse" },
+              React.createElement(
+                "ul",
+                { className: "nav navbar-nav" },
+                React.createElement(
+                  "li",
+                  null,
+                  React.createElement(
+                    Link,
+                    { to: "/about" },
+                    "About"
+                  )
+                )
+              ),
               React.createElement(NavAdmin, null)
             )
           )

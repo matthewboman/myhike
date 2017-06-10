@@ -16,6 +16,10 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var Images = require("../common").Images;
+var _ = require("./");
+
+var DifficultySelect = _.DifficultySelect;
+var FeatureSelect = _.FeatureSelect;
 var CreateReview = (function (Component) {
   function CreateReview(props) {
     _classCallCheck(this, CreateReview);
@@ -25,12 +29,15 @@ var CreateReview = (function (Component) {
       review: {
         animals: "",
         description: "",
+        difficulty: "",
         fungi: "",
+        features: [],
         pictures: [],
         plants: "",
         user: props.user,
         hikeId: props.hike.id,
-        userId: props.user.id
+        userId: props.user.id,
+        hikeName: props.hike.name
       }
     };
   }
@@ -38,6 +45,13 @@ var CreateReview = (function (Component) {
   _inherits(CreateReview, Component);
 
   _prototypeProperties(CreateReview, null, {
+    componentDidMount: {
+      value: function componentDidMount() {
+        console.log(JSON.stringify(this.props, null, 2));
+      },
+      writable: true,
+      configurable: true
+    },
     updateHike: {
       value: function updateHike(event) {
         var updatedReview = Object.assign({}, this.state.review);
@@ -71,6 +85,26 @@ var CreateReview = (function (Component) {
       writable: true,
       configurable: true
     },
+    addDifficultyToHike: {
+      value: function addDifficultyToHike(value) {
+        var updatedReview = Object.assign({}, this.state.review);
+        updatedReview.difficulty = value;
+        this.setState({ review: updatedReview });
+      },
+      writable: true,
+      configurable: true
+    },
+    addFeaturesToHike: {
+      value: function addFeaturesToHike(value) {
+        var updatedReview = Object.assign({}, this.state.review);
+        var updatedFeatures = Object.assign([], this.state.review.features);
+        updatedFeatures = value.split(",");
+        updatedReview.features = updatedFeatures;
+        this.setState({ review: updatedReview });
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
         return React.createElement(
@@ -81,20 +115,45 @@ var CreateReview = (function (Component) {
             { className: "review-header" },
             "Add your own review"
           ),
-          React.createElement("input", { onChange: this.updateHike.bind(this), id: "description",
-            className: "form-control", type: "text", placeholder: "Describe it!" }),
-          React.createElement("br", null),
-          React.createElement("input", { onChange: this.updateHike.bind(this), id: "plants",
-            className: "form-control", type: "text", placeholder: "What plants?" }),
-          React.createElement("br", null),
-          React.createElement("input", { onChange: this.updateHike.bind(this), id: "fungi",
-            className: "form-control", type: "text", placeholder: "What mushrooms?" }),
-          React.createElement("br", null),
-          React.createElement("input", { onChange: this.updateHike.bind(this), id: "animals",
-            className: "form-control", type: "text", placeholder: "What animals" }),
-          React.createElement("br", null),
-          React.createElement(Images, { onImageSubmit: this.addImages.bind(this) }),
-          React.createElement("br", null),
+          React.createElement(
+            "div",
+            { className: "review-input description-input" },
+            React.createElement("textarea", { onChange: this.updateHike.bind(this), id: "description",
+              className: "form-control", type: "text", placeholder: "Describe it!" })
+          ),
+          React.createElement(
+            "div",
+            { className: "review-input difficulty-select" },
+            React.createElement(DifficultySelect, { addDifficultyToHike: this.addDifficultyToHike.bind(this) })
+          ),
+          React.createElement(
+            "div",
+            { className: "review-input feature-select" },
+            React.createElement(FeatureSelect, { addFeaturesToHike: this.addFeaturesToHike.bind(this) })
+          ),
+          React.createElement(
+            "div",
+            { className: "review-input plant-input" },
+            React.createElement("input", { onChange: this.updateHike.bind(this), id: "plants",
+              className: "form-control", type: "text", placeholder: "What plants?" })
+          ),
+          React.createElement(
+            "div",
+            { className: "review-input fungi-input" },
+            React.createElement("input", { onChange: this.updateHike.bind(this), id: "fungi",
+              className: "form-control", type: "text", placeholder: "What mushrooms?" })
+          ),
+          React.createElement(
+            "div",
+            { className: "review-input animals-input" },
+            React.createElement("input", { onChange: this.updateHike.bind(this), id: "animals",
+              className: "form-control", type: "text", placeholder: "What animals" })
+          ),
+          React.createElement(
+            "div",
+            { className: "review-input review-image-input" },
+            React.createElement(Images, { onImageSubmit: this.addImages.bind(this) })
+          ),
           React.createElement(
             "button",
             { onClick: this.submitHike.bind(this),

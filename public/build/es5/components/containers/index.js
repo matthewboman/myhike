@@ -2,6 +2,8 @@
 
 var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
+var About = _interopRequire(require("./About"));
+
 var AccountContainer = _interopRequire(require("./AccountContainer"));
 
 var CreateHikeContainer = _interopRequire(require("./CreateHikeContainer"));
@@ -14,6 +16,7 @@ var Navbar = _interopRequire(require("./Navbar"));
 
 var ProfileContainer = _interopRequire(require("./ProfileContainer"));
 
+exports.About = About;
 exports.AccountContainer = AccountContainer;
 exports.CreateHikeContainer = CreateHikeContainer;
 exports.HikeContainer = HikeContainer;

@@ -1,3 +1,4 @@
+import About from './About'
 import AccountContainer from './AccountContainer'
 import CreateHikeContainer from './CreateHikeContainer'
 import HikeContainer from './HikeContainer'
@@ -8,6 +9,7 @@ import ProfileContainer from './ProfileContainer'
 
 export {
 
+  About,
   AccountContainer,
   CreateHikeContainer,
   HikeContainer,

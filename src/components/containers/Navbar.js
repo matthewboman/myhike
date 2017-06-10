@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { Link } from 'react-router'
 import { NavAdmin } from '../Navbar'
 
 class Navbar extends React.Component {
@@ -24,6 +24,9 @@ class Navbar extends React.Component {
           </div>
 
           <div className="collapse navbar-collapse" id="sm-collapse">
+            <ul className="nav navbar-nav">
+              <li><Link to="/about">About</Link></li>
+            </ul>
             <NavAdmin />
           </div>
 

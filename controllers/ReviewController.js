@@ -45,6 +45,7 @@ module.exports = {
       Review.create(params, function(err, review) {
         if (err) {
           reject(err)
+          console.log(err)
           return
         }
         resolve(review.summary())

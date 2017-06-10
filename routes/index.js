@@ -10,6 +10,7 @@ var controllers = require('../controllers')
 
 var serverapp = require('../public/build/es5/serverapp')
 var store = require('../public/build/es5/store/store')
+var About = require('../public/build/es5/components/containers/About')
 var AccountContainer = require('../public/build/es5/components/containers/AccountContainer')
 var CreateHikeContainer = require('../public/build/es5/components/containers/CreateHikeContainer')
 var HikeContainer = require('../public/build/es5/components/containers/HikeContainer')
@@ -108,6 +109,37 @@ router.get('/:page', function(req, res, next) {
 
   let initialStore = null
   let reducers = {}
+
+  if (page == 'about') {
+    // See if user is logged in
+    controllers.account.currentUser(req)
+      .then(function(result) {
+        reducers['account'] = {
+          user: result
+        }
+
+        initialStore = store.configureStore(reducers)
+        var routes = {
+          path: '/create-hike',
+          component: serverapp,
+          initial: initialStore,
+          indexRoute: {
+            component: About
+          }
+        }
+        return matchRoutes(req, routes)
+      })
+      .then(function(renderProps) {
+        var html = ReactDOMServer.renderToString(React.createElement(ReactRouter.RouterContext, renderProps))
+        res.render('index', {
+          react: html,
+          preloadedState: JSON.stringify(initialStore.getState())
+        })
+      })
+      .catch(function(err) {
+        console.log(err)
+      })
+  }
 
   // Server-side rendering for CreateHike component
   if (page == 'create-hike') {
