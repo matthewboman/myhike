@@ -28911,12 +28911,12 @@
 	  switch (action.type) {
 	
 	    case _constants2.default.MESSAGE_RECEIVED:
-	      // console.log("MESSAGE RECEIVED: " + JSON.stringify(action.message))
+	      console.log("MESSAGE RECEIVED: " + JSON.stringify(action.message));
 	      updatedState['message'] = action.message;
 	      return updatedState;
 	
 	    case _constants2.default.ERROR_RECEIVED:
-	      // console.log("ERROR_RECEIVED: " + action.message)
+	      console.log("ERROR_RECEIVED: " + action.message);
 	      updatedState['error'] = action.message;
 	      return updatedState;
 	
@@ -29995,6 +29995,7 @@
 	
 	  // Log user in
 	  currentUserReceived: function currentUserReceived(credentials) {
+	    console.log(JSON.stringify(credentials));
 	    return function (dispatch) {
 	      _utils.APIManager.post('/account/login', credentials, function (err, response) {
 	        if (err) {

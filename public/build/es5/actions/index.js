@@ -26,6 +26,7 @@ module.exports = {
 
   // Log user in
   currentUserReceived: function (credentials) {
+    console.log(JSON.stringify(credentials));
     return function (dispatch) {
       APIManager.post("/account/login", credentials, function (err, response) {
         if (err) {

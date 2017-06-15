@@ -23,6 +23,7 @@ export default {
 
   // Log user in
   currentUserReceived: (credentials) => {
+    console.log(JSON.stringify(credentials))
     return (dispatch) => {
       APIManager.post('/account/login', credentials, (err, response) => {
         if (err) {
