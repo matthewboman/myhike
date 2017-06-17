@@ -15,174 +15,79 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var connect = require("react-redux").connect;
-var actions = _interopRequire(require("../../actions"));
-
 var ImageHelper = require("../../utils").ImageHelper;
-var Review = require("../Reviews").Review;
 var Profile = (function (Component) {
-  function Profile() {
+  function Profile(props) {
     _classCallCheck(this, Profile);
 
-    _get(Object.getPrototypeOf(Profile.prototype), "constructor", this).call(this);
-    this.state = {};
+    _get(Object.getPrototypeOf(Profile.prototype), "constructor", this).call(this, props);
   }
 
   _inherits(Profile, Component);
 
   _prototypeProperties(Profile, null, {
-    componentDidMount: {
-      value: function componentDidMount() {
-        var profile = this.props.profiles[this.props.id];
-
-        if (profile == null) {
-          this.props.fetchProfile(this.props.id);
-          return;
-        }
-        if (this.props.reviews[profile.id] != null) {
-          return;
-        }
-        this.props.fetchReviews({ "user.id": profile.id });
-      },
-      writable: true,
-      configurable: true
-    },
-    componentDidUpdate: {
-      value: function componentDidUpdate() {
-        var profile = this.props.profiles[this.props.id];
-        if (profile == null) {
-          return;
-        }
-        if (this.props.reviews[profile.id] != null) {
-          return;
-        }
-        this.props.fetchReviews({ "user.id": profile.id });
-      },
-      writable: true,
-      configurable: true
-    },
     render: {
-
-      // renderReviews() {
-      //   if (this.props.reviews[this.props.profiles[this.props.id].id]) {
-      //     return this.props.reviews[this.props.user.id].map((review, i) => {
-      //       return (
-      //         <Review key={i}
-      //           onUpdate={this.updateReview.bind(this)}
-      //           isEditable={(this.props.user) ? (this.props.user.id == review.user.id) : false}
-      //           review={review} />
-      //       )
-      //     })
-      //   }
-      // }
-
       value: function render() {
-        var profile = this.props.profiles[this.props.id];
-        var page = null;
-        console.log("profile is " + JSON.stringify(profile));
-
-        // Make sure we have everything, then get reviews user has made
-        if (profile != null) {
-          var reviews = this.props.reviews[profile.id] ? this.props.reviews[profile.id] : [];
-          var list = reviews.map(function (review, i) {
-            return React.createElement(
-              "li",
-              { key: i, className: "review-block" },
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Review/description: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-description" },
-                review.description
-              ),
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Animals spotted: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-animals" },
-                review.animals
-              ),
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Plants identified: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-plants" },
-                review.plants
-              ),
-              React.createElement(
-                "h4",
-                { className: "review-header" },
-                "Mushrooms and other fungi: "
-              ),
-              React.createElement(
-                "p",
-                { className: "review-fungi" },
-                review.fungi
-              )
-            );
-          });
-          page = React.createElement(
-            "div",
-            { className: "row" },
-            React.createElement(
-              "div",
-              { className: "col-md-4" },
-              React.createElement(
-                "div",
-                { className: "account-image-box" },
-                React.createElement(
-                  "h3",
-                  null,
-                  profile.username
-                ),
-                React.createElement("img", { className: "account-image", src: ImageHelper.profile(profile.image, 300) }),
-                React.createElement("br", null),
-                React.createElement(
-                  "div",
-                  { className: "bio-block" },
-                  React.createElement(
-                    "span",
-                    { className: "profile-city" },
-                    profile.city
-                  ),
-                  React.createElement(
-                    "p",
-                    { className: "bio" },
-                    profile.bio
-                  )
-                )
-              )
-            ),
-            React.createElement(
-              "div",
-              { className: "col-md-8" },
-              React.createElement(
-                "h3",
-                null,
-                "Reviews"
-              ),
-              React.createElement(
-                "ul",
-                { className: "reviews" },
-                list
-              )
-            )
-          );
-        }
+        var image = this.props.profile.image == null ? "" : ImageHelper.profile(this.props.profile.image, 300);
 
         return React.createElement(
           "div",
-          { className: "container-fluid" },
-          this.renderReviews()
+          { className: "profile-block" },
+          React.createElement("img", { className: "account-image", src: image }),
+          React.createElement(
+            "div",
+            { className: "profile-name-block" },
+            React.createElement(
+              "div",
+              { className: "profile-title profile-name-title" },
+              "Name: "
+            ),
+            React.createElement(
+              "span",
+              { className: "profile-name" },
+              this.props.profile.firstName
+            ),
+            React.createElement(
+              "span",
+              null,
+              " "
+            ),
+            React.createElement(
+              "span",
+              { className: "profile-name" },
+              this.props.profile.lastName
+            )
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            { className: "profile-city-block" },
+            React.createElement(
+              "div",
+              { className: "profile-title profile-city-title" },
+              "City: "
+            ),
+            React.createElement(
+              "span",
+              { className: "profile-city" },
+              this.props.profile.city
+            )
+          ),
+          React.createElement("br", null),
+          React.createElement(
+            "div",
+            { className: "profile-bio-block" },
+            React.createElement(
+              "div",
+              { className: "profile-title" },
+              "Bio :"
+            ),
+            React.createElement(
+              "p",
+              { className: "profile-bio" },
+              this.props.profile.bio
+            )
+          )
         );
       },
       writable: true,
@@ -193,20 +98,4 @@ var Profile = (function (Component) {
   return Profile;
 })(Component);
 
-var stateToProps = function (state) {
-  return {
-    reviews: state.review.reviewMap,
-    profiles: state.profile.profileMap };
-};
-
-var dispatchToProps = function (dispatch) {
-  return {
-    fetchReviews: function (params) {
-      return dispatch(actions.fetchReviews(params));
-    },
-    fetchProfile: function (id) {
-      return dispatch(actions.fetchProfile(id));
-    } };
-};
-
-module.exports = connect(stateToProps, dispatchToProps)(Profile);
+module.exports = Profile;

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import actions from '../../actions'
 import { ImageHelper, ImageUploader } from '../../utils'
-import { UserReviews } from '../User'
+import { Profile, UserReviews } from '../User'
 import { Navbar } from './'
 
 class ProfileContainer extends Component {
@@ -18,17 +18,10 @@ class ProfileContainer extends Component {
   }
 
   renderProfile() {
-    const profile = this.props.profiles[this.props.params.id]
-    if (profile) {
+    if (this.props.profiles[this.props.params.id]) {
       return (
         <div className="account-image-box">
-          <h3>{profile.username}</h3>
-          <img className="account-image" src={ImageHelper.profile(profile.image, 300)} />
-          <br />
-          <div className="bio-block">
-            <span className="profile-city">{profile.city}</span>
-            <p className="bio" >{profile.bio}</p>
-          </div>
+          <Profile profile={this.props.profiles[this.props.params.id]}/>
         </div>
       )
     }
@@ -46,16 +39,18 @@ class ProfileContainer extends Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="profile-container">
+        <div className="row">
 
-        <div className="col-md-4">
-          {this.renderProfile()}
+          <div className="col-md-4">
+            {this.renderProfile()}
+          </div>
+
+          <div className="col-md-8">
+            {this.renderReviews()}
+          </div>
+
         </div>
-
-        <div className="col-md-8">
-          {this.renderReviews()}
-        </div>
-
       </div>
     )
   }

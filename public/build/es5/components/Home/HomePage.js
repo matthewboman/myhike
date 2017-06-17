@@ -29,11 +29,19 @@ var HomePage = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "homepage" },
+          { className: "homepage-right" },
           React.createElement(
             "div",
-            { className: "home-instructions" },
-            "Use the map to search for a hike, or sign in to create/review hikes of your own"
+            { className: "homepage-header-background-image" },
+            React.createElement(
+              "div",
+              { className: "home-text" },
+              React.createElement(
+                "div",
+                { className: "home-instructions" },
+                "Use the map to search for a hike, or sign in to create/review hikes of your own"
+              )
+            )
           )
         );
       },

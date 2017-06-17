@@ -22,7 +22,10 @@ var _utils = require("../../utils");
 
 var ImageHelper = _utils.ImageHelper;
 var ImageUploader = _utils.ImageUploader;
-var UserReviews = require("../User").UserReviews;
+var _User = require("../User");
+
+var Profile = _User.Profile;
+var UserReviews = _User.UserReviews;
 var Navbar = require("./").Navbar;
 var ProfileContainer = (function (Component) {
   function ProfileContainer() {
@@ -45,32 +48,11 @@ var ProfileContainer = (function (Component) {
     },
     renderProfile: {
       value: function renderProfile() {
-        var profile = this.props.profiles[this.props.params.id];
-        if (profile) {
+        if (this.props.profiles[this.props.params.id]) {
           return React.createElement(
             "div",
             { className: "account-image-box" },
-            React.createElement(
-              "h3",
-              null,
-              profile.username
-            ),
-            React.createElement("img", { className: "account-image", src: ImageHelper.profile(profile.image, 300) }),
-            React.createElement("br", null),
-            React.createElement(
-              "div",
-              { className: "bio-block" },
-              React.createElement(
-                "span",
-                { className: "profile-city" },
-                profile.city
-              ),
-              React.createElement(
-                "p",
-                { className: "bio" },
-                profile.bio
-              )
-            )
+            React.createElement(Profile, { profile: this.props.profiles[this.props.params.id] })
           );
         }
       },
@@ -92,16 +74,20 @@ var ProfileContainer = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "row" },
+          { className: "profile-container" },
           React.createElement(
             "div",
-            { className: "col-md-4" },
-            this.renderProfile()
-          ),
-          React.createElement(
-            "div",
-            { className: "col-md-8" },
-            this.renderReviews()
+            { className: "row" },
+            React.createElement(
+              "div",
+              { className: "col-md-4" },
+              this.renderProfile()
+            ),
+            React.createElement(
+              "div",
+              { className: "col-md-8" },
+              this.renderReviews()
+            )
           )
         );
       },

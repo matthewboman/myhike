@@ -40,13 +40,14 @@ class AccountEditor extends Component {
     return (
       <div className="profile-block">
         <div className="profile-name-block">
-          <div className="profile-title">Name: </div>
-          <span className="profile-name">{this.props.profile.firstName} </span>
+          <div className="profile-title profile-name-title">Name: </div>
+          <span className="profile-name">{this.props.profile.firstName}</span>
+          <span> </span>
           <span className="profile-name">{this.props.profile.lastName}</span>
         </div>
         <br/>
         <div className="profile-city-block">
-          <div className="profile-title">City: </div>
+          <div className="profile-title profile-city-title">City: </div>
           <span className="profile-city">{this.props.profile.city}</span>
         </div>
         <br/>
@@ -55,7 +56,7 @@ class AccountEditor extends Component {
           <p className="profile-bio">{this.props.profile.bio}</p>
         </div>
         <br />
-        <button className="btn" onClick={this.toggleEdit.bind(this)}>Edit</button>
+        <button className="button-default" onClick={this.toggleEdit.bind(this)}>Edit</button>
       </div>
     )
   }
@@ -98,8 +99,8 @@ class AccountEditor extends Component {
           onChange={this.updateProfile.bind(this)}
           defaultValue={this.props.profile.bio} />
         <br />
-        <button className="btn" onClick={this.submitUpdate.bind(this)}>Update</button>
-        <button className="btn" onClick={this.toggleEdit.bind(this)}>Nevermind</button>
+        <button className="button-default" onClick={this.submitUpdate.bind(this)}>Update</button>
+        <button className="button-default" onClick={this.toggleEdit.bind(this)}>Nevermind</button>
       </div>
     )
   }

@@ -10,13 +10,6 @@ import Main from './components/Main'
 import { About, AccountContainer, CreateHikeContainer, HikeContainer, HomeContainer,
          ProfileContainer } from './components/containers'
 
-/*
-// NOTE:
-//  for client side rendering: path="../profile/:id"
-//  for server-side rendering: path="/profile/:id"
-//  both go tothe same place
-*/
-
 // Get initial state as rendered by the server
 const initialState = window.__PRELOADED_STATE__
 
@@ -27,6 +20,7 @@ const app = (
 
         <IndexRoute component={HomeContainer}></IndexRoute>
         <Route path="/hike/:id" component={HikeContainer}></Route>
+        <Route path="../hike/:id" component={HikeContainer}></Route>
         <Route path="/create-hike" component={CreateHikeContainer}></Route>
         <Route path="/currentuser" component={AccountContainer}></Route>
         <Route path="../profile/:id" component={ProfileContainer}></Route>

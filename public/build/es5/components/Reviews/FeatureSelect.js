@@ -46,7 +46,7 @@ var FeatureSelect = (function (Component) {
       value: function render() {
         return React.createElement(Select, { multi: true, simpleValue: true,
           value: this.state.value,
-          placeholder: "Select your favourite(s)",
+          placeholder: "Noteable features",
           options: features,
           onChange: this.updateValues.bind(this) });
       },

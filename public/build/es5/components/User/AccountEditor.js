@@ -75,13 +75,17 @@ var AccountEditor = (function (Component) {
             { className: "profile-name-block" },
             React.createElement(
               "div",
-              { className: "profile-title" },
+              { className: "profile-title profile-name-title" },
               "Name: "
             ),
             React.createElement(
               "span",
               { className: "profile-name" },
-              this.props.profile.firstName,
+              this.props.profile.firstName
+            ),
+            React.createElement(
+              "span",
+              null,
               " "
             ),
             React.createElement(
@@ -96,7 +100,7 @@ var AccountEditor = (function (Component) {
             { className: "profile-city-block" },
             React.createElement(
               "div",
-              { className: "profile-title" },
+              { className: "profile-title profile-city-title" },
               "City: "
             ),
             React.createElement(
@@ -123,7 +127,7 @@ var AccountEditor = (function (Component) {
           React.createElement("br", null),
           React.createElement(
             "button",
-            { className: "btn", onClick: this.toggleEdit.bind(this) },
+            { className: "button-default", onClick: this.toggleEdit.bind(this) },
             "Edit"
           )
         );
@@ -183,12 +187,12 @@ var AccountEditor = (function (Component) {
           React.createElement("br", null),
           React.createElement(
             "button",
-            { className: "btn", onClick: this.submitUpdate.bind(this) },
+            { className: "button-default", onClick: this.submitUpdate.bind(this) },
             "Update"
           ),
           React.createElement(
             "button",
-            { className: "btn", onClick: this.toggleEdit.bind(this) },
+            { className: "button-default", onClick: this.toggleEdit.bind(this) },
             "Nevermind"
           )
         );

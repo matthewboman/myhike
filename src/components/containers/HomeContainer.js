@@ -13,12 +13,12 @@ class HomeContainer extends Component {
 
   render() {
 
-    const mapContainer = <div style={{height: '90vh', width: '30vw'}}></div>
+    const mapContainer = <div style={{height: '90vh', width: '50vw'}}></div>
 
     return (
-      <div>
+      <div className="homepage">
 
-        <div className="col-md-4">
+        <div className="col-sm-12 col-md-6">
           <section style={{height: '100%'}} className="map-section">
           <HikeMap
             mapContainer={mapContainer}
@@ -26,7 +26,7 @@ class HomeContainer extends Component {
           </section>
         </div>
 
-        <div className="col-md-8">
+        <div className="col-sm-12 col-md-6">
           <HomePage />
         </div>
 

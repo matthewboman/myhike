@@ -33,7 +33,7 @@ var About = (function (Component) {
           { className: "about-page-container" },
           React.createElement(
             "div",
-            { className: "about" },
+            { className: "about-block" },
             React.createElement(
               "div",
               { className: "about-section-title" },

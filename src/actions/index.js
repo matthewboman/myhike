@@ -23,14 +23,15 @@ export default {
 
   // Log user in
   currentUserReceived: (credentials) => {
-    console.log(JSON.stringify(credentials))
     return (dispatch) => {
       APIManager.post('/account/login', credentials, (err, response) => {
         if (err) {
           let msg = err.message || err
-          dispatch({ type: constants.ERROR_RECEIVED, message: msg })
-          return
+          console.log(err)
+          // dispatch({ type: constants.ERROR_RECEIVED, message: msg })
+          // return
         }
+        console.log(response)
         const user = response.profile
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,

@@ -43,7 +43,6 @@ var Review = (function (Component) {
     componentDidMount: {
       value: function componentDidMount() {
         this.createImageList();
-        console.log(this.props.review.hikeName);
       },
       writable: true,
       configurable: true
@@ -158,7 +157,7 @@ var Review = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "review-description" },
+            { className: "review-text" },
             this.props.review.description
           )
         );
@@ -173,12 +172,12 @@ var Review = (function (Component) {
           { className: "review-difficulty-block" },
           React.createElement(
             "div",
-            { className: "review-header" },
+            { className: "review-header difficulty-header" },
             "Difficulty: "
           ),
           React.createElement(
             "div",
-            { className: "review-difficulty" },
+            { className: "review-text difficulty-text" },
             this.props.review.difficulty.value
           )
         );
@@ -192,7 +191,8 @@ var Review = (function (Component) {
           return React.createElement(
             "span",
             { key: id, className: "review-feature" },
-            feature
+            feature,
+            ", "
           );
         });
       },
@@ -211,7 +211,7 @@ var Review = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "review-animals" },
+            { className: "review-text" },
             this.props.review.animals
           )
         );
@@ -231,7 +231,7 @@ var Review = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "review-plants" },
+            { className: "review-text" },
             this.props.review.plants
           )
         );
@@ -251,7 +251,7 @@ var Review = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "review-fungi" },
+            { className: "review-text" },
             this.props.review.fungi
           )
         );
@@ -306,6 +306,11 @@ var Review = (function (Component) {
           React.createElement(
             "div",
             { className: "review-feature-block" },
+            React.createElement(
+              "div",
+              { className: "review-header" },
+              "Features: "
+            ),
             this.renderFeatures()
           ),
           this.props.review.animals ? this.renderAnimals() : "",
@@ -314,7 +319,7 @@ var Review = (function (Component) {
           this.renderUser(),
           (this.props.isEditable ? this.props.isEditable : false) ? React.createElement(
             "button",
-            { className: "btn review-edit-button", onClick: this.toggleEdit.bind(this) },
+            { className: "button-default review-edit-button", onClick: this.toggleEdit.bind(this) },
             "Edit Review"
           ) : null
         );
@@ -395,7 +400,11 @@ var Review = (function (Component) {
         return React.createElement(
           "div",
           { className: "hike-name" },
-          this.props.review.hikeName
+          React.createElement(
+            Link,
+            { to: "../hike/" + this.props.review.hikeId },
+            this.props.review.hikeName
+          )
         );
       },
       writable: true,

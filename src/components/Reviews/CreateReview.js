@@ -23,10 +23,6 @@ class CreateReview extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log(JSON.stringify(this.props, null, 2))
-  }
-
   updateHike(event) {
     let updatedReview = Object.assign({}, this.state.review)
     updatedReview[event.target.id] = event.target.value
@@ -66,8 +62,8 @@ class CreateReview extends Component {
 
   render() {
     return (
-      <div className="review-block">
-        <div className="review-header">Add your own review</div>
+      <div className="new-review-block">
+        <div className="add-review-header">Add your own review</div>
         <div className="review-input description-input">
           <textarea onChange={this.updateHike.bind(this)} id="description"
             className="form-control" type="text" placeholder="Describe it!" />
@@ -94,7 +90,7 @@ class CreateReview extends Component {
           <Images onImageSubmit={this.addImages.bind(this)}/>
         </div>
         <button onClick={this.submitHike.bind(this)}
-          className="btn add-review-btn">Add it</button>
+          className="button-default add-review-btn">Add it</button>
       </div>
     )
   }

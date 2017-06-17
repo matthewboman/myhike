@@ -62,15 +62,15 @@ class AccountContainer extends Component {
           <img className="image-preview"
                src={(this.state.updated.image == '') ? '' : ImageHelper.preview(this.state.updated.image, 325, 300)} />
           <br />
-          <button className="btn" onClick={this.updatePhoto.bind(this)}>Update</button>
+          <button className="button-default" onClick={this.updatePhoto.bind(this)}>Update</button>
           <span>  </span>
-          <button className="btn" onClick={this.toggleImageUploader.bind(this)}>Nevermind</button>
+          <button className="button-default" onClick={this.toggleImageUploader.bind(this)}>Nevermind</button>
         </div>
       )
     } else {
       return (
         <div className="change-button">
-          <button className="btn change" onClick={this.toggleImageUploader.bind(this)}>Change profile picture</button>
+          <button className="button-default" onClick={this.toggleImageUploader.bind(this)}>Change profile picture</button>
         </div>
       )
     }
@@ -96,7 +96,7 @@ class AccountContainer extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="account-container">
         <div className="account-header">Welcome {this.props.user.username}</div>
         <div className="row">
 

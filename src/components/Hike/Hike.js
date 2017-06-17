@@ -50,7 +50,7 @@ class Hike extends Component {
       )
     } else {
       return (
-        <div className="review-block">
+        <div className="add-review-block">
           <span className="add-review" onClick={this.displayCreateReviewComponent.bind(this)}>
             Add a Review
           </span>
@@ -61,7 +61,7 @@ class Hike extends Component {
 
   render() {
     return (
-      <div className="hike-component-container">
+      <div className="hike-sidebar">
         {this.renderHikeName()}
         <span className="error">{this.props.message}</span>
         {this.renderCreateReviewOption()}

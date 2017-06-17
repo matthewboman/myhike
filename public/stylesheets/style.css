@@ -12,6 +12,9 @@ h1, h2, h3 {
   padding-bottom: 12px;
 }
 
+.col-md-6 {
+  padding: 0;
+}
 
 .error {
   color: red;
@@ -20,10 +23,16 @@ h1, h2, h3 {
   transform: translateY(-50%);
 }
 
-.btn {
+.button-default {
+  height: 40px;
+  width: 140px;
   background-color: #7fc857;
-  border-color: #66a046;
   border-radius: 20px;
+  border: none;
+  font-weight: bold;
+}
+.button-default:hover {
+  background-color: #66a046;
 }
 
 
@@ -44,9 +53,10 @@ h1, h2, h3 {
 }
 .navbar-inverse .navbar-nav>li>a {
   color: #d8d8d8;
+  font-size: 18px;
 }
 .navbar-right {
-  float: right!important;
+  float: right;
   font-size: 18px;
 }
 
@@ -57,6 +67,7 @@ h1, h2, h3 {
     }
   .navbar-right {
       margin-right: 0px;
+      float: inherit;
   }
 }
 
@@ -84,10 +95,6 @@ h1, h2, h3 {
 }
 
 .modal-header {
-  background-image: url('../images/roots.png');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
   padding: 50px;
   width: 100%;
   height: 100%;
@@ -127,29 +134,57 @@ h1, h2, h3 {
 
 /* Map Component */
 /* Used in:
-    /layout/Home
-    /layout/CreateContainer
+    /layout/HomeContainer
+    /layout/CreateHikeContainer
     /layout/HikeContainer
 */
 .map-section {
   height: 110%;
   position: fixed;
-  margin-top: 60px;
   z-index: 0;
 }
 
 
 /* Home Component */
 .homepage {
-  padding-top: 60px;
+  padding-top: 50px;
+  overflow: hidden;
 }
-.about {
+
+.homepage-right {
+
+}
+
+.homepage-header-background-image {
+  height: 100vh;
+  width: 50vw;
+  background-image: url('/images/roots.png');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.home-text {
+  padding: 50px;
+}
+
+.home-instructions {
+  color: #f5f5f5;
+  font-size: 24px;
+}
+
+
+/* About */
+.about-page-container {
+  padding: 50px;
+}
+.about-block {
   margin: 20px;
 }
-.home-section-title {
+.about-section-title {
   font-size: 32px;
 }
-.home-section-content {
+.about-section-content {
   font-size: 18px;
   margin-bottom: 20px;
 }
@@ -165,16 +200,196 @@ h1, h2, h3 {
 
 
 /* Create Hike component*/
+.create-hike {
+  padding-top: 50px;
+}
 .create-hike-sidebar {
-  padding-top: 60px;
+  padding: 30px;
+}
+.create-hike-header {
+  font-size: 24px;
+  margin-bottom: 15px;
 }
 .add-hike-how {
   display: inline-block;
 }
+.create-hike-label {
+
+}
+.location-type {
+
+}
+.create-hike-button {
+  margin-right: 10px;
+}
 
 
+/* Hike Component */
+.hike-component-container {
+  padding-top: 50px;
+}
+.hike-sidebar {
+  padding: 50px;
+}
+.hike-name {
+  font-size: 24px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.add-review-block {
+  margin-bottom: 15px;
+}
+
+.add-review {
+  display: inline-block;
+  padding: 0 5px;
+  color: green;
+  text-decoration: underline;
+}
+.add-review:hover {
+  cursor: pointer;
+}
+
+
+
+
+
+/* HikeReviews Component */
+.reviews {
+  padding: 0;
+}
 
 /* Review Component */
+.review-block {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #515c41;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 1.5em;
+  background-color: #f7fbf5;
+  overflow: hidden;
+  -webkit-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+}
+
+.hike-name {
+
+}
+
+.hike-review-photos {
+  list-style-type: none;
+}
+.hike-review-photo {
+  margin-right: 5px;
+}
+
+.review-feature-block {
+  margin: 5px 0;
+}
+.review-description-block {
+  margin: 5px 0;
+}
+.review-difficulty-block {
+  margin: 5px 0;
+}
+.difficulty-header {
+  display: inline-block;
+}
+.difficulty-text {
+  display: inline-block;
+  margin-left: 10px;
+}
+.review-animals-block {
+  margin: 5px 0;
+}
+.review-plants-block {
+  margin: 5px 0;
+}
+.review-fungi-block {
+  margin: 5px 0;
+}
+
+.review-header {
+  font-weight: bold;
+}
+.review-text {
+}
+.review-feature {
+
+}
+
+.review-user-block {
+  display: inline-block;
+}
+.icon-image {
+  border-radius: 20px;
+  margin-right: 6px;
+}
+
+.review-edit-button {
+  float: right;
+  display: inline-block;
+}
+
+
+/* CreateReview Component */
+.new-review-block {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #515c41;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  padding: 1.5em;
+  background-color: #f7fbf5;
+  overflow: hidden;
+  -webkit-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+  box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
+}
+.add-review-header {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+.review-input {
+  margin-bottom: 12px;
+}
+.description-input {
+  resize: vertical;
+}
+.difficulty-select {
+
+}
+.feature-select {
+
+}
+.plant-input {
+
+}
+.fungi-input {
+
+}
+.animals-input {
+
+}
+.review-image-input {
+
+}
+
+/*not florked with*/
+.add-review-btn {
+  float: right;
+  margin-top: -25px;
+}
+
+.image-submit-btn {
+  margin-top: 25px;
+  margin-bottom: -25px;
+}
+
+
 .image-drop {
   width: 150px;
   height: 150px;
@@ -205,7 +420,6 @@ h1, h2, h3 {
   padding-right: 2px;
 }
 
-
 .parent {
   position: relative;
   display: inline-block;
@@ -213,7 +427,6 @@ h1, h2, h3 {
 .image-preview {
   width: 150px;
   height: 150px;
-  margin: 1em;
 }
 .close {
   position: absolute;
@@ -221,30 +434,6 @@ h1, h2, h3 {
   right: 0;
   /*color: black;*/
   background-color: #fff;
-}
-
-
-/* Hike Component */
-.hike-component-container {
-  padding-top: 60px;
-}
-.hikeBlock {
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
-.hike-images .hike-image{
-  display: inline-flex;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-.add-review {
-  display: inline-block;
-  padding: 0 5px;
-  color: green;
-  text-decoration: underline;
-}
-.add-review:hover {
-  cursor: pointer;
 }
 
 
@@ -266,26 +455,64 @@ h1, h2, h3 {
 
 }
 
-/* CreateHike Component */
-.btn-change {
-  margin-right: 10px;
+/* AccountContainer Component */
+.account-container {
+  padding: 100px 50px;
+}
+.account-header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* Account Component */
+/* ProfileContainer and AccountContainer Component */
+.profile-block {
+
+}
+.profile-title {
+  font-weight: bold;
+}
+.profile-name-block {
+
+}
+.profile-name-title {
+  display: inline-block;
+  margin-right: 5px;
+}
+.profile-name {
+  display: inline-block;
+}
+.profile-city-block {
+
+}
+.profile-city-title {
+  display: inline-block;
+  margin-right: 5px;
+}
+.profile-city {
+  display: inline-block;
+}
+.profile-bio-block {
+
+}
+.profile-bio {
+
+}
+
 .account-image {
   margin-left:auto;
   margin-right:auto;
   display:block;
   border-radius: 4px;
+  margin-bottom: 40px;
+  margin-top: 20px;
 }
 
 .account-image-box {
   border-radius: 4px;
   background-color: #f7fbf5;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-left: 22px;
-  margin-right: 22px;
+  padding: 20px;
   border-width: 1px;
   border-style: solid;
   border-color: #515c41;
@@ -294,27 +521,8 @@ h1, h2, h3 {
   box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
 }
 
-.bio-block {
-  padding: 1em;
-  overflow: hidden;
-}
-
-.profile-city {
-  margin-left: 1em;
-}
-
-.bio {
-  padding: 1em;
-}
-
-.edit-bio {
-  resize: vertical;
-}
-
 .update-profile-image {
-  /*padding-left: 2em;*/
-  transform: translateX(20%);
-  position: relative;
+
 }
 
 .text-center {
@@ -329,61 +537,7 @@ h1, h2, h3 {
 }
 
 
-
-/* Review Component */
-.reviews {
-  list-style-type: none;
-  padding-left: inherit;
-}
-
-.review-block {
-  border-width: 1px;
-  border-style: solid;
-  border-color: #515c41;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  padding: 1.5em;
-  background-color: #f7fbf5;
-  overflow: hidden;
-  -webkit-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
-  -moz-box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
-  box-shadow: 6px 13px 50px -15px rgba(0,0,0,0.75);
-}
-
-.review-header {
-  padding-top: 0;
-  font-weight: 400;
-}
-
-.review-edit-button {
-  float: right;
-}
-
-.add-review-btn {
-  float: right;
-  margin-top: -25px;
-}
-
-.image-submit-btn {
-  margin-top: 25px;
-  margin-bottom: -25px;
-}
-
-
-.hike-review-photos {
-  list-style-type: none;
-  display: inline-flex;
-}
-
-.hike-review-photo {
-  margin-right: 5px;
-}
-
-.icon-image {
-  border-radius: 20px;
-  margin-right: 6px;
-}
-
-#description {
-  resize: vertical;
+/* Profile Component */
+.profile-container {
+  padding: 100px 50px;
 }

@@ -144,8 +144,8 @@ var CreateHike = (function (Component) {
           "div",
           { className: "create-hike-sidebar" },
           React.createElement(
-            "h3",
-            null,
+            "div",
+            { className: "create-hike-header" },
             "Add a New Hike"
           ),
           React.createElement(
@@ -166,7 +166,7 @@ var CreateHike = (function (Component) {
             { className: "add-hike-how" },
             React.createElement(
               "span",
-              null,
+              { className: "create-hike-label" },
               "I want to:"
             ),
             React.createElement(
@@ -192,7 +192,7 @@ var CreateHike = (function (Component) {
           React.createElement(
             "button",
             { onClick: this.submitHike.bind(this),
-              className: "btn" },
+              className: "button-default" },
             "Add it"
           )
         );
