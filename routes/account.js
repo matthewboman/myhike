@@ -24,12 +24,14 @@ router.get('/:action', function(req, res, next){
 	if (action == 'currentuser') {
 		controllers.account.currentUser(req)
 			.then(function(result) {
+				console.log(result)
 				res.json({
 					confirmation: 'success',
 					user: result
 				})
 			})
 			.catch(function(err) {
+				console.log(err)
 				res.json({
 					confirmation: 'fail',
 					message: err

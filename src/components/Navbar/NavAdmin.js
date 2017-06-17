@@ -80,7 +80,7 @@ class NavAdmin extends Component {
         <div className="modal-login">
           <Login onLogin={this.login.bind(this)}
                  displayError={(error) => this.props.displayError(error)}
-                 error={this.props.error} 
+                 error={this.props.error}
             />
         </div>
       )

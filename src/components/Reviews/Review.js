@@ -21,7 +21,6 @@ class Review extends Component {
 
   componentDidMount() {
     this.createImageList()
-    console.log(this.props.review.hikeName)
   }
 
   createImageList() {
@@ -98,7 +97,7 @@ class Review extends Component {
     return (
       <div className="review-description-block">
         <div className="review-header">Review/description: </div>
-        <div className="review-description">{this.props.review.description}</div>
+        <div className="review-text">{this.props.review.description}</div>
       </div>
     )
   }
@@ -106,8 +105,8 @@ class Review extends Component {
   renderDifficulty() {
     return (
       <div className="review-difficulty-block">
-        <div className="review-header">Difficulty: </div>
-        <div className="review-difficulty">{this.props.review.difficulty.value}</div>
+        <div className="review-header difficulty-header">Difficulty: </div>
+        <div className="review-text difficulty-text">{this.props.review.difficulty.value}</div>
       </div>
     )
   }
@@ -115,7 +114,7 @@ class Review extends Component {
   renderFeatures() {
     return this.props.review.features.map((feature, id) => {
       return (
-        <span key={id} className="review-feature">{feature}</span>
+        <span key={id} className="review-feature">{feature}, </span>
       )
     })
   }
@@ -124,7 +123,7 @@ class Review extends Component {
     return (
       <div className="review-animals-block">
         <div className="review-header">Animals: </div>
-        <div className="review-animals">{this.props.review.animals}</div>
+        <div className="review-text">{this.props.review.animals}</div>
       </div>
     )
   }
@@ -133,7 +132,7 @@ class Review extends Component {
     return (
       <div className="review-plants-block">
         <div className="review-header">Plants: </div>
-        <div className="review-plants">{this.props.review.plants}</div>
+        <div className="review-text">{this.props.review.plants}</div>
       </div>
     )
   }
@@ -142,7 +141,7 @@ class Review extends Component {
     return (
       <div className="review-fungi-block">
         <div className="review-header">Fungi: </div>
-        <div className="review-fungi">{this.props.review.fungi}</div>
+        <div className="review-text">{this.props.review.fungi}</div>
       </div>
     )
   }
@@ -174,6 +173,7 @@ class Review extends Component {
         {(this.props.review.difficulty) ? this.renderDifficulty() : ''}
 
         <div className="review-feature-block">
+          <div className="review-header">Features: </div>
           {this.renderFeatures()}
         </div>
 
@@ -183,7 +183,7 @@ class Review extends Component {
         {this.renderUser()}
         {
           ((this.props.isEditable) ? this.props.isEditable : false) ?
-            <button className="btn review-edit-button" onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
+            <button className="button-default review-edit-button" onClick={this.toggleEdit.bind(this)}>Edit Review</button> : null
         }
       </div>
     )
@@ -232,7 +232,9 @@ class Review extends Component {
   renderHikeName() {
     return (
       <div className="hike-name">
-        {this.props.review.hikeName}
+        <Link to={`../hike/${this.props.review.hikeId}`}>
+          {this.props.review.hikeName}
+        </Link>
       </div>
     )
   }

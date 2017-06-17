@@ -12,12 +12,12 @@ class CreateHikeContainer extends Component {
   }
 
   render() {
-    const mapContainer = <div style={{height: '80vh', width: '30vw'}}></div>
+    const mapContainer = <div style={{height: '90vh', width: '50vw'}}></div>
 
     return (
-      <div>
+      <div className="create-hike">
 
-        <div className="col-md-4">
+        <div className="col-md-6">
           <section style={{height: '100%'}} className="map-section">
           <HikeMap
             mapContainer={mapContainer}
@@ -25,7 +25,7 @@ class CreateHikeContainer extends Component {
           </section>
         </div>
 
-        <div className="col-md-8">
+        <div className="col-md-6">
           <CreateHike />
         </div>
 

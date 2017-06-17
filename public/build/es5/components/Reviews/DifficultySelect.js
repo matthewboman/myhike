@@ -47,7 +47,8 @@ var DifficultySelect = (function (Component) {
         return React.createElement(Select, { name: "difficulty",
           value: this.state.difficulty,
           options: difficulty,
-          onChange: this.updateDifficulty.bind(this) });
+          onChange: this.updateDifficulty.bind(this),
+          placeholder: "Difficulty" });
       },
       writable: true,
       configurable: true

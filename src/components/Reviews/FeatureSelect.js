@@ -28,7 +28,7 @@ class FeatureSelect extends Component {
     return (
       <Select multi simpleValue
               value={this.state.value}
-              placeholder="Select your favourite(s)"
+              placeholder="Noteable features"
               options={features}
               onChange={this.updateValues.bind(this)} />
     )

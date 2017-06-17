@@ -97,14 +97,14 @@ class CreateHike extends Component {
   render() {
     return (
       <div className="create-hike-sidebar">
-        <h3>Add a New Hike</h3>
+        <div className="create-hike-header">Add a New Hike</div>
         <span className="error">{this.props.error}</span>
         <span className="message">{this.props.message}</span>
         <input onChange={this.updateHike.bind(this)} id="name"
           className="form-control" type="text" placeholder="Hike name" />
         <br />
         <div className="add-hike-how">
-          <span>I want to:</span>
+          <span className="create-hike-label">I want to:</span>
           <span className="location-type" onClick={this.useCurrentLocation.bind(this)}>Use current location</span>
           <span className="location-type" onClick={this.useAddress.bind(this)}>Enter an address</span>
           <span className="location-type" onClick={this.useMap.bind(this)}>Select Map Location</span>
@@ -114,7 +114,7 @@ class CreateHike extends Component {
         {this.renderAddressSearch()}
         <br />
         <button onClick={this.submitHike.bind(this)}
-          className="btn">Add it</button>
+          className="button-default">Add it</button>
       </div>
     )
   }

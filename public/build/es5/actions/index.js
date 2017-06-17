@@ -26,14 +26,13 @@ module.exports = {
 
   // Log user in
   currentUserReceived: function (credentials) {
-    console.log(JSON.stringify(credentials));
     return function (dispatch) {
       APIManager.post("/account/login", credentials, function (err, response) {
         if (err) {
           var msg = err.message || err;
-          dispatch({ type: constants.ERROR_RECEIVED, message: msg });
-          return;
+          console.log(err);
         }
+        console.log(response);
         var user = response.profile;
         dispatch({
           type: constants.CURRENT_USER_RECEIVED,
@@ -260,3 +259,5 @@ module.exports = {
       });
     };
   } };
+// dispatch({ type: constants.ERROR_RECEIVED, message: msg })
+// return

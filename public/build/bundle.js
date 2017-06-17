@@ -74,13 +74,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	/*
-	// NOTE:
-	//  for client side rendering: path="../profile/:id"
-	//  for server-side rendering: path="/profile/:id"
-	//  both go tothe same place
-	*/
-	
 	// Get initial state as rendered by the server
 	var initialState = window.__PRELOADED_STATE__;
 	
@@ -95,6 +88,7 @@
 	      { path: '/', component: _Main2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _containers.HomeContainer }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '/hike/:id', component: _containers.HikeContainer }),
+	      _react2.default.createElement(_reactRouter.Route, { path: '../hike/:id', component: _containers.HikeContainer }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '/create-hike', component: _containers.CreateHikeContainer }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '/currentuser', component: _containers.AccountContainer }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '../profile/:id', component: _containers.ProfileContainer }),
@@ -29184,7 +29178,7 @@
 	        { className: "about-page-container" },
 	        _react2.default.createElement(
 	          "div",
-	          { className: "about" },
+	          { className: "about-block" },
 	          _react2.default.createElement(
 	            "div",
 	            { className: "about-section-title" },
@@ -29347,7 +29341,7 @@
 	          _react2.default.createElement('br', null),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'btn', onClick: this.updatePhoto.bind(this) },
+	            { className: 'button-default', onClick: this.updatePhoto.bind(this) },
 	            'Update'
 	          ),
 	          _react2.default.createElement(
@@ -29357,7 +29351,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'btn', onClick: this.toggleImageUploader.bind(this) },
+	            { className: 'button-default', onClick: this.toggleImageUploader.bind(this) },
 	            'Nevermind'
 	          )
 	        );
@@ -29367,7 +29361,7 @@
 	          { className: 'change-button' },
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'btn change', onClick: this.toggleImageUploader.bind(this) },
+	            { className: 'button-default', onClick: this.toggleImageUploader.bind(this) },
 	            'Change profile picture'
 	          )
 	        );
@@ -29397,7 +29391,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container-fluid' },
+	        { className: 'account-container' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'account-header' },
@@ -29995,14 +29989,15 @@
 	
 	  // Log user in
 	  currentUserReceived: function currentUserReceived(credentials) {
-	    console.log(JSON.stringify(credentials));
 	    return function (dispatch) {
 	      _utils.APIManager.post('/account/login', credentials, function (err, response) {
 	        if (err) {
 	          var msg = err.message || err;
-	          dispatch({ type: _constants2.default.ERROR_RECEIVED, message: msg });
-	          return;
+	          console.log(err);
+	          // dispatch({ type: constants.ERROR_RECEIVED, message: msg })
+	          // return
 	        }
+	        console.log(response);
 	        var user = response.profile;
 	        dispatch({
 	          type: _constants2.default.CURRENT_USER_RECEIVED,
@@ -34686,7 +34681,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.UserReviews = exports.RegisterForm = exports.Register = exports.Login = exports.AccountEditor = undefined;
+	exports.UserReviews = exports.RegisterForm = exports.Register = exports.Profile = exports.Login = exports.AccountEditor = undefined;
 	
 	var _AccountEditor = __webpack_require__(306);
 	
@@ -34695,6 +34690,10 @@
 	var _Login = __webpack_require__(307);
 	
 	var _Login2 = _interopRequireDefault(_Login);
+	
+	var _Profile = __webpack_require__(662);
+	
+	var _Profile2 = _interopRequireDefault(_Profile);
 	
 	var _Register = __webpack_require__(308);
 	
@@ -34712,6 +34711,7 @@
 	
 	exports.AccountEditor = _AccountEditor2.default;
 	exports.Login = _Login2.default;
+	exports.Profile = _Profile2.default;
 	exports.Register = _Register2.default;
 	exports.RegisterForm = _RegisterForm2.default;
 	exports.UserReviews = _UserReviews2.default;
@@ -34795,13 +34795,17 @@
 	          { className: "profile-name-block" },
 	          _react2.default.createElement(
 	            "div",
-	            { className: "profile-title" },
+	            { className: "profile-title profile-name-title" },
 	            "Name: "
 	          ),
 	          _react2.default.createElement(
 	            "span",
 	            { className: "profile-name" },
-	            this.props.profile.firstName,
+	            this.props.profile.firstName
+	          ),
+	          _react2.default.createElement(
+	            "span",
+	            null,
 	            " "
 	          ),
 	          _react2.default.createElement(
@@ -34816,7 +34820,7 @@
 	          { className: "profile-city-block" },
 	          _react2.default.createElement(
 	            "div",
-	            { className: "profile-title" },
+	            { className: "profile-title profile-city-title" },
 	            "City: "
 	          ),
 	          _react2.default.createElement(
@@ -34843,7 +34847,7 @@
 	        _react2.default.createElement("br", null),
 	        _react2.default.createElement(
 	          "button",
-	          { className: "btn", onClick: this.toggleEdit.bind(this) },
+	          { className: "button-default", onClick: this.toggleEdit.bind(this) },
 	          "Edit"
 	        )
 	      );
@@ -34901,12 +34905,12 @@
 	        _react2.default.createElement("br", null),
 	        _react2.default.createElement(
 	          "button",
-	          { className: "btn", onClick: this.submitUpdate.bind(this) },
+	          { className: "button-default", onClick: this.submitUpdate.bind(this) },
 	          "Update"
 	        ),
 	        _react2.default.createElement(
 	          "button",
-	          { className: "btn", onClick: this.toggleEdit.bind(this) },
+	          { className: "button-default", onClick: this.toggleEdit.bind(this) },
 	          "Nevermind"
 	        )
 	      );
@@ -39179,11 +39183,6 @@
 	  }
 	
 	  _createClass(CreateReview, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      console.log(JSON.stringify(this.props, null, 2));
-	    }
-	  }, {
 	    key: 'updateHike',
 	    value: function updateHike(event) {
 	      var updatedReview = Object.assign({}, this.state.review);
@@ -39252,10 +39251,10 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'review-block' },
+	        { className: 'new-review-block' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-header' },
+	          { className: 'add-review-header' },
 	          'Add your own review'
 	        ),
 	        _react2.default.createElement(
@@ -39300,7 +39299,7 @@
 	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.submitHike.bind(this),
-	            className: 'btn add-review-btn' },
+	            className: 'button-default add-review-btn' },
 	          'Add it'
 	        )
 	      );
@@ -65482,7 +65481,8 @@
 	      return _react2.default.createElement(_reactSelect2.default, { name: 'difficulty',
 	        value: this.state.difficulty,
 	        options: difficulty,
-	        onChange: this.updateDifficulty.bind(this) });
+	        onChange: this.updateDifficulty.bind(this),
+	        placeholder: 'Difficulty' });
 	    }
 	  }]);
 	
@@ -70013,7 +70013,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(_reactSelect2.default, { multi: true, simpleValue: true,
 	        value: this.state.value,
-	        placeholder: 'Select your favourite(s)',
+	        placeholder: 'Noteable features',
 	        options: features,
 	        onChange: this.updateValues.bind(this) });
 	    }
@@ -70204,7 +70204,6 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.createImageList();
-	      console.log(this.props.review.hikeName);
 	    }
 	  }, {
 	    key: 'createImageList',
@@ -70303,7 +70302,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-description' },
+	          { className: 'review-text' },
 	          this.props.review.description
 	        )
 	      );
@@ -70316,12 +70315,12 @@
 	        { className: 'review-difficulty-block' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-header' },
+	          { className: 'review-header difficulty-header' },
 	          'Difficulty: '
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-difficulty' },
+	          { className: 'review-text difficulty-text' },
 	          this.props.review.difficulty.value
 	        )
 	      );
@@ -70333,7 +70332,8 @@
 	        return _react2.default.createElement(
 	          'span',
 	          { key: id, className: 'review-feature' },
-	          feature
+	          feature,
+	          ', '
 	        );
 	      });
 	    }
@@ -70350,7 +70350,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-animals' },
+	          { className: 'review-text' },
 	          this.props.review.animals
 	        )
 	      );
@@ -70368,7 +70368,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-plants' },
+	          { className: 'review-text' },
 	          this.props.review.plants
 	        )
 	      );
@@ -70386,7 +70386,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'review-fungi' },
+	          { className: 'review-text' },
 	          this.props.review.fungi
 	        )
 	      );
@@ -70437,6 +70437,11 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'review-feature-block' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'review-header' },
+	            'Features: '
+	          ),
 	          this.renderFeatures()
 	        ),
 	        this.props.review.animals ? this.renderAnimals() : '',
@@ -70445,7 +70450,7 @@
 	        this.renderUser(),
 	        (this.props.isEditable ? this.props.isEditable : false) ? _react2.default.createElement(
 	          'button',
-	          { className: 'btn review-edit-button', onClick: this.toggleEdit.bind(this) },
+	          { className: 'button-default review-edit-button', onClick: this.toggleEdit.bind(this) },
 	          'Edit Review'
 	        ) : null
 	      );
@@ -70522,7 +70527,11 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'hike-name' },
-	        this.props.review.hikeName
+	        _react2.default.createElement(
+	          _reactRouter.Link,
+	          { to: '../hike/' + this.props.review.hikeId },
+	          this.props.review.hikeName
+	        )
 	      );
 	    }
 	  }, {
@@ -74198,14 +74207,14 @@
 	  _createClass(CreateHikeContainer, [{
 	    key: 'render',
 	    value: function render() {
-	      var mapContainer = _react2.default.createElement('div', { style: { height: '80vh', width: '30vw' } });
+	      var mapContainer = _react2.default.createElement('div', { style: { height: '90vh', width: '50vw' } });
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'create-hike' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-4' },
+	          { className: 'col-md-6' },
 	          _react2.default.createElement(
 	            'section',
 	            { style: { height: '100%' }, className: 'map-section' },
@@ -74216,7 +74225,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-8' },
+	          { className: 'col-md-6' },
 	          _react2.default.createElement(_CreateHike.CreateHike, null)
 	        )
 	      );
@@ -74392,8 +74401,8 @@
 	        'div',
 	        { className: 'create-hike-sidebar' },
 	        _react2.default.createElement(
-	          'h3',
-	          null,
+	          'div',
+	          { className: 'create-hike-header' },
 	          'Add a New Hike'
 	        ),
 	        _react2.default.createElement(
@@ -74414,7 +74423,7 @@
 	          { className: 'add-hike-how' },
 	          _react2.default.createElement(
 	            'span',
-	            null,
+	            { className: 'create-hike-label' },
 	            'I want to:'
 	          ),
 	          _react2.default.createElement(
@@ -74440,7 +74449,7 @@
 	        _react2.default.createElement(
 	          'button',
 	          { onClick: this.submitHike.bind(this),
-	            className: 'btn' },
+	            className: 'button-default' },
 	          'Add it'
 	        )
 	      );
@@ -74712,14 +74721,14 @@
 	  _createClass(HikeContainer, [{
 	    key: 'render',
 	    value: function render() {
-	      var mapContainer = _react2.default.createElement('div', { style: { height: '90vh', width: '30vw' } });
+	      var mapContainer = _react2.default.createElement('div', { style: { height: '90vh', width: '50vw' } });
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'hike-component-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-4' },
+	          { className: 'col-md-6' },
 	          _react2.default.createElement(
 	            'section',
 	            { className: 'map-section' },
@@ -74730,7 +74739,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-8' },
+	          { className: 'col-md-6' },
 	          _react2.default.createElement(_Hike.Hike, null)
 	        )
 	      );
@@ -74852,7 +74861,7 @@
 	      } else {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'review-block' },
+	          { className: 'add-review-block' },
 	          _react2.default.createElement(
 	            'span',
 	            { className: 'add-review', onClick: this.displayCreateReviewComponent.bind(this) },
@@ -74866,7 +74875,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'hike-component-container' },
+	        { className: 'hike-sidebar' },
 	        this.renderHikeName(),
 	        _react2.default.createElement(
 	          'span',
@@ -74954,14 +74963,14 @@
 	    key: 'render',
 	    value: function render() {
 	
-	      var mapContainer = _react2.default.createElement('div', { style: { height: '90vh', width: '30vw' } });
+	      var mapContainer = _react2.default.createElement('div', { style: { height: '90vh', width: '50vw' } });
 	
 	      return _react2.default.createElement(
 	        'div',
-	        null,
+	        { className: 'homepage' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-4' },
+	          { className: 'col-sm-12 col-md-6' },
 	          _react2.default.createElement(
 	            'section',
 	            { style: { height: '100%' }, className: 'map-section' },
@@ -74972,7 +74981,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-8' },
+	          { className: 'col-sm-12 col-md-6' },
 	          _react2.default.createElement(_Home.HomePage, null)
 	        )
 	      );
@@ -75041,11 +75050,19 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        "div",
-	        { className: "homepage" },
+	        { className: "homepage-right" },
 	        _react2.default.createElement(
 	          "div",
-	          { className: "home-instructions" },
-	          "Use the map to search for a hike, or sign in to create/review hikes of your own"
+	          { className: "homepage-header-background-image" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "home-text" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: "home-instructions" },
+	              "Use the map to search for a hike, or sign in to create/review hikes of your own"
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -75490,32 +75507,11 @@
 	  }, {
 	    key: 'renderProfile',
 	    value: function renderProfile() {
-	      var profile = this.props.profiles[this.props.params.id];
-	      if (profile) {
+	      if (this.props.profiles[this.props.params.id]) {
 	        return _react2.default.createElement(
 	          'div',
 	          { className: 'account-image-box' },
-	          _react2.default.createElement(
-	            'h3',
-	            null,
-	            profile.username
-	          ),
-	          _react2.default.createElement('img', { className: 'account-image', src: _utils.ImageHelper.profile(profile.image, 300) }),
-	          _react2.default.createElement('br', null),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'bio-block' },
-	            _react2.default.createElement(
-	              'span',
-	              { className: 'profile-city' },
-	              profile.city
-	            ),
-	            _react2.default.createElement(
-	              'p',
-	              { className: 'bio' },
-	              profile.bio
-	            )
-	          )
+	          _react2.default.createElement(_User.Profile, { profile: this.props.profiles[this.props.params.id] })
 	        );
 	      }
 	    }
@@ -75533,16 +75529,20 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'row' },
+	        { className: 'profile-container' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-md-4' },
-	          this.renderProfile()
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'col-md-8' },
-	          this.renderReviews()
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-4' },
+	            this.renderProfile()
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-8' },
+	            this.renderReviews()
+	          )
 	        )
 	      );
 	    }
@@ -75570,6 +75570,113 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(ProfileContainer);
+
+/***/ },
+/* 662 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(286);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Profile = function (_Component) {
+	  _inherits(Profile, _Component);
+	
+	  function Profile(props) {
+	    _classCallCheck(this, Profile);
+	
+	    return _possibleConstructorReturn(this, (Profile.__proto__ || Object.getPrototypeOf(Profile)).call(this, props));
+	  }
+	
+	  _createClass(Profile, [{
+	    key: 'render',
+	    value: function render() {
+	      var image = this.props.profile.image == null ? '' : _utils.ImageHelper.profile(this.props.profile.image, 300);
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'profile-block' },
+	        _react2.default.createElement('img', { className: 'account-image', src: image }),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'profile-name-block' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'profile-title profile-name-title' },
+	            'Name: '
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'profile-name' },
+	            this.props.profile.firstName
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            null,
+	            ' '
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'profile-name' },
+	            this.props.profile.lastName
+	          )
+	        ),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'profile-city-block' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'profile-title profile-city-title' },
+	            'City: '
+	          ),
+	          _react2.default.createElement(
+	            'span',
+	            { className: 'profile-city' },
+	            this.props.profile.city
+	          )
+	        ),
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'profile-bio-block' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'profile-title' },
+	            'Bio :'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'profile-bio' },
+	            this.props.profile.bio
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Profile;
+	}(_react.Component);
+	
+	exports.default = Profile;
 
 /***/ }
 /******/ ]);

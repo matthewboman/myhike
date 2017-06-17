@@ -45,13 +45,6 @@ var CreateReview = (function (Component) {
   _inherits(CreateReview, Component);
 
   _prototypeProperties(CreateReview, null, {
-    componentDidMount: {
-      value: function componentDidMount() {
-        console.log(JSON.stringify(this.props, null, 2));
-      },
-      writable: true,
-      configurable: true
-    },
     updateHike: {
       value: function updateHike(event) {
         var updatedReview = Object.assign({}, this.state.review);
@@ -109,10 +102,10 @@ var CreateReview = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "review-block" },
+          { className: "new-review-block" },
           React.createElement(
             "div",
-            { className: "review-header" },
+            { className: "add-review-header" },
             "Add your own review"
           ),
           React.createElement(
@@ -157,7 +150,7 @@ var CreateReview = (function (Component) {
           React.createElement(
             "button",
             { onClick: this.submitHike.bind(this),
-              className: "btn add-review-btn" },
+              className: "button-default add-review-btn" },
             "Add it"
           )
         );

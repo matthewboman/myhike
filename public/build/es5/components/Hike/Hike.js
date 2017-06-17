@@ -88,7 +88,7 @@ var Hike = (function (Component) {
         } else {
           return React.createElement(
             "div",
-            { className: "review-block" },
+            { className: "add-review-block" },
             React.createElement(
               "span",
               { className: "add-review", onClick: this.displayCreateReviewComponent.bind(this) },
@@ -104,7 +104,7 @@ var Hike = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "hike-component-container" },
+          { className: "hike-sidebar" },
           this.renderHikeName(),
           React.createElement(
             "span",

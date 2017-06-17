@@ -32,14 +32,14 @@ var HomeContainer = (function (Component) {
   _prototypeProperties(HomeContainer, null, {
     render: {
       value: function render() {
-        var mapContainer = React.createElement("div", { style: { height: "90vh", width: "30vw" } });
+        var mapContainer = React.createElement("div", { style: { height: "90vh", width: "50vw" } });
 
         return React.createElement(
           "div",
-          null,
+          { className: "homepage" },
           React.createElement(
             "div",
-            { className: "col-md-4" },
+            { className: "col-sm-12 col-md-6" },
             React.createElement(
               "section",
               { style: { height: "100%" }, className: "map-section" },
@@ -50,7 +50,7 @@ var HomeContainer = (function (Component) {
           ),
           React.createElement(
             "div",
-            { className: "col-md-8" },
+            { className: "col-sm-12 col-md-6" },
             React.createElement(HomePage, null)
           )
         );

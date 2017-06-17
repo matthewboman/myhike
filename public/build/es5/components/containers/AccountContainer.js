@@ -108,7 +108,7 @@ var AccountContainer = (function (Component) {
             React.createElement("br", null),
             React.createElement(
               "button",
-              { className: "btn", onClick: this.updatePhoto.bind(this) },
+              { className: "button-default", onClick: this.updatePhoto.bind(this) },
               "Update"
             ),
             React.createElement(
@@ -118,7 +118,7 @@ var AccountContainer = (function (Component) {
             ),
             React.createElement(
               "button",
-              { className: "btn", onClick: this.toggleImageUploader.bind(this) },
+              { className: "button-default", onClick: this.toggleImageUploader.bind(this) },
               "Nevermind"
             )
           );
@@ -128,7 +128,7 @@ var AccountContainer = (function (Component) {
             { className: "change-button" },
             React.createElement(
               "button",
-              { className: "btn change", onClick: this.toggleImageUploader.bind(this) },
+              { className: "button-default", onClick: this.toggleImageUploader.bind(this) },
               "Change profile picture"
             )
           );
@@ -162,7 +162,7 @@ var AccountContainer = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "container-fluid" },
+          { className: "account-container" },
           React.createElement(
             "div",
             { className: "account-header" },
