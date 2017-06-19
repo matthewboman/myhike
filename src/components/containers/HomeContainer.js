@@ -1,14 +1,28 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import actions from '../../actions'
 import { HikeMap } from '../common'
 import { Navbar } from './'
 import { HomePage } from '../Home'
 
 class HomeContainer extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {}
+  }
+
+  searchByDifficulty(term) {
+    this.props.searchReviews('difficulty', term.value, null)
+  }
+
+  searchByFeatures(features, mustIncludeAll) {
+    let featureList = features.split(',')
+    this.props.searchReviews('features', featureList, mustIncludeAll)
+  }
+
+  searchByField(field, term) {
+    this.props.searchReviews(field, term, null)
   }
 
   render() {
@@ -27,7 +41,11 @@ class HomeContainer extends Component {
         </div>
 
         <div className="col-sm-12 col-md-6">
-          <HomePage />
+          <HomePage
+            searchByDifficulty={this.searchByDifficulty.bind(this)}
+            searchByFeatures={this.searchByFeatures.bind(this)}
+            searchByField={this.searchByField.bind(this)}
+            searchResults={this.props.searchResults} />
         </div>
 
       </div>
@@ -35,4 +53,16 @@ class HomeContainer extends Component {
   }
 }
 
-export default HomeContainer
+const stateToProps = (state) => {
+  return {
+    searchResults: state.review.searchResults,
+  }
+}
+
+const dispatchToProps = (dispatch) => {
+  return {
+    searchReviews: (field, term, includeAll) => dispatch(actions.searchReviews(field, term, includeAll)),
+  }
+}
+
+export default connect(stateToProps, dispatchToProps)(HomeContainer)

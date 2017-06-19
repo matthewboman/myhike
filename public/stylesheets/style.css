@@ -34,6 +34,9 @@ h1, h2, h3 {
 .button-default:hover {
   background-color: #66a046;
 }
+.button-right {
+  float: right;
+}
 
 
 /*Navbar*/
@@ -148,7 +151,7 @@ h1, h2, h3 {
 /* Home Component */
 .homepage {
   padding-top: 50px;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .homepage-right {
@@ -157,11 +160,11 @@ h1, h2, h3 {
 
 .homepage-header-background-image {
   height: 100vh;
-  width: 50vw;
+  /* width: 50vw;
   background-image: url('/images/roots.png');
   background-position: center;
   background-size: cover;
-  background-attachment: fixed;
+  background-attachment: fixed;*/
 }
 
 .home-text {
@@ -169,10 +172,41 @@ h1, h2, h3 {
 }
 
 .home-instructions {
-  color: #f5f5f5;
+  /*color: #f5f5f5;*/
+
   font-size: 24px;
 }
-
+.search-difficulty-container {
+  padding: 20px 0;
+  border-bottom: 1px solid grey;
+  height: 155px;
+}
+.difficulty-select {
+  margin: 12px 0;
+}
+.search-feature-container {
+  padding: 20px 0;
+  border-bottom: 1px solid grey;
+  height: 155px;
+}
+.feature-select {
+  margin: 12px 0;
+}
+.include-all {
+  margin-right: 10px;
+}
+.search-many-container {
+  padding: 20px 0;
+  border-bottom: 1px solid grey;
+  height: 200px;
+}
+.many-select {
+  margin: 12px 0;
+}
+.search-header {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
 
 /* About */
 .about-page-container {

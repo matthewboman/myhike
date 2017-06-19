@@ -5,8 +5,8 @@ var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["defau
 var constants = _interopRequire(require("../constants"));
 
 var initialState = {
-  reviewMap: {}
-};
+  reviewMap: {},
+  searchResults: [] };
 
 module.exports = function (_x, action) {
   var state = arguments[0] === undefined ? initialState : arguments[0];
@@ -44,6 +44,11 @@ module.exports = function (_x, action) {
 
       updatedMap[action.review.hikeId] = newList;
       updatedState.reviewMap = updatedMap;
+      return updatedState;
+
+    case constants.REVIEWS_SEARCHED:
+      console.log("REVIEWS_SEARCHED " + JSON.stringify(action.reviews));
+      updatedState.searchResults = action.reviews;
       return updatedState;
 
     default:

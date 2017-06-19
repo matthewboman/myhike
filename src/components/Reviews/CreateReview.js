@@ -48,7 +48,7 @@ class CreateReview extends Component {
 
   addDifficultyToHike(value) {
     let updatedReview = Object.assign({}, this.state.review)
-    updatedReview['difficulty'] = value
+    updatedReview['difficulty'] = value.value
     this.setState({ review: updatedReview})
   }
 

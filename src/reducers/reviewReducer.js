@@ -1,7 +1,8 @@
 import constants from '../constants'
 
 let initialState = {
-  reviewMap: {}
+  reviewMap: {},
+  searchResults: [],
 }
 
 export default (state = initialState, action) => {
@@ -39,6 +40,11 @@ export default (state = initialState, action) => {
 
       updatedMap[action.review.hikeId] = newList
       updatedState['reviewMap'] = updatedMap
+      return updatedState
+
+    case constants.REVIEWS_SEARCHED:
+      console.log('REVIEWS_SEARCHED ' + JSON.stringify(action.reviews))
+      updatedState['searchResults'] = action.reviews
       return updatedState
 
     default:

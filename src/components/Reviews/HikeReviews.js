@@ -39,7 +39,8 @@ class HikeReviews extends Component {
           <Review key={i}
             onUpdate={this.updateReview.bind(this)}
             isEditable={(this.props.user) ? (this.props.user.id == review.user.id) : false}
-            review={review} />
+            review={review}
+            displayName={false} />
         )
       })
     }

@@ -73,7 +73,8 @@ var HikeReviews = (function (Component) {
             return React.createElement(Review, { key: i,
               onUpdate: _this.updateReview.bind(_this),
               isEditable: _this.props.user ? _this.props.user.id == review.user.id : false,
-              review: review });
+              review: review,
+              displayName: false });
           });
         }
       },
