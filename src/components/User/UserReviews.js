@@ -25,7 +25,7 @@ class UserReviews extends Component {
             onUpdate={this.updateReview.bind(this)}
             isEditable={(this.props.user) ? (this.props.user.id == review.user.id) : false}
             review={review}
-            inUser={true} />
+            displayName={true} />
         )
       })
     }

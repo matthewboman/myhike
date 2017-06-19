@@ -16,20 +16,44 @@ var React = _interopRequire(_react);
 
 var Component = _react.Component;
 var connect = require("react-redux").connect;
+var actions = _interopRequire(require("../../actions"));
+
 var HikeMap = require("../common").HikeMap;
 var Navbar = require("./").Navbar;
 var HomePage = require("../Home").HomePage;
 var HomeContainer = (function (Component) {
-  function HomeContainer() {
+  function HomeContainer(props) {
     _classCallCheck(this, HomeContainer);
 
-    _get(Object.getPrototypeOf(HomeContainer.prototype), "constructor", this).call(this);
+    _get(Object.getPrototypeOf(HomeContainer.prototype), "constructor", this).call(this, props);
     this.state = {};
   }
 
   _inherits(HomeContainer, Component);
 
   _prototypeProperties(HomeContainer, null, {
+    searchByDifficulty: {
+      value: function searchByDifficulty(term) {
+        this.props.searchReviews("difficulty", term.value, null);
+      },
+      writable: true,
+      configurable: true
+    },
+    searchByFeatures: {
+      value: function searchByFeatures(features, mustIncludeAll) {
+        var featureList = features.split(",");
+        this.props.searchReviews("features", featureList, mustIncludeAll);
+      },
+      writable: true,
+      configurable: true
+    },
+    searchByField: {
+      value: function searchByField(field, term) {
+        this.props.searchReviews(field, term, null);
+      },
+      writable: true,
+      configurable: true
+    },
     render: {
       value: function render() {
         var mapContainer = React.createElement("div", { style: { height: "90vh", width: "50vw" } });
@@ -51,7 +75,11 @@ var HomeContainer = (function (Component) {
           React.createElement(
             "div",
             { className: "col-sm-12 col-md-6" },
-            React.createElement(HomePage, null)
+            React.createElement(HomePage, {
+              searchByDifficulty: this.searchByDifficulty.bind(this),
+              searchByFeatures: this.searchByFeatures.bind(this),
+              searchByField: this.searchByField.bind(this),
+              searchResults: this.props.searchResults })
           )
         );
       },
@@ -63,4 +91,16 @@ var HomeContainer = (function (Component) {
   return HomeContainer;
 })(Component);
 
-module.exports = HomeContainer;
+var stateToProps = function (state) {
+  return {
+    searchResults: state.review.searchResults };
+};
+
+var dispatchToProps = function (dispatch) {
+  return {
+    searchReviews: function (field, term, includeAll) {
+      return dispatch(actions.searchReviews(field, term, includeAll));
+    } };
+};
+
+module.exports = connect(stateToProps, dispatchToProps)(HomeContainer);

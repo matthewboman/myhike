@@ -225,6 +225,23 @@ module.exports = {
     };
   },
 
+  // Search reviews and return corresponding hikes
+  searchReviews: function (field, term, includeAll) {
+    return function (dispatch) {
+      APIManager.get("search/" + field + "/" + term + "/" + includeAll, null, function (err, response) {
+        if (err) {
+          console.log(err);
+          dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
+          return;
+        }
+        dispatch({
+          type: constants.REVIEWS_SEARCHED,
+          reviews: response.results
+        });
+      });
+    };
+  },
+
   // Allow user to add new review to a hike
   reviewCreated: function (review, params) {
     return function (dispatch) {

@@ -80,7 +80,7 @@ router.get('/', (req, res, next) => {
 router.get('/:page', (req, res, next) => {
   var page = req.params.page
 
-  if (page == 'api' || page == 'account') {
+  if (page == 'api' || page == 'account' || page == 'search') {
     next()
     return
   }
@@ -167,7 +167,7 @@ router.get('/:page/:slug', function(req, res, next) {
   var page = req.params.page
   var slug = req.params.slug
 
-  if (page == 'api' || page == 'account') {
+  if (page == 'api' || page == 'account' || page == 'search') {
     next()
     return
   }

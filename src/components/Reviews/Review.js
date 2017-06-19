@@ -163,7 +163,7 @@ class Review extends Component {
   renderReview() {
     return (
       <div className="review-block">
-        {(this.props.inUser) ? this.renderHikeName() : ''}
+        {(this.props.displayName) ? this.renderHikeName() : ''}
 
         <div className="hike-review-photos">
           {this.renderPhotos()}
@@ -232,7 +232,7 @@ class Review extends Component {
   renderHikeName() {
     return (
       <div className="hike-name">
-        <Link to={`../hike/${this.props.review.hikeId}`}>
+        <Link to={`../hike/${this.props.review.hikeId}`} >
           {this.props.review.hikeName}
         </Link>
       </div>

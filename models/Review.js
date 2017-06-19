@@ -7,7 +7,7 @@ var ReviewSchema = new mongoose.Schema({
   userId: { type: String, default: ''},
   user: { type: mongoose.Schema.Types.Mixed, default: {} },
   description: { type: String, default: '' },
-  difficulty: { type: Object, default: {} },
+  difficulty: { type: String, default: '' },
   features: { type: Array, default: [] },
   plants: { type: String, default: '' },
   fungi: { type: String, default: '' },
