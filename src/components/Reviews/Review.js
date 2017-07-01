@@ -103,10 +103,11 @@ class Review extends Component {
   }
 
   renderDifficulty() {
+    console.log(this.props.review.difficulty)
     return (
       <div className="review-difficulty-block">
         <div className="review-header difficulty-header">Difficulty: </div>
-        <div className="review-text difficulty-text">{this.props.review.difficulty.value}</div>
+        <div className="review-text difficulty-text">{this.props.review.difficulty}</div>
       </div>
     )
   }
