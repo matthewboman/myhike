@@ -1,11 +1,7 @@
-var AccountController = require('./AccountController');
-var HikeController = require('./HikeController');
-var ProfileController = require('./ProfileController');
-var ReviewController = require('./ReviewController');
-
-/*
-Not currently implemented b/c it causes problems with the controller
-*/
+const AccountController = require('./AccountController');
+const HikeController = require('./HikeController');
+const ProfileController = require('./ProfileController');
+const ReviewController = require('./ReviewController');
 
 module.exports = {
 

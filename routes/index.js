@@ -1,31 +1,25 @@
-var express = require('express')
-var router = express.Router()
-var Promise = require('bluebird')
+const express = require('express')
+const router = express.Router()
+const Promise = require('bluebird')
+const React = require('react')
+const ReactRouter = require('react-router')
+const ReactDOMServer = require('react-dom/server')
 
-var React = require('react')
-var ReactRouter = require('react-router')
-var ReactDOMServer = require('react-dom/server')
-
-var controllers = require('../controllers')
-
-var serverapp = require('../public/build/es5/serverapp')
-var store = require('../public/build/es5/store/store')
-var About = require('../public/build/es5/components/containers/About')
-var AccountContainer = require('../public/build/es5/components/containers/AccountContainer')
-var CreateHikeContainer = require('../public/build/es5/components/containers/CreateHikeContainer')
-var HikeContainer = require('../public/build/es5/components/containers/HikeContainer')
-var HomeContainer = require('../public/build/es5/components/containers/HomeContainer')
-var ProfileContainer = require('../public/build/es5/components/containers/ProfileContainer')
-
-/*
-TODO: Write general routes for pages.
-*/
+const controllers = require('../controllers')
+const serverapp = require('../public/build/es5/serverapp')
+const store = require('../public/build/es5/store/store')
+const About = require('../public/build/es5/components/containers/About')
+const AccountContainer = require('../public/build/es5/components/containers/AccountContainer')
+const CreateHikeContainer = require('../public/build/es5/components/containers/CreateHikeContainer')
+const HikeContainer = require('../public/build/es5/components/containers/HikeContainer')
+const HomeContainer = require('../public/build/es5/components/containers/HomeContainer')
+const ProfileContainer = require('../public/build/es5/components/containers/ProfileContainer')
 
 
 /* ==================== Private Functions ========================= */
 
 // Allows React-Router to connect app to previously-defined routes
-matchRoutes = function(req, routes) {
+matchRoutes = (req, routes) => {
   return new Promise((resolve, reject) => {
     ReactRouter.match({ routes, location: req.url}, (error, redirectLocation, renderProps) => {
       if (error) {
@@ -56,7 +50,7 @@ router.get('/', (req, res, next) => {
     })
     .then(() => {
       initialStore = store.configureStore(reducers)
-      var routes = {
+      const routes = {
         path: '/',
         component: serverapp,
         initial: initialStore,
@@ -71,14 +65,14 @@ router.get('/', (req, res, next) => {
       })
     })
     .catch((err) => {
-      console.log('Error in / route: ' + err)
+      console.log(`Error in / route: ${err}`)
     })
 })
 
 
 /* Server-side rendering for a specific page */
 router.get('/:page', (req, res, next) => {
-  var page = req.params.page
+  const page = req.params.page
 
   if (page == 'api' || page == 'account' || page == 'search') {
     next()
@@ -93,7 +87,7 @@ router.get('/:page', (req, res, next) => {
       .then((result) => {
         reducers['account'] = { user: result }
         initialStore = store.configureStore(reducers)
-        var routes = {
+        const routes = {
           path: '/create-hike',
           component: serverapp,
           initial: initialStore,
@@ -117,7 +111,7 @@ router.get('/:page', (req, res, next) => {
       .then((result) => {
         reducers['account'] = { user: result }
         initialStore = store.configureStore(reducers)
-        var routes = {
+        const routes = {
           path: '/create-hike',
           component: serverapp,
           initial: initialStore,
@@ -141,7 +135,7 @@ router.get('/:page', (req, res, next) => {
       .then((result) => {
         reducers['account'] = { user: result }
         initialStore = store.configureStore(reducers)
-        var routes = {
+        const routes = {
           path: '/currentuser',
           component: serverapp,
           initial: initialStore,
@@ -164,8 +158,8 @@ router.get('/:page', (req, res, next) => {
 
 /* Server-side rendering for a specific page of a specific resource */
 router.get('/:page/:slug', function(req, res, next) {
-  var page = req.params.page
-  var slug = req.params.slug
+  const page = req.params.page
+  const slug = req.params.slug
 
   if (page == 'api' || page == 'account' || page == 'search') {
     next()
@@ -178,7 +172,7 @@ router.get('/:page/:slug', function(req, res, next) {
   if (page == 'profile') {
     controllers.profile.findById(slug)
       .then((profile) => {
-        var profileMap = {}
+        let profileMap = {}
         profileMap[slug] = profile
         reducers['profile'] = { profileMap: profileMap }
         return controllers.account.currentUser(req)
@@ -186,7 +180,7 @@ router.get('/:page/:slug', function(req, res, next) {
         reducers['account'] = { user: user }
       }).then(() => {
         initialStore = store.configureStore(reducers)
-        var routes = {
+        const routes = {
           path: '/profile/:id',
           component: serverapp,
           initial: initialStore,
@@ -208,7 +202,7 @@ router.get('/:page/:slug', function(req, res, next) {
   if (page == 'hike') {
     controllers.hike.findById(slug)
       .then((hike) => {
-        var hikeMap = {}
+        const hikeMap = {}
         hikeMap[slug] = hike
         reducers['hike'] = { currentHike: hike, hikeMap: hikeMap }
         return controllers.account.currentUser(req)
@@ -218,7 +212,7 @@ router.get('/:page/:slug', function(req, res, next) {
       })
       .then(() => {
         initialStore = store.configureStore(reducers)
-        var routes = {
+        const routes = {
           path : '/hike/:id',
           component: serverapp,
           initial: initialStore,
@@ -233,7 +227,7 @@ router.get('/:page/:slug', function(req, res, next) {
         })
       })
       .catch((err) => {
-        console.log('Error in /:page/:slug route: ' + err)
+        console.log(`Error in /:page/:slug route: ${err}`)
       })
   }
 })
