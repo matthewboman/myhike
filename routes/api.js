@@ -1,29 +1,28 @@
-var express = require('express');
-var router = express.Router();
-var controllers = require('../controllers');
+const express = require('express')
+const router = express.Router()
+const controllers = require('../controllers')
 
 // GET all instances of a resource
-router.get('/:resource', function(req, res, next) {
-
-  var resource = req.params.resource;
-  var controller = controllers[resource];
+router.get('/:resource', (req, res, next) => {
+  const resource = req.params.resource
+  const controller = controllers[resource]
 
   if (controller == null) {
     res.json({
       confirmation: 'fail',
-      message: 'Invalid resource request: ' + resource
+      message: `Invalid resource request: ${resource}`
     })
-    return;
+    return
   }
 
   controller.find(req.query, false)
-    .then(function(entities) {
+    .then((entities) => {
       res.json({
         confirmation: 'success',
         results: entities
       })
     })
-    .catch(function(err) {
+    .catch((err) => {
       res.json({
         confirmation: 'fail',
         message: err
@@ -32,57 +31,56 @@ router.get('/:resource', function(req, res, next) {
 })
 
 // GET a specific instance of a resource
-router.get('/:resource/:id', function(req, res, next) {
+router.get('/:resource/:id', (req, res, next) => {
 
-  var resource = req.params.resource;
-  var id = req.params.id;
-  var controller = controllers[resource];
+  const resource = req.params.resource
+  const id = req.params.id
+  const controller = controllers[resource]
 
   if (controller == null) {
     res.json({
       confirmation: 'fail',
-      message: 'Invalid resource request ' + resource
+      message: `Invalid resource request: ${resource}`
     })
-    return;
+    return
   }
 
   controller.findById(id)
-    .then(function(result) {
+    .then((result) => {
       res.json({
         confirmation: 'success',
         result: result
       })
     })
-    .catch(function(err) {
+    .catch((err) => {
       res.json({
         confirmation: 'fail',
-        message: resource + ' ' + id + ' ' + ' not found.'
+        message: `${resource} ${id} not found.`
       })
     })
 })
 
 // POST a new instance of a resource
-router.post('/:resource', function(req, res, next) {
-
-  var resource = req.params.resource;
-  var controller = controllers[resource];
+router.post('/:resource', (req, res, next) => {
+  const resource = req.params.resource
+  const controller = controllers[resource]
 
   if (controller == null) {
     res.json({
       confirmation: 'fail',
-      message: 'Invalid resource request: ' + resource
+      message: `Invalid resource request: ${resource}`
     })
-    return;
+    return
   }
 
   controller.create(req.body)
-    .then(function(result) {
+    .then((result) => {
       res.json({
         confirmation: 'success',
         result: result
       })
     })
-    .catch(function(err) {
+    .catch((err) => {
       res.json({
         confirmation: 'fail',
         message: err
@@ -91,29 +89,28 @@ router.post('/:resource', function(req, res, next) {
 })
 
 
-// PUT an existing resource
-router.put('/:resource/:id', function(req, res, next) {
-
-  var resource = req.params.resource;
-  var id = req.params.id;
-  var controller = controllers[resource];
+// UPDATE an existing resource
+router.put('/:resource/:id', (req, res, next) => {
+  const resource = req.params.resource
+  const id = req.params.id
+  const controller = controllers[resource]
 
   if (controller == null) {
     res.json({
       confirmation: 'fail',
-      message: 'Invalid resource request: ' + resource
+      message: `Invalid resource request: ${resource}`
     })
-    return;
+    return
   }
 
   controller.update(id, req.body)
-    .then(function(result) {
+    .then((result) => {
       res.json({
         confirmation: 'success',
         result: result
       })
     })
-    .catch(function(err) {
+    .catch((err) => {
       res.json({
         confirmation: 'fail',
         message: err
@@ -123,27 +120,26 @@ router.put('/:resource/:id', function(req, res, next) {
 
 
 // DELETE an existing resource
-router.delete('/:resource/:id', function(req, res, next) {
-
-  var resource = req.params.resource;
-  var id = req.params.id;
-  var controller = controllers[resource];
+router.delete('/:resource/:id', (req, res, next) => {
+  const resource = req.params.resource
+  const id = req.params.id
+  const controller = controllers[resource]
 
   if (controller == null) {
     res.json({
       confirmation: 'Fail',
-      message: 'Invalid resource request: ' + resource
+      message: `Invalid resource request: ${resource}`
     })
-    return;
+    return
   }
 
   controller.delete(id)
-    .then(function(result) {
+    .then((result) => {
       res.json({
         confirmation: 'success'
       })
     })
-    .catch(function(err) {
+    .catch((err) => {
       res.json({
         confirmation: 'fail',
         message: err
@@ -151,4 +147,4 @@ router.delete('/:resource/:id', function(req, res, next) {
     })
 })
 
-module.exports = router;
+module.exports = router

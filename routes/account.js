@@ -1,20 +1,14 @@
-var express = require('express')
-var router = express.Router()
-var bcrypt = require('bcryptjs')
-
-var controllers = require('../controllers')
-var utils = require('../utils')
-
-/*
-TODO: Move password logic to profile or account controller so that this
-			handles only routing.
-*/
+const express = require('express')
+const router = express.Router()
+const bcrypt = require('bcryptjs')
+const controllers = require('../controllers')
+const utils = require('../utils')
 
 // Log user out, check if user is logged in
-router.get('/:action', function(req, res, next){
-	var action = req.params.action
+router.get('/:action', (req, res, next) => {
+	const action = req.params.action
 
-	if (action == 'logout'){ // log out
+	if (action == 'logout'){
 		req.session.reset()
 		res.json({
 			confirmation: 'success'
@@ -23,41 +17,36 @@ router.get('/:action', function(req, res, next){
 
 	if (action == 'currentuser') {
 		controllers.account.currentUser(req)
-			.then(function(result) {
-				console.log(result)
+			.then((result) => {
 				res.json({
 					confirmation: 'success',
 					user: result
 				})
 			})
-			.catch(function(err) {
-				console.log(err)
+			.catch((err) => {
 				res.json({
 					confirmation: 'fail',
 					message: err
 				})
 			})
 	}
-
 })
 
 // Register and login new user
-router.post('/register', function(req, res, next){
-	var credentials = req.body
+router.post('/register', (req, res, next) => {
+	const credentials = req.body
 
 	controllers.profile.create(credentials)
-		.then(function(profile){
-			// create signed token
-			var token = utils.JWT.sign({id: profile.id}, process.env.TOKEN_SECRET)
+		.then((profile) => {
+			const token = utils.JWT.sign({id: profile.id}, process.env.TOKEN_SECRET)
 			req.session.token = token
-
 			res.json({
 				confirmation: 'success',
 				profile: profile,
 				token: token
 			})
 		})
-		.catch(function(err){
+		.catch((err) => {
 			let errors = []
 			// If username is taken
 			if (err.errors.username) {
@@ -78,12 +67,11 @@ router.post('/register', function(req, res, next){
 		})
 })
 
-// Login returning user
-router.post('/login', function(req, res, next){
-	var credentials = req.body
+router.post('/login', (req, res, next) => {
+	const credentials = req.body
 
 	controllers.profile.find({username: credentials.username}, true)
-  	.then(function(profiles){
+  	.then((profiles) => {
   		if (profiles.length == 0){
   			res.json({
   				confirmation: 'fail',
@@ -91,19 +79,16 @@ router.post('/login', function(req, res, next){
   			})
   			return
   		}
+  		const profile = profiles[0]
 
-  		var profile = profiles[0]
-  		var passwordCorrect = bcrypt.compareSync(credentials.password, profile.password)
-  		if (passwordCorrect == false){
+  		if (bcrypt.compareSync(credentials.password, profile.password) == false){
   			res.json({
   				confirmation: 'fail',
   				message: 'Incorrect Password.'
   			})
   			return
   		}
-
-  		// create signed token
-  		var token = utils.JWT.sign({id: profile.id}, process.env.TOKEN_SECRET)
+  		const token = utils.JWT.sign({id: profile.id}, process.env.TOKEN_SECRET)
   		req.session.token = token
 			req.session.user = profile.id
   		res.json({
@@ -112,7 +97,7 @@ router.post('/login', function(req, res, next){
   			token: token
   		})
   	})
-  	.catch(function(err){
+  	.catch((err) => {
   		res.json({
   			confirmation: 'fail',
   			message: err

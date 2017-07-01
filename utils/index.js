@@ -1,9 +1,9 @@
-var JWT = require('./JWT');
-var Requests = require('./Requests');
+const JWT = require('./JWT')
+const Requests = require('./Requests')
 
 module.exports = {
 
-  JWT: JWT,
-  Requests: Requests,
+  JWT,
+  Requests,
 
-};
+}
