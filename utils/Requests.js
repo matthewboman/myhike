@@ -1,13 +1,13 @@
-var superagent = require('superagent')
+const superagent = require('superagent')
 
 module.exports = {
 
-  get: function(url, params, callback) {
+  get: (url, params, callback) => {
     superagent
       .get(url)
       .query(params)
       .set('Accept', 'text/json')
-      .end(function(err, response) {
+      .end((err, response) => {
         if (err) {
           callback(err, null)
           return

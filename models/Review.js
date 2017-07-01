@@ -1,6 +1,6 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-var ReviewSchema = new mongoose.Schema({
+const ReviewSchema = new mongoose.Schema({
 
   hikeId: { type: String, default: ''},
   hikeName: { type: String, default: ''},
@@ -17,7 +17,7 @@ var ReviewSchema = new mongoose.Schema({
 })
 
 ReviewSchema.methods.summary = function() {
-  var summary = {
+  const summary = {
     id: this._id.toString(),
     hikeId: this.hikeId,
     hikeName: this.hikeName,

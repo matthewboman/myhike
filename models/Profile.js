@@ -1,7 +1,7 @@
-var mongoose = require('mongoose')
-var uniqueValidator = require('mongoose-unique-validator');
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator');
 
-var ProfileSchema = new mongoose.Schema({
+const ProfileSchema = new mongoose.Schema({
 
   username: { type: String, trim: true, required: true, unique: true, default: ''},
   email: { type: String, trim: true, required: true, unique: true, lowercase: true, default: '' },
@@ -18,7 +18,7 @@ var ProfileSchema = new mongoose.Schema({
 ProfileSchema.plugin(uniqueValidator)
 
 ProfileSchema.methods.summary = function() {
-  var summary = {
+  const summary = {
     id: this._id.toString(),
     username: this.username,
     firstName: this.firstName,

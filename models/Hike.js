@@ -1,6 +1,6 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
-var HikeSchema = new mongoose.Schema({
+const HikeSchema = new mongoose.Schema({
 
   name: { type: String, default: '' },
   user: { type: String, default: '' },
@@ -15,7 +15,7 @@ var HikeSchema = new mongoose.Schema({
 })
 
 HikeSchema.methods.summary = function() {
-  var summary = {
+  const summary = {
     // id: this._id.toString(),
     id: this._id,
     name: this.name,

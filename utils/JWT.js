@@ -1,21 +1,19 @@
-var jwt = require('jsonwebtoken')
-var Promise = require('bluebird')
+const jwt = require('jsonwebtoken')
+const Promise = require('bluebird')
 
 module.exports = {
 
-	sign: function(obj, secret){
+	sign: (obj, secret) => {
 		return jwt.sign(obj, secret) // return token
 	},
 
-	verify: function(token, secret){
-
-		return new Promise(function(resolve, reject){
-			jwt.verify(token, secret, function(err, decode){
+	verify: (token, secret) => {
+		return new Promise((resolve, reject) => {
+			jwt.verify(token, secret, (err, decode) => {
 				if (err){
 					reject(err)
 					return
 				}
-
 				resolve(decode)
 			})
 		})
