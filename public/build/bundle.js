@@ -29123,11 +29123,11 @@
 	
 	var _HomeContainer2 = _interopRequireDefault(_HomeContainer);
 	
-	var _Navbar = __webpack_require__(661);
+	var _Navbar = __webpack_require__(662);
 	
 	var _Navbar2 = _interopRequireDefault(_Navbar);
 	
-	var _ProfileContainer = __webpack_require__(664);
+	var _ProfileContainer = __webpack_require__(665);
 	
 	var _ProfileContainer2 = _interopRequireDefault(_ProfileContainer);
 	
@@ -70442,6 +70442,7 @@
 	  }, {
 	    key: 'renderDifficulty',
 	    value: function renderDifficulty() {
+	      console.log(this.props.review.difficulty);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'review-difficulty-block' },
@@ -70453,7 +70454,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'review-text difficulty-text' },
-	          this.props.review.difficulty.value
+	          this.props.review.difficulty
 	        )
 	      );
 	    }
@@ -75186,7 +75187,7 @@
 	
 	var _SearchFeatures2 = _interopRequireDefault(_SearchFeatures);
 	
-	var _SearchMany = __webpack_require__(665);
+	var _SearchMany = __webpack_require__(661);
 	
 	var _SearchMany2 = _interopRequireDefault(_SearchMany);
 	
@@ -75221,7 +75222,7 @@
 	
 	var _SearchFeatures2 = _interopRequireDefault(_SearchFeatures);
 	
-	var _SearchMany = __webpack_require__(665);
+	var _SearchMany = __webpack_require__(661);
 	
 	var _SearchMany2 = _interopRequireDefault(_SearchMany);
 	
@@ -75504,9 +75505,107 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _reactSelect = __webpack_require__(607);
+	
+	var _reactSelect2 = _interopRequireDefault(_reactSelect);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var field = [{ value: 'animals', label: 'animals' }, { value: 'plants', label: 'plants' }, { value: 'fungi', label: 'fungi' }];
+	
+	var SearchMany = function (_Component) {
+	  _inherits(SearchMany, _Component);
+	
+	  function SearchMany(props) {
+	    _classCallCheck(this, SearchMany);
+	
+	    var _this = _possibleConstructorReturn(this, (SearchMany.__proto__ || Object.getPrototypeOf(SearchMany)).call(this, props));
+	
+	    _this.state = {
+	      field: '',
+	      term: ''
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(SearchMany, [{
+	    key: 'updateSearchTerm',
+	    value: function updateSearchTerm(event) {
+	      this.setState({ term: event.target.value });
+	    }
+	  }, {
+	    key: 'searchByField',
+	    value: function searchByField() {
+	      this.props.searchByField(this.state.field.value, this.state.term);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-many-container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-header' },
+	          'Search in categories'
+	        ),
+	        _react2.default.createElement('input', { className: 'form-control',
+	          placeholder: 'Seach for',
+	          onChange: this.updateSearchTerm.bind(this) }),
+	        _react2.default.createElement(_reactSelect2.default, {
+	          name: 'term-field',
+	          className: 'many-select',
+	          placeholder: 'in',
+	          searchable: false,
+	          value: this.state.field,
+	          clearable: false,
+	          options: field,
+	          autoBlur: true,
+	          onChange: function onChange(field) {
+	            return _this2.setState({ field: field });
+	          } }),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'button-right button-default',
+	            onClick: this.searchByField.bind(this) },
+	          'Search'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return SearchMany;
+	}(_react.Component);
+	
+	exports.default = SearchMany;
+
+/***/ },
+/* 662 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
 	var _reactRouter = __webpack_require__(178);
 	
-	var _Navbar = __webpack_require__(662);
+	var _Navbar = __webpack_require__(663);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -75587,7 +75686,7 @@
 	exports.default = Navbar;
 
 /***/ },
-/* 662 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75597,7 +75696,7 @@
 	});
 	exports.NavAdmin = undefined;
 	
-	var _NavAdmin = __webpack_require__(663);
+	var _NavAdmin = __webpack_require__(664);
 	
 	var _NavAdmin2 = _interopRequireDefault(_NavAdmin);
 	
@@ -75606,7 +75705,7 @@
 	exports.NavAdmin = _NavAdmin2.default;
 
 /***/ },
-/* 663 */
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75866,7 +75965,7 @@
 	exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(NavAdmin);
 
 /***/ },
-/* 664 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75985,104 +76084,6 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(ProfileContainer);
-
-/***/ },
-/* 665 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactSelect = __webpack_require__(607);
-	
-	var _reactSelect2 = _interopRequireDefault(_reactSelect);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var field = [{ value: 'animals', label: 'animals' }, { value: 'plants', label: 'plants' }, { value: 'fungi', label: 'fungi' }];
-	
-	var SearchMany = function (_Component) {
-	  _inherits(SearchMany, _Component);
-	
-	  function SearchMany(props) {
-	    _classCallCheck(this, SearchMany);
-	
-	    var _this = _possibleConstructorReturn(this, (SearchMany.__proto__ || Object.getPrototypeOf(SearchMany)).call(this, props));
-	
-	    _this.state = {
-	      field: '',
-	      term: ''
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(SearchMany, [{
-	    key: 'updateSearchTerm',
-	    value: function updateSearchTerm(event) {
-	      this.setState({ term: event.target.value });
-	    }
-	  }, {
-	    key: 'searchByField',
-	    value: function searchByField() {
-	      this.props.searchByField(this.state.field.value, this.state.term);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'search-many-container' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'search-header' },
-	          'Search in categories'
-	        ),
-	        _react2.default.createElement('input', { className: 'form-control',
-	          placeholder: 'Seach for',
-	          onChange: this.updateSearchTerm.bind(this) }),
-	        _react2.default.createElement(_reactSelect2.default, {
-	          name: 'term-field',
-	          className: 'many-select',
-	          placeholder: 'in',
-	          searchable: false,
-	          value: this.state.field,
-	          clearable: false,
-	          options: field,
-	          autoBlur: true,
-	          onChange: function onChange(field) {
-	            return _this2.setState({ field: field });
-	          } }),
-	        _react2.default.createElement(
-	          'button',
-	          { className: 'button-right button-default',
-	            onClick: this.searchByField.bind(this) },
-	          'Search'
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return SearchMany;
-	}(_react.Component);
-	
-	exports.default = SearchMany;
 
 /***/ }
 /******/ ]);
