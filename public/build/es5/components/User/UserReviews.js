@@ -50,7 +50,7 @@ var UserReviews = (function (Component) {
               onUpdate: _this.updateReview.bind(_this),
               isEditable: _this.props.user ? _this.props.user.id == review.user.id : false,
               review: review,
-              inUser: true });
+              displayName: true });
           });
         }
       },

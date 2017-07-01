@@ -81,7 +81,7 @@ var CreateReview = (function (Component) {
     addDifficultyToHike: {
       value: function addDifficultyToHike(value) {
         var updatedReview = Object.assign({}, this.state.review);
-        updatedReview.difficulty = value;
+        updatedReview.difficulty = value.value;
         this.setState({ review: updatedReview });
       },
       writable: true,

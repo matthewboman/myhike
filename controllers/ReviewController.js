@@ -39,6 +39,128 @@ module.exports = {
     })
   },
 
+  searchDifficulty: function(term, isRaw) {
+    const t = term.toString()
+    return new Promise((resolve, reject) => {
+      Review.find({difficulty: t}, (err, reviews) => {
+        if (err) {
+          reject(err)
+          return
+        }
+
+        if (isRaw) {
+          resolve(reviews)
+          return
+        }
+
+        var summaries = []
+        reviews.forEach(function(review) {
+          summaries.push(review.summary())
+        })
+        resolve(summaries)
+      })
+    })
+  },
+
+  searchFeatures: function(term, includeAll, isRaw) {
+    let featureList = term.split(',')
+    if (includeAll) {
+      return new Promise((resolve, reject) => {
+        Review.find({features: { $all: featureList }}, (err, reviews) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          if (isRaw) {
+            resolve(reviews)
+            return
+          }
+          var summaries = []
+          reviews.forEach(function(review) {
+            summaries.push(review.summary())
+          })
+          resolve(summaries)
+        })
+      })
+    } else {
+      return new Promise((resolve, reject) => {
+        Review.find({features: { $in: featureList }}, (err, reviews) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          if (isRaw) {
+            resolve(reviews)
+            return
+          }
+          var summaries = []
+          reviews.forEach(function(review) {
+            summaries.push(review.summary())
+          })
+          resolve(summaries)
+        })
+      })
+    }
+  },
+
+  searchMany: function(searchField, searchTerm, isRaw) {
+    if (searchField == 'plants') {
+      return new Promise((resolve, reject) => {
+        Review.find({'plants': { '$regex' : searchTerm, '$options' : 'i' }}, (err, reviews) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          if (isRaw) {
+            resolve(reviews)
+            return
+          }
+          var summaries = []
+          reviews.forEach(function(review) {
+            summaries.push(review.summary())
+          })
+          resolve(summaries)
+        })
+      })
+    } else if (searchField == 'animals') {
+      return new Promise((resolve, reject) => {
+        Review.find({'animals': { '$regex' : searchTerm, '$options' : 'i' }}, (err, reviews) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          if (isRaw) {
+            resolve(reviews)
+            return
+          }
+          var summaries = []
+          reviews.forEach(function(review) {
+            summaries.push(review.summary())
+          })
+          resolve(summaries)
+        })
+      })
+    } else if (searchField == 'fungi') {
+      return new Promise((resolve, reject) => {
+        Review.find({'fungi': { '$regex' : searchTerm, '$options' : 'i' }}, (err, reviews) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          if (isRaw) {
+            resolve(reviews)
+            return
+          }
+          var summaries = []
+          reviews.forEach(function(review) {
+            summaries.push(review.summary())
+          })
+          resolve(summaries)
+        })
+      })
+    }
+  },
+
   // POST
   create: function(params) {
     return new Promise(function(resolve, reject) {

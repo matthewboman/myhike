@@ -103,10 +103,11 @@ class Review extends Component {
   }
 
   renderDifficulty() {
+    console.log(this.props.review.difficulty)
     return (
       <div className="review-difficulty-block">
         <div className="review-header difficulty-header">Difficulty: </div>
-        <div className="review-text difficulty-text">{this.props.review.difficulty.value}</div>
+        <div className="review-text difficulty-text">{this.props.review.difficulty}</div>
       </div>
     )
   }
@@ -163,7 +164,7 @@ class Review extends Component {
   renderReview() {
     return (
       <div className="review-block">
-        {(this.props.inUser) ? this.renderHikeName() : ''}
+        {(this.props.displayName) ? this.renderHikeName() : ''}
 
         <div className="hike-review-photos">
           {this.renderPhotos()}
@@ -232,7 +233,7 @@ class Review extends Component {
   renderHikeName() {
     return (
       <div className="hike-name">
-        <Link to={`../hike/${this.props.review.hikeId}`}>
+        <Link to={`../hike/${this.props.review.hikeId}`} >
           {this.props.review.hikeName}
         </Link>
       </div>

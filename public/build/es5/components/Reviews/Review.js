@@ -167,6 +167,7 @@ var Review = (function (Component) {
     },
     renderDifficulty: {
       value: function renderDifficulty() {
+        console.log(this.props.review.difficulty);
         return React.createElement(
           "div",
           { className: "review-difficulty-block" },
@@ -178,7 +179,7 @@ var Review = (function (Component) {
           React.createElement(
             "div",
             { className: "review-text difficulty-text" },
-            this.props.review.difficulty.value
+            this.props.review.difficulty
           )
         );
       },
@@ -295,7 +296,7 @@ var Review = (function (Component) {
         return React.createElement(
           "div",
           { className: "review-block" },
-          this.props.inUser ? this.renderHikeName() : "",
+          this.props.displayName ? this.renderHikeName() : "",
           React.createElement(
             "div",
             { className: "hike-review-photos" },

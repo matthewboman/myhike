@@ -28760,7 +28760,8 @@
 	  REVIEW_UPDATED: 'REVIEW_UPDATED',
 	  REVIEW_ADDED: 'REVIEW_ADDED',
 	  REVIEW_RECEIVED: 'REVIEW_RECEIVED',
-	  REVIEWS_RECEIVED: 'REVIEWS_RECEIVED'
+	  REVIEWS_RECEIVED: 'REVIEWS_RECEIVED',
+	  REVIEWS_SEARCHED: 'REVIEWS_SEARCHED'
 	
 	};
 
@@ -28977,7 +28978,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var initialState = {
-	  reviewMap: {}
+	  reviewMap: {},
+	  searchResults: []
 	};
 	
 	exports.default = function () {
@@ -29018,6 +29020,11 @@
 	
 	      updatedMap[action.review.hikeId] = newList;
 	      updatedState['reviewMap'] = updatedMap;
+	      return updatedState;
+	
+	    case _constants2.default.REVIEWS_SEARCHED:
+	      console.log('REVIEWS_SEARCHED ' + JSON.stringify(action.reviews));
+	      updatedState['searchResults'] = action.reviews;
 	      return updatedState;
 	
 	    default:
@@ -30184,6 +30191,23 @@
 	        dispatch({
 	          type: _constants2.default.REVIEWS_RECEIVED,
 	          params: params,
+	          reviews: response.results
+	        });
+	      });
+	    };
+	  },
+	
+	  // Search reviews and return corresponding hikes
+	  searchReviews: function searchReviews(field, term, includeAll) {
+	    return function (dispatch) {
+	      _utils.APIManager.get('search/' + field + '/' + term + '/' + includeAll, null, function (err, response) {
+	        if (err) {
+	          console.log(err);
+	          dispatch({ type: _constants2.default.ERROR_RECEIVED, message: err.message });
+	          return;
+	        }
+	        dispatch({
+	          type: _constants2.default.REVIEWS_SEARCHED,
 	          reviews: response.results
 	        });
 	      });
@@ -39158,7 +39182,7 @@
 	            onUpdate: _this2.updateReview.bind(_this2),
 	            isEditable: _this2.props.user ? _this2.props.user.id == review.user.id : false,
 	            review: review,
-	            inUser: true });
+	            displayName: true });
 	        });
 	      }
 	    }
@@ -39341,7 +39365,7 @@
 	    key: 'addDifficultyToHike',
 	    value: function addDifficultyToHike(value) {
 	      var updatedReview = Object.assign({}, this.state.review);
-	      updatedReview['difficulty'] = value;
+	      updatedReview['difficulty'] = value.value;
 	      this.setState({ review: updatedReview });
 	    }
 	  }, {
@@ -70213,7 +70237,8 @@
 	          return _react2.default.createElement(_.Review, { key: i,
 	            onUpdate: _this2.updateReview.bind(_this2),
 	            isEditable: _this2.props.user ? _this2.props.user.id == review.user.id : false,
-	            review: review });
+	            review: review,
+	            displayName: false });
 	        });
 	      }
 	    }
@@ -70417,6 +70442,7 @@
 	  }, {
 	    key: 'renderDifficulty',
 	    value: function renderDifficulty() {
+	      console.log(this.props.review.difficulty);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'review-difficulty-block' },
@@ -70428,7 +70454,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'review-text difficulty-text' },
-	          this.props.review.difficulty.value
+	          this.props.review.difficulty
 	        )
 	      );
 	    }
@@ -70533,7 +70559,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'review-block' },
-	        this.props.inUser ? this.renderHikeName() : '',
+	        this.props.displayName ? this.renderHikeName() : '',
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'hike-review-photos' },
@@ -75040,6 +75066,10 @@
 	
 	var _reactRedux = __webpack_require__(233);
 	
+	var _actions = __webpack_require__(285);
+	
+	var _actions2 = _interopRequireDefault(_actions);
+	
 	var _common = __webpack_require__(380);
 	
 	var _ = __webpack_require__(281);
@@ -75057,16 +75087,32 @@
 	var HomeContainer = function (_Component) {
 	  _inherits(HomeContainer, _Component);
 	
-	  function HomeContainer() {
+	  function HomeContainer(props) {
 	    _classCallCheck(this, HomeContainer);
 	
-	    var _this = _possibleConstructorReturn(this, (HomeContainer.__proto__ || Object.getPrototypeOf(HomeContainer)).call(this));
+	    var _this = _possibleConstructorReturn(this, (HomeContainer.__proto__ || Object.getPrototypeOf(HomeContainer)).call(this, props));
 	
 	    _this.state = {};
 	    return _this;
 	  }
 	
 	  _createClass(HomeContainer, [{
+	    key: 'searchByDifficulty',
+	    value: function searchByDifficulty(term) {
+	      this.props.searchReviews('difficulty', term.value, null);
+	    }
+	  }, {
+	    key: 'searchByFeatures',
+	    value: function searchByFeatures(features, mustIncludeAll) {
+	      var featureList = features.split(',');
+	      this.props.searchReviews('features', featureList, mustIncludeAll);
+	    }
+	  }, {
+	    key: 'searchByField',
+	    value: function searchByField(field, term) {
+	      this.props.searchReviews(field, term, null);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	
@@ -75089,7 +75135,11 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'col-sm-12 col-md-6' },
-	          _react2.default.createElement(_Home.HomePage, null)
+	          _react2.default.createElement(_Home.HomePage, {
+	            searchByDifficulty: this.searchByDifficulty.bind(this),
+	            searchByFeatures: this.searchByFeatures.bind(this),
+	            searchByField: this.searchByField.bind(this),
+	            searchResults: this.props.searchResults })
 	        )
 	      );
 	    }
@@ -75098,7 +75148,21 @@
 	  return HomeContainer;
 	}(_react.Component);
 	
-	exports.default = HomeContainer;
+	var stateToProps = function stateToProps(state) {
+	  return {
+	    searchResults: state.review.searchResults
+	  };
+	};
+	
+	var dispatchToProps = function dispatchToProps(dispatch) {
+	  return {
+	    searchReviews: function searchReviews(field, term, includeAll) {
+	      return dispatch(_actions2.default.searchReviews(field, term, includeAll));
+	    }
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(stateToProps, dispatchToProps)(HomeContainer);
 
 /***/ },
 /* 657 */
@@ -75109,21 +75173,36 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.HomePage = undefined;
+	exports.SearchMany = exports.SearchFeatures = exports.SearchDifficulty = exports.HomePage = undefined;
 	
 	var _HomePage = __webpack_require__(658);
 	
 	var _HomePage2 = _interopRequireDefault(_HomePage);
 	
+	var _SearchDifficulty = __webpack_require__(659);
+	
+	var _SearchDifficulty2 = _interopRequireDefault(_SearchDifficulty);
+	
+	var _SearchFeatures = __webpack_require__(660);
+	
+	var _SearchFeatures2 = _interopRequireDefault(_SearchFeatures);
+	
+	var _SearchMany = __webpack_require__(661);
+	
+	var _SearchMany2 = _interopRequireDefault(_SearchMany);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	exports.HomePage = _HomePage2.default;
+	exports.SearchDifficulty = _SearchDifficulty2.default;
+	exports.SearchFeatures = _SearchFeatures2.default;
+	exports.SearchMany = _SearchMany2.default;
 
 /***/ },
 /* 658 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -75134,6 +75213,20 @@
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _SearchDifficulty = __webpack_require__(659);
+	
+	var _SearchDifficulty2 = _interopRequireDefault(_SearchDifficulty);
+	
+	var _SearchFeatures = __webpack_require__(660);
+	
+	var _SearchFeatures2 = _interopRequireDefault(_SearchFeatures);
+	
+	var _SearchMany = __webpack_require__(661);
+	
+	var _SearchMany2 = _interopRequireDefault(_SearchMany);
+	
+	var _Reviews = __webpack_require__(378);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -75146,29 +75239,50 @@
 	var HomePage = function (_Component) {
 	  _inherits(HomePage, _Component);
 	
-	  function HomePage() {
+	  function HomePage(props) {
 	    _classCallCheck(this, HomePage);
 	
-	    return _possibleConstructorReturn(this, (HomePage.__proto__ || Object.getPrototypeOf(HomePage)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (HomePage.__proto__ || Object.getPrototypeOf(HomePage)).call(this, props));
+	
+	    _this.state = {};
+	    return _this;
 	  }
 	
 	  _createClass(HomePage, [{
-	    key: "render",
+	    key: 'renderSearchResults',
+	    value: function renderSearchResults() {
+	      if (this.props.searchResults && this.props.searchResults.length > 0) {
+	        return this.props.searchResults.map(function (review, i) {
+	          return _react2.default.createElement(_Reviews.Review, { key: i,
+	            review: review,
+	            displayName: true });
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "homepage-right" },
+	        'div',
+	        { className: 'homepage-right' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "homepage-header-background-image" },
+	          'div',
+	          { className: 'homepage-header-background-image' },
 	          _react2.default.createElement(
-	            "div",
-	            { className: "home-text" },
+	            'div',
+	            { className: 'home-text' },
 	            _react2.default.createElement(
-	              "div",
-	              { className: "home-instructions" },
-	              "Use the map to search for a hike, or sign in to create/review hikes of your own"
-	            )
+	              'div',
+	              { className: 'home-instructions' },
+	              'Use the map to search for a hike, or sign in to create/review hikes of your own'
+	            ),
+	            _react2.default.createElement(_SearchDifficulty2.default, {
+	              searchByDifficulty: this.props.searchByDifficulty.bind(this) }),
+	            _react2.default.createElement(_SearchFeatures2.default, {
+	              searchByFeatures: this.props.searchByFeatures.bind(this) }),
+	            _react2.default.createElement(_SearchMany2.default, {
+	              searchByField: this.props.searchByField.bind(this) }),
+	            this.renderSearchResults()
 	          )
 	        )
 	      );
@@ -75181,9 +75295,299 @@
 	exports.default = HomePage;
 
 /***/ },
-/* 659 */,
-/* 660 */,
-/* 661 */,
+/* 659 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactSelect = __webpack_require__(607);
+	
+	var _reactSelect2 = _interopRequireDefault(_reactSelect);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SearchDifficulty = function (_Component) {
+	  _inherits(SearchDifficulty, _Component);
+	
+	  function SearchDifficulty(props) {
+	    _classCallCheck(this, SearchDifficulty);
+	
+	    var _this = _possibleConstructorReturn(this, (SearchDifficulty.__proto__ || Object.getPrototypeOf(SearchDifficulty)).call(this, props));
+	
+	    _this.state = {
+	      levels: [{ value: 'easy', label: 'easy' }, { value: 'moderate', label: 'moderate' }, { value: 'strenuous', label: 'strenuous' }, { value: 'very strenuous', label: 'very strenuous' }],
+	      term: ''
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(SearchDifficulty, [{
+	    key: 'searchByDifficulty',
+	    value: function searchByDifficulty() {
+	      this.props.searchByDifficulty(this.state.term);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-difficulty-container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-header' },
+	          'Search by difficulty'
+	        ),
+	        _react2.default.createElement(_reactSelect2.default, {
+	          name: 'term-field',
+	          className: 'difficulty-select',
+	          placeholder: 'difficulty level',
+	          searchable: false,
+	          value: this.state.term,
+	          clearable: false,
+	          options: this.state.levels,
+	          autoBlur: true,
+	          onChange: function onChange(term) {
+	            return _this2.setState({ term: term });
+	          } }),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'button-right button-default',
+	            onClick: this.searchByDifficulty.bind(this) },
+	          'Search'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return SearchDifficulty;
+	}(_react.Component);
+	
+	exports.default = SearchDifficulty;
+
+/***/ },
+/* 660 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactSelect = __webpack_require__(607);
+	
+	var _reactSelect2 = _interopRequireDefault(_reactSelect);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var features = [{ value: 'waterfalls', label: 'waterfalls' }, { value: 'scenic views', label: 'scenic views' }, { value: 'river or stream', label: 'river or stream' }, { value: 'lake', label: 'lake' }, { value: 'paved path', label: 'paved path' }, _defineProperty({ value: 'dirt path' }, 'value', 'dirt path')];
+	
+	var SearchFeatures = function (_Component) {
+	  _inherits(SearchFeatures, _Component);
+	
+	  function SearchFeatures(props) {
+	    _classCallCheck(this, SearchFeatures);
+	
+	    var _this = _possibleConstructorReturn(this, (SearchFeatures.__proto__ || Object.getPrototypeOf(SearchFeatures)).call(this, props));
+	
+	    _this.state = {
+	      value: [],
+	      mustIncludeAll: false
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(SearchFeatures, [{
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      console.log(this.state.mustIncludeAll);
+	    }
+	  }, {
+	    key: 'updateValues',
+	    value: function updateValues(value) {
+	      this.setState({ value: value });
+	    }
+	  }, {
+	    key: 'searchByFeatures',
+	    value: function searchByFeatures() {
+	      this.props.searchByFeatures(this.state.value, this.state.mustIncludeAll);
+	    }
+	  }, {
+	    key: 'toggleCheckbox',
+	    value: function toggleCheckbox() {
+	      this.setState({ mustIncludeAll: !this.state.mustIncludeAll });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-feature-container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-header' },
+	          'Search for specific features'
+	        ),
+	        _react2.default.createElement(_reactSelect2.default, { multi: true, simpleValue: true,
+	          className: 'feature-select',
+	          value: this.state.value,
+	          placeholder: 'Noteable features',
+	          options: features,
+	          onChange: this.updateValues.bind(this) }),
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'include-all' },
+	          'Hike must include all'
+	        ),
+	        _react2.default.createElement('input', { type: 'checkbox',
+	          checked: this.state.mustIncludeAll,
+	          onChange: this.toggleCheckbox.bind(this) }),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'button-right button-default',
+	            onClick: this.searchByFeatures.bind(this) },
+	          'Search'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return SearchFeatures;
+	}(_react.Component);
+	
+	exports.default = SearchFeatures;
+
+/***/ },
+/* 661 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactSelect = __webpack_require__(607);
+	
+	var _reactSelect2 = _interopRequireDefault(_reactSelect);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var field = [{ value: 'animals', label: 'animals' }, { value: 'plants', label: 'plants' }, { value: 'fungi', label: 'fungi' }];
+	
+	var SearchMany = function (_Component) {
+	  _inherits(SearchMany, _Component);
+	
+	  function SearchMany(props) {
+	    _classCallCheck(this, SearchMany);
+	
+	    var _this = _possibleConstructorReturn(this, (SearchMany.__proto__ || Object.getPrototypeOf(SearchMany)).call(this, props));
+	
+	    _this.state = {
+	      field: '',
+	      term: ''
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(SearchMany, [{
+	    key: 'updateSearchTerm',
+	    value: function updateSearchTerm(event) {
+	      this.setState({ term: event.target.value });
+	    }
+	  }, {
+	    key: 'searchByField',
+	    value: function searchByField() {
+	      this.props.searchByField(this.state.field.value, this.state.term);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'search-many-container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'search-header' },
+	          'Search in categories'
+	        ),
+	        _react2.default.createElement('input', { className: 'form-control',
+	          placeholder: 'Seach for',
+	          onChange: this.updateSearchTerm.bind(this) }),
+	        _react2.default.createElement(_reactSelect2.default, {
+	          name: 'term-field',
+	          className: 'many-select',
+	          placeholder: 'in',
+	          searchable: false,
+	          value: this.state.field,
+	          clearable: false,
+	          options: field,
+	          autoBlur: true,
+	          onChange: function onChange(field) {
+	            return _this2.setState({ field: field });
+	          } }),
+	        _react2.default.createElement(
+	          'button',
+	          { className: 'button-right button-default',
+	            onClick: this.searchByField.bind(this) },
+	          'Search'
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return SearchMany;
+	}(_react.Component);
+	
+	exports.default = SearchMany;
+
+/***/ },
 /* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
