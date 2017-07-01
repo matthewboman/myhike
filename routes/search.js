@@ -1,7 +1,7 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
-var controllers = require('../controllers')
+const controllers = require('../controllers')
 
 router.get('/:field/:term/:includeAll', (req, res, next) => {
   const searchField = req.params.field
