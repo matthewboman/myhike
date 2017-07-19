@@ -7,20 +7,6 @@ import { APIManager } from '../../utils'
 import actions from '../../actions'
 import { Login, Register } from '../User'
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)',
-    height                : '450px',
-    width                 : '330px',
-    padding               : '0px'
-  }
-};
-
 class NavAdmin extends Component {
   constructor() {
     super()
@@ -66,6 +52,17 @@ class NavAdmin extends Component {
   logout(event) {
     event.preventDefault()
     this.props.logoutUser(null)
+  }
+
+  renderModalHeader() {
+    return (
+      <div className="modal-header">
+        <span className="modal-title">
+          { (this.state.isRegister) ? 'Register' : 'Login' }
+        </span>
+        <span onClick={this.closeModal} className="x-button"></span>
+      </div>
+    )
   }
 
   renderModalType() {
@@ -124,15 +121,15 @@ class NavAdmin extends Component {
       <div className="nav-admin">
         { (this.props.user) ? this.renderIfUser() : this.renderIfNoUser() }
         <Modal
-          // className="account-modal"
+          className='account-modal'
+          overlayClassName='account-modal-overlay'
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
-          style={customStyles}
           contentLabel="account modal"
         >
-          <div onClick={this.closeModal} className="x"></div>
-          <div className="modal-header">
+          {this.renderModalHeader()}
+          <div className="modal-body">
             {this.renderModalType()}
           </div>
 

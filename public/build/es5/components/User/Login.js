@@ -15,6 +15,7 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
+var Error = require("../common").Error;
 var APIManager = require("../../utils").APIManager;
 var Login = (function (Component) {
   function Login() {
@@ -45,7 +46,6 @@ var Login = (function (Component) {
       value: function login(event) {
         event.preventDefault();
         if (this.state.user.username == 0) {
-          console.log("Please enter your username");
           this.props.displayError("Please enter your username");
           return;
         }
@@ -63,7 +63,7 @@ var Login = (function (Component) {
         return React.createElement(
           "div",
           { className: "login" },
-          this.props.error ? this.props.error : "",
+          this.props.error ? React.createElement(Error, null) : "",
           React.createElement(
             "form",
             null,

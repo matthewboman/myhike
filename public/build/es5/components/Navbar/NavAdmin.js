@@ -26,22 +26,6 @@ var _User = require("../User");
 
 var Login = _User.Login;
 var Register = _User.Register;
-
-
-var customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    height: "450px",
-    width: "330px",
-    padding: "0px"
-  }
-};
-
 var NavAdmin = (function (Component) {
   function NavAdmin() {
     _classCallCheck(this, NavAdmin);
@@ -105,6 +89,22 @@ var NavAdmin = (function (Component) {
       value: function logout(event) {
         event.preventDefault();
         this.props.logoutUser(null);
+      },
+      writable: true,
+      configurable: true
+    },
+    renderModalHeader: {
+      value: function renderModalHeader() {
+        return React.createElement(
+          "div",
+          { className: "modal-header" },
+          React.createElement(
+            "span",
+            { className: "modal-title" },
+            this.state.isRegister ? "Register" : "Login"
+          ),
+          React.createElement("span", { onClick: this.closeModal, className: "x-button" })
+        );
       },
       writable: true,
       configurable: true
@@ -217,16 +217,17 @@ var NavAdmin = (function (Component) {
           React.createElement(
             Modal,
             {
+              className: "account-modal",
+              overlayClassName: "account-modal-overlay",
               isOpen: this.state.modalIsOpen,
               onAfterOpen: this.afterOpenModal,
               onRequestClose: this.closeModal,
-              style: customStyles,
               contentLabel: "account modal"
             },
-            React.createElement("div", { onClick: this.closeModal, className: "x" }),
+            this.renderModalHeader(),
             React.createElement(
               "div",
-              { className: "modal-header" },
+              { className: "modal-body" },
               this.renderModalType()
             )
           )
@@ -261,4 +262,3 @@ var dispatchToProps = function (dispatch) {
 };
 
 module.exports = connect(stateToProps, dispatchToProps)(NavAdmin);
-// className="account-modal"
