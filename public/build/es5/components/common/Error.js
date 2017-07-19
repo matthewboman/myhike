@@ -18,24 +18,19 @@ var Component = _react.Component;
 var connect = require("react-redux").connect;
 var actions = _interopRequire(require("../../actions"));
 
-var APIManager = require("../../utils").APIManager;
-var RegisterForm = require("./").RegisterForm;
-var Error = require("../common").Error;
-var Register = (function (Component) {
-  function Register() {
-    _classCallCheck(this, Register);
+var Error = (function (Component) {
+  function Error(props) {
+    _classCallCheck(this, Error);
 
-    _get(Object.getPrototypeOf(Register.prototype), "constructor", this).call(this);
-    this.state = {};
+    _get(Object.getPrototypeOf(Error.prototype), "constructor", this).call(this, props);
   }
 
-  _inherits(Register, Component);
+  _inherits(Error, Component);
 
-  _prototypeProperties(Register, null, {
-    register: {
-      value: function register(profile) {
-        this.props.profileCreated(profile);
-        if (this.props.error == null) this.props.onClose();
+  _prototypeProperties(Error, null, {
+    clearError: {
+      value: function clearError() {
+        this.props.displayError("");
       },
       writable: true,
       configurable: true
@@ -44,9 +39,8 @@ var Register = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          { className: "register" },
-          this.props.error ? React.createElement(Error, null) : "",
-          React.createElement(RegisterForm, { onRegister: this.register.bind(this) })
+          { className: "error-block", onClick: this.clearError.bind(this) },
+          this.props.error
         );
       },
       writable: true,
@@ -54,7 +48,7 @@ var Register = (function (Component) {
     }
   });
 
-  return Register;
+  return Error;
 })(Component);
 
 var stateToProps = function (state) {
@@ -65,9 +59,10 @@ var stateToProps = function (state) {
 
 var dispatchToProps = function (dispatch) {
   return {
-    profileCreated: function (profile) {
-      return dispatch(actions.profileCreated(profile));
-    } };
+    displayError: function (error) {
+      return dispatch(actions.displayError(error));
+    }
+  };
 };
 
-module.exports = connect(stateToProps, dispatchToProps)(Register);
+module.exports = connect(stateToProps, dispatchToProps)(Error);

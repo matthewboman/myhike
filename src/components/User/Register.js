@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import actions from '../../actions'
 import { APIManager } from '../../utils'
 import { RegisterForm } from './'
+import { Error } from '../common'
 
 class Register extends Component {
   constructor() {
@@ -13,13 +14,14 @@ class Register extends Component {
 
   register(profile) {
     this.props.profileCreated(profile)
-    this.props.onClose()
+    if (this.props.error == null)
+      this.props.onClose()
   }
 
   render() {
     return (
       <div className="register">
-        {(this.props.error) ? this.props.error : ''}
+        {(this.props.error) ? <Error /> : ''}
         <RegisterForm onRegister={this.register.bind(this)}/>
       </div>
     )

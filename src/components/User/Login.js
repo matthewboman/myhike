@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { Error } from '../common'
 import { APIManager } from '../../utils'
 
 class Login extends Component {
@@ -22,7 +23,6 @@ class Login extends Component {
   login(event) {
     event.preventDefault()
     if (this.state.user.username == 0) {
-      console.log('Please enter your username')
       this.props.displayError('Please enter your username')
       return
     }
@@ -36,7 +36,7 @@ class Login extends Component {
   render() {
     return (
       <div className="login">
-        {(this.props.error) ? this.props.error : ''}
+        {(this.props.error) ? <Error /> : ''}
       <form>
         <div className="username">
           <input
