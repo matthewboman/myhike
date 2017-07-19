@@ -4,6 +4,10 @@
   "scripts": {
     "start": "node app.js"
   },
+  "engines": {
+    "node": "8.0.0"
+  },
+  "main": "app.js",
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "bluebird": "^3.4.7",
@@ -64,5 +68,6 @@
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",
     "webpack": "^1.14.0"
-  }
+  },
+  "license": "MIT"
 }
