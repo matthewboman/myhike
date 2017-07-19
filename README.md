@@ -20,6 +20,16 @@ list of ways anyone interested can help:
         but I also haven't tried to fix it yet).
 
       - Database different/better: (how) would a relational database or GraphQL simplify shit?
+      
+      - Fix errors in error handling
+      
+      - Build more intuitive and user-friendly photo-uploading component
+      
+      - Link map to search results
+      
+      - Link search results to Redux state so app doesn't need to be refreshed
+      
+      - Expand list of notable characteristics
 
       - Mobile routing and rewriting the Map/Container files.
 
