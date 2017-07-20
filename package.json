@@ -1,10 +1,13 @@
 {
   "name": "myhike",
-  "version": "0.0.0",
-  "private": true,
+  "version": "0.1.0",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node app.js"
   },
+  "engines": {
+    "node": "8.0.0"
+  },
+  "main": "app.js",
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "bluebird": "^3.4.7",
@@ -30,6 +33,7 @@
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.9.2",
     "react-google-autocomplete": "^1.0.12",
+    "react-google-maps": "^7.2.0",
     "react-image-lightbox": "^4.0.0",
     "react-modal": "^1.7.2",
     "react-native": "^0.40.0",
@@ -65,5 +69,6 @@
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",
     "webpack": "^1.14.0"
-  }
+  },
+  "license": "MIT"
 }
