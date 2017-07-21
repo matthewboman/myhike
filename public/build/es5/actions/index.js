@@ -98,6 +98,8 @@ module.exports = {
 
   // Update Profile
   profileUpdated: function (user, profile) {
+    console.log(user);
+    console.log(profile);
     return function (dispatch) {
       APIManager.put("/api/profile/" + user.id, profile, function (err, response) {
         if (err) {

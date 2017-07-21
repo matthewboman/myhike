@@ -4,6 +4,7 @@ import Dropzone from 'react-dropzone'
 
 import actions from '../../actions'
 import { ImageHelper, ImageUploader } from '../../utils'
+import { Images } from '../common'
 import { AccountEditor, UserReviews } from '../User'
 import { Navbar } from './'
 
@@ -12,9 +13,7 @@ class AccountContainer extends Component {
   constructor() {
     super()
     this.state = {
-      updated: {
-        image: ''
-      },
+      updated: {},
       updateImage: false,
       showNevermind: false
     }
@@ -53,18 +52,23 @@ class AccountContainer extends Component {
     this.props.profileUpdated(this.props.user, profile)
   }
 
+  addImage(image) {
+    let updatedProfile = Object.assign({}, this.props.user)
+    updatedProfile['image'] = image[0].secure_url
+    console.log('updatedProfile ' + JSON.stringify(updatedProfile))
+    this.setState({ updated: updatedProfile })
+  }
+
   updateImage() {
     if (this.state.updateImage == true) {
       return (
-        <div className="update-profile-image">
-          <Dropzone onDrop={this.uploadImage.bind(this)} />
-          <br />
-          <img className="image-preview"
-               src={(this.state.updated.image == '') ? '' : ImageHelper.preview(this.state.updated.image, 325, 300)} />
-          <br />
-          <button className="button-default" onClick={this.updatePhoto.bind(this)}>Update</button>
-          <span>  </span>
-          <button className="button-default" onClick={this.toggleImageUploader.bind(this)}>Nevermind</button>
+        <div className="review-input review-image-input">
+          <Images onImageSubmit={this.addImage.bind(this)}/>
+          <div className="change-button">    
+            <button className="button-default" onClick={this.updatePhoto.bind(this)}>Update</button>
+            <span>  </span>
+            <button className="button-default" onClick={this.toggleImageUploader.bind(this)}>Nevermind</button>
+          </div>
         </div>
       )
     } else {

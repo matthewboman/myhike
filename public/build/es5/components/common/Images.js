@@ -132,7 +132,7 @@ var Images = (function (Component) {
       value: function render() {
         return React.createElement(
           "div",
-          null,
+          { className: "image-uploader" },
           React.createElement(
             "ul",
             { className: "hike-images" },
@@ -157,8 +157,7 @@ var Images = (function (Component) {
           ),
           React.createElement(
             "button",
-            { onClick: this.submitImages.bind(this),
-              className: "btn image-submit-btn" },
+            { onClick: this.submitImages.bind(this), className: "button-default" },
             "Submit Images"
           )
         );
