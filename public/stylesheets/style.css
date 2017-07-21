@@ -488,6 +488,10 @@ h1, h2, h3 {
   padding-right: 2px;
 }
 
+.image-uploader {
+  padding: 10px;
+}
+
 .parent {
   position: relative;
   display: inline-block;

@@ -24,6 +24,7 @@ var _utils = require("../../utils");
 
 var ImageHelper = _utils.ImageHelper;
 var ImageUploader = _utils.ImageUploader;
+var Images = require("../common").Images;
 var _User = require("../User");
 
 var AccountEditor = _User.AccountEditor;
@@ -35,9 +36,7 @@ var AccountContainer = (function (Component) {
 
     _get(Object.getPrototypeOf(AccountContainer.prototype), "constructor", this).call(this);
     this.state = {
-      updated: {
-        image: ""
-      },
+      updated: {},
       updateImage: false,
       showNevermind: false
     };
@@ -95,31 +94,41 @@ var AccountContainer = (function (Component) {
       writable: true,
       configurable: true
     },
+    addImage: {
+      value: function addImage(image) {
+        var updatedProfile = Object.assign({}, this.props.user);
+        updatedProfile.image = image[0].secure_url;
+        console.log("updatedProfile " + JSON.stringify(updatedProfile));
+        this.setState({ updated: updatedProfile });
+      },
+      writable: true,
+      configurable: true
+    },
     updateImage: {
       value: function updateImage() {
         if (this.state.updateImage == true) {
           return React.createElement(
             "div",
-            { className: "update-profile-image" },
-            React.createElement(Dropzone, { onDrop: this.uploadImage.bind(this) }),
-            React.createElement("br", null),
-            React.createElement("img", { className: "image-preview",
-              src: this.state.updated.image == "" ? "" : ImageHelper.preview(this.state.updated.image, 325, 300) }),
-            React.createElement("br", null),
+            { className: "review-input review-image-input" },
+            React.createElement(Images, { onImageSubmit: this.addImage.bind(this) }),
             React.createElement(
-              "button",
-              { className: "button-default", onClick: this.updatePhoto.bind(this) },
-              "Update"
-            ),
-            React.createElement(
-              "span",
-              null,
-              "  "
-            ),
-            React.createElement(
-              "button",
-              { className: "button-default", onClick: this.toggleImageUploader.bind(this) },
-              "Nevermind"
+              "div",
+              { className: "change-button" },
+              React.createElement(
+                "button",
+                { className: "button-default", onClick: this.updatePhoto.bind(this) },
+                "Update"
+              ),
+              React.createElement(
+                "span",
+                null,
+                "  "
+              ),
+              React.createElement(
+                "button",
+                { className: "button-default", onClick: this.toggleImageUploader.bind(this) },
+                "Nevermind"
+              )
             )
           );
         } else {

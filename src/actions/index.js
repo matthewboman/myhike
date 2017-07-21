@@ -97,6 +97,8 @@ export default {
 
   // Update Profile
   profileUpdated: (user, profile) => {
+    console.log(user)
+    console.log(profile)
     return (dispatch) => {
       APIManager.put(`/api/profile/${user.id}`, profile, (err, response) => {
         if (err) {
