@@ -39,6 +39,7 @@ class Login extends Component {
         {(this.props.error) ? <Error /> : ''}
       <form>
         <div className="username">
+          <span>Username</span>
           <input
             className="form-control login-field"
             onChange={this.updateVisitor.bind(this)}
@@ -47,6 +48,7 @@ class Login extends Component {
         </div>
         <br />
         <div className="password">
+          <span>Password</span>
           <input
             className="form-control login-field"
             onChange={this.updateVisitor.bind(this)}

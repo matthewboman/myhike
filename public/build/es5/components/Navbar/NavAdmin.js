@@ -71,6 +71,7 @@ var NavAdmin = (function (Component) {
           isLogin: false,
           isRegister: false
         });
+        this.props.displayError("");
       },
       writable: true,
       configurable: true
@@ -153,7 +154,7 @@ var NavAdmin = (function (Component) {
             null,
             React.createElement(
               "a",
-              { onClick: this.openLogin },
+              { onClick: this.openLogin, className: "nav-link" },
               "Login"
             )
           ),
@@ -162,7 +163,7 @@ var NavAdmin = (function (Component) {
             null,
             React.createElement(
               "a",
-              { onClick: this.openRegister },
+              { onClick: this.openRegister, className: "nav-link" },
               "Register"
             )
           )
@@ -199,7 +200,7 @@ var NavAdmin = (function (Component) {
             null,
             React.createElement(
               "a",
-              { onClick: this.logout.bind(this) },
+              { onClick: this.logout.bind(this), className: "nav-link" },
               "Log out"
             )
           )
