@@ -24,14 +24,14 @@ class NavAdmin extends Component {
     this.setState({
       modalIsOpen: true,
       isLogin: true
-    });
+    })
   }
 
   openRegister() {
     this.setState({
       modalIsOpen: true,
       isRegister: true
-    });
+    })
   }
 
   closeModal() {
@@ -39,7 +39,8 @@ class NavAdmin extends Component {
       modalIsOpen: false,
       isLogin: false,
       isRegister: false
-    });
+    })
+    this.props.displayError('')
   }
 
   login(credentials) {
@@ -91,10 +92,10 @@ class NavAdmin extends Component {
           <Link to="/create-hike">Create Hike</Link>
         </li>
         <li>
-          <a onClick={this.openLogin}>Login</a>
+          <a onClick={this.openLogin} className="nav-link">Login</a>
         </li>
         <li>
-          <a onClick={this.openRegister}>Register</a>
+          <a onClick={this.openRegister} className="nav-link">Register</a>
         </li>
       </ul>
     )
@@ -110,7 +111,7 @@ class NavAdmin extends Component {
           <Link to="/currentuser">Account</Link>
         </li>
         <li>
-          <a onClick={this.logout.bind(this)}>Log out</a>
+          <a onClick={this.logout.bind(this)} className="nav-link">Log out</a>
         </li>
       </ul>
     )

@@ -15,95 +15,7 @@ var _react = require("react");
 var React = _interopRequire(_react);
 
 var Component = _react.Component;
-var Validation = _interopRequire(require("react-validation"));
-
-var validator = _interopRequire(require("validator"));
-
-/*
-TODO: move validation rules to utils
-*/
-
-// ================ Validation =========================
-Object.assign(Validation.rules, {
-  // Field must have 8+ characters
-  length: {
-    rule: function (value) {
-      return value.length > 7;
-    },
-    hint: function (value) {
-      return React.createElement(
-        "span",
-        { className: "form-error is-visible" },
-        "Password must be at least 8 characters"
-      );
-    }
-  },
-  // Field is required
-  required: {
-    // Make sure what we get is strings
-    rule: function (value) {
-      return value.toString().trim();
-    },
-    hint: function (value) {
-      return React.createElement(
-        "span",
-        { className: "form-error is-visible" },
-        "Required"
-      );
-    }
-  },
-  // Make sure email field is email
-  email: {
-    rule: function (value) {
-      return validator.isEmail(value);
-    },
-    hint: function (value) {
-      return React.createElement(
-        "span",
-        { className: "form-error is-visible" },
-        value,
-        " is not a valid email address"
-      );
-    }
-  },
-  // Compare two password fields
-  password: {
-    rule: function (value, components) {
-      var password = components.password.state;
-      var passwordConfirm = components.passwordConfirm.state;
-      var isBothUsed = password && passwordConfirm && password.isUsed && passwordConfirm.isUsed;
-      var isBothChanged = isBothUsed && password.isChanged && passwordConfirm.isChanged;
-
-      if (!isBothUsed || !isBothChanged) {
-        return true;
-      }
-
-      return password.value === passwordConfirm.value;
-    },
-    hint: function () {
-      return React.createElement(
-        "span",
-        { className: "form-error is-visible" },
-        "Passwords should match"
-      );
-    }
-  },
-  // Define API rule to show hint after API error response
-  api: {
-    // no rule needed b/c it will bubble up from DB
-    hint: function (value) {
-      return React.createElement(
-        "button",
-        { className: "form-error is-visible" },
-        "API Error on \"",
-        value,
-        "\" value. Focus to hide."
-      );
-    }
-  }
-});
-// =================== END Validation ======================
-
+var Validation = require("../../utils").Validation;
 var RegisterForm = (function (Component) {
   function RegisterForm() {
     _classCallCheck(this, RegisterForm);
@@ -122,8 +34,6 @@ var RegisterForm = (function (Component) {
 
   _prototypeProperties(RegisterForm, null, {
     updateVisitor: {
-
-      // Update state with what user enters into input
       value: function updateVisitor(event) {
         var updated = Object.assign({}, this.state.visitor);
         updated[event.target.id] = event.target.value;
@@ -133,8 +43,6 @@ var RegisterForm = (function (Component) {
       configurable: true
     },
     register: {
-
-      // Register user if all checks out
       value: function register(event) {
         event.preventDefault();
         this.props.onRegister(this.state.visitor);
@@ -150,6 +58,11 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
+            React.createElement(
+              "span",
+              null,
+              "Username"
+            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
               value: "username",
@@ -161,6 +74,11 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
+            React.createElement(
+              "span",
+              null,
+              "Email"
+            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
               value: "email",
@@ -172,6 +90,11 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
+            React.createElement(
+              "span",
+              null,
+              "Password"
+            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
               type: "password",
@@ -184,6 +107,11 @@ var RegisterForm = (function (Component) {
           React.createElement(
             "div",
             null,
+            React.createElement(
+              "span",
+              null,
+              " Re-type password"
+            ),
             React.createElement(Validation.components.Input, {
               onChange: this.updateVisitor.bind(this),
               type: "password",

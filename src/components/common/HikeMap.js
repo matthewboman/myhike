@@ -93,8 +93,8 @@ class HikeMap extends Component {
             defaultCenter={this.state.mapCenter}
             options={{streetViewControl: false, mapTypeControl: true}}
             onClick={this.addMarker.bind(this)} >
-            {this.renderNewHikeMarker()}
-            {this.renderHikeMarkers()}
+            { this.renderNewHikeMarker() }
+            { this.renderHikeMarkers() }
           </GoogleMap>
         }
         />

@@ -33,7 +33,7 @@
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.9.2",
     "react-google-autocomplete": "^1.0.12",
-    "react-google-maps": "^7.2.0",
+    "react-google-maps": "4.11.0",
     "react-image-lightbox": "^4.0.0",
     "react-modal": "^1.7.2",
     "react-native": "^0.40.0",

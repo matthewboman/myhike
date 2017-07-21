@@ -70,6 +70,11 @@ var Login = (function (Component) {
             React.createElement(
               "div",
               { className: "username" },
+              React.createElement(
+                "span",
+                null,
+                "Username"
+              ),
               React.createElement("input", {
                 className: "form-control login-field",
                 onChange: this.updateVisitor.bind(this),
@@ -80,6 +85,11 @@ var Login = (function (Component) {
             React.createElement(
               "div",
               { className: "password" },
+              React.createElement(
+                "span",
+                null,
+                "Password"
+              ),
               React.createElement("input", {
                 className: "form-control login-field",
                 onChange: this.updateVisitor.bind(this),
