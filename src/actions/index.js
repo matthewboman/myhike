@@ -83,6 +83,7 @@ export default {
     return (dispatch) => {
       APIManager.post('/account/register', profile, (err, response) => {
         if (err) {
+          console.log(err)
           dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }

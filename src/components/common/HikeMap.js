@@ -16,7 +16,7 @@ class HikeMap extends Component {
   constructor() {
     super()
     this.state = {
-      mapCenter: { lat: 0, lng: 0 }
+      mapCenter: { lat: 0, lng: 0} // must start at (0,0) or we get an error that google is not defined
     }
   }
 
@@ -35,7 +35,8 @@ class HikeMap extends Component {
       })
       this.props.userLocationReceived({lat: position.coords.latitude, lng: position.coords.longitude})
     }, (error) => {
-        this.props.displayError("Error dectecting your location")
+      this.setState({ mapCenter: { lat: 35.57, lng: -82.60 } })
+      this.props.displayError("Error dectecting your location")
     }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 })
   }
 
@@ -115,6 +116,7 @@ const stateToProps = (state) => {
 const dispatchToProps = (dispatch) => {
 	return {
     currentHikeReceived: (hike) => dispatch(actions.currentHikeReceived(hike)),
+    displayError: (error) => dispatch(actions.displayError(error)),
     fetchHikes: (params) => dispatch(actions.fetchHikes(params)),
     hikeSelected: (id) => dispatch(actions.hikeSelected(id)),
     markClickedLocation: (location, usingMap) => dispatch(actions.markClickedLocation(location, usingMap)),

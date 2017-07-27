@@ -31459,6 +31459,7 @@
 	    return function (dispatch) {
 	      _utils.APIManager.post('/account/register', profile, function (err, response) {
 	        if (err) {
+	          console.log(err);
 	          dispatch({ type: _constants2.default.ERROR_RECEIVED, message: err.message });
 	          return;
 	        }
@@ -40037,8 +40038,8 @@
 	    var _this = _possibleConstructorReturn(this, (HikeMap.__proto__ || Object.getPrototypeOf(HikeMap)).call(this));
 	
 	    _this.state = {
-	      mapCenter: { lat: 0, lng: 0 }
-	    };
+	      mapCenter: { lat: 0, lng: 0 // must start at (0,0) or we get an error that google is not defined
+	      } };
 	    return _this;
 	  }
 	
@@ -40062,6 +40063,7 @@
 	        });
 	        _this2.props.userLocationReceived({ lat: position.coords.latitude, lng: position.coords.longitude });
 	      }, function (error) {
+	        _this2.setState({ mapCenter: { lat: 35.57, lng: -82.60 } });
 	        _this2.props.displayError("Error dectecting your location");
 	      }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
 	    }
@@ -40146,6 +40148,9 @@
 	  return {
 	    currentHikeReceived: function currentHikeReceived(hike) {
 	      return dispatch(_actions2.default.currentHikeReceived(hike));
+	    },
+	    displayError: function displayError(error) {
+	      return dispatch(_actions2.default.displayError(error));
 	    },
 	    fetchHikes: function fetchHikes(params) {
 	      return dispatch(_actions2.default.fetchHikes(params));
@@ -45315,7 +45320,7 @@
 	    key: 'register',
 	    value: function register(profile) {
 	      this.props.profileCreated(profile);
-	      if (this.props.error == null) this.props.onClose();
+	      this.props.onClose();
 	    }
 	  }, {
 	    key: 'render',

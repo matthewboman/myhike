@@ -35,7 +35,7 @@ var Register = (function (Component) {
     register: {
       value: function register(profile) {
         this.props.profileCreated(profile);
-        if (this.props.error == null) this.props.onClose();
+        this.props.onClose();
       },
       writable: true,
       configurable: true

@@ -84,6 +84,7 @@ module.exports = {
     return function (dispatch) {
       APIManager.post("/account/register", profile, function (err, response) {
         if (err) {
+          console.log(err);
           dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
