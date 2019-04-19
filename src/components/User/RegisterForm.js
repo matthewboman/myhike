@@ -1,68 +1,5 @@
 import React, { Component } from 'react'
-import Validation from 'react-validation'
-import validator from 'validator'
-
-/*
-TODO: move validation rules to utils
-*/
-
-// ================ Validation =========================
-Object.assign(Validation.rules, {
-  // Field must have 8+ characters
-  length: {
-    rule: value => {
-      return value.length >7;
-    },
-    hint: value => {
-      return <span className="form-error is-visible">Password must be at least 8 characters</span>
-    }
-  },
-  // Field is required
-  required: {
-    // Make sure what we get is strings
-    rule: value => {
-      return value.toString().trim();
-    },
-    hint: value => {
-      return <span className="form-error is-visible">Required</span>
-    }
-  },
-  // Make sure email field is email
-  email: {
-    rule: value => {
-      return validator.isEmail(value);
-    },
-    hint: value => {
-      return <span className="form-error is-visible">{value} is not a valid email address</span>
-    }
-  },
-  // Compare two password fields
-  password: {
-    rule: (value, components) => {
-      const password = components.password.state;
-      const passwordConfirm = components.passwordConfirm.state;
-      const isBothUsed = password && passwordConfirm && password.isUsed && passwordConfirm.isUsed;
-      const isBothChanged = isBothUsed && password.isChanged && passwordConfirm.isChanged;
-
-      if (!isBothUsed || !isBothChanged) {
-        return true;
-      }
-
-      return password.value === passwordConfirm.value;
-    },
-    hint: () => <span className="form-error is-visible">Passwords should match</span>
-  },
-  // Define API rule to show hint after API error response
-  api: {
-    // no rule needed b/c it will bubble up from DB
-    hint: value => (
-      <button className="form-error is-visible">
-        API Error on "{value}" value. Focus to hide.
-      </button>
-    )
-  }
-})
-// =================== END Validation ======================
+import { Validation } from '../../utils'
 
 class RegisterForm extends Component {
   constructor() {
@@ -76,14 +13,12 @@ class RegisterForm extends Component {
     }
   }
 
-  // Update state with what user enters into input
   updateVisitor(event) {
     let updated = Object.assign({}, this.state.visitor)
     updated[event.target.id] = event.target.value
     this.setState({ visitor: updated })
   }
 
-  // Register user if all checks out
   register(event) {
     event.preventDefault()
     this.props.onRegister(this.state.visitor)
@@ -93,6 +28,7 @@ class RegisterForm extends Component {
     return (
       <Validation.components.Form>
         <div>
+          <span>Username</span>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
             value="username"
@@ -102,6 +38,7 @@ class RegisterForm extends Component {
         </div>
         <br />
         <div>
+          <span>Email</span>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
             value="email"
@@ -111,6 +48,7 @@ class RegisterForm extends Component {
         </div>
         <br />
         <div>
+          <span>Password</span>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
             type="password"
@@ -121,6 +59,7 @@ class RegisterForm extends Component {
         </div>
         <br />
         <div>
+          <span> Re-type password</span>
           <Validation.components.Input
             onChange={this.updateVisitor.bind(this)}
             type="password"

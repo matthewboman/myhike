@@ -84,6 +84,7 @@ module.exports = {
     return function (dispatch) {
       APIManager.post("/account/register", profile, function (err, response) {
         if (err) {
+          console.log(err);
           dispatch({ type: constants.ERROR_RECEIVED, message: err.message });
           return;
         }
@@ -98,6 +99,8 @@ module.exports = {
 
   // Update Profile
   profileUpdated: function (user, profile) {
+    console.log(user);
+    console.log(profile);
     return function (dispatch) {
       APIManager.put("/api/profile/" + user.id, profile, function (err, response) {
         if (err) {

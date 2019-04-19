@@ -84,6 +84,10 @@ h1, h2, h3 {
   }
 }
 
+.nav-link:hover {
+  cursor: pointer;
+}
+
 /* Modal */
 .account-modal {
   position: absolute;
@@ -482,6 +486,10 @@ h1, h2, h3 {
   display: inline-flex;
   padding-left: 2px;
   padding-right: 2px;
+}
+
+.image-uploader {
+  padding: 10px;
 }
 
 .parent {

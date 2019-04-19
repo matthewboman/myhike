@@ -83,6 +83,7 @@ export default {
     return (dispatch) => {
       APIManager.post('/account/register', profile, (err, response) => {
         if (err) {
+          console.log(err)
           dispatch ({ type: constants.ERROR_RECEIVED, message: err.message })
           return
         }
@@ -97,6 +98,8 @@ export default {
 
   // Update Profile
   profileUpdated: (user, profile) => {
+    console.log(user)
+    console.log(profile)
     return (dispatch) => {
       APIManager.put(`/api/profile/${user.id}`, profile, (err, response) => {
         if (err) {

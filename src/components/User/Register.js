@@ -14,8 +14,7 @@ class Register extends Component {
 
   register(profile) {
     this.props.profileCreated(profile)
-    if (this.props.error == null)
-      this.props.onClose()
+    this.props.onClose()      
   }
 
   render() {

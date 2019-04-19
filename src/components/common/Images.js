@@ -88,7 +88,7 @@ class Images extends Component {
 
   render() {
     return (
-      <div>
+      <div className="image-uploader">
         <ul className="hike-images">
         <li className="image-list-preview">
           <Dropzone
@@ -101,8 +101,9 @@ class Images extends Component {
         </li>
         {this.renderPictures()}
         </ul>
-        <button onClick={this.submitImages.bind(this)}
-          className="btn image-submit-btn">Submit Images</button>
+        <button onClick={this.submitImages.bind(this)} className="button-default">
+          Submit Images
+        </button>
       </div>
     )
   }

@@ -41,7 +41,7 @@ var HikeMap = (function (Component) {
 
     _get(Object.getPrototypeOf(HikeMap.prototype), "constructor", this).call(this);
     this.state = {
-      mapCenter: { lat: 0, lng: 0 }
+      mapCenter: { lat: 0, lng: 0 } // must start at (0,0) or we get an error that google is not defined
     };
   }
 
@@ -68,6 +68,7 @@ var HikeMap = (function (Component) {
           });
           _this.props.userLocationReceived({ lat: position.coords.latitude, lng: position.coords.longitude });
         }, function (error) {
+          _this.setState({ mapCenter: { lat: 35.57, lng: -82.6 } });
           _this.props.displayError("Error dectecting your location");
         }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
       },
@@ -164,6 +165,9 @@ var dispatchToProps = function (dispatch) {
   return {
     currentHikeReceived: function (hike) {
       return dispatch(actions.currentHikeReceived(hike));
+    },
+    displayError: function (error) {
+      return dispatch(actions.displayError(error));
     },
     fetchHikes: function (params) {
       return dispatch(actions.fetchHikes(params));
