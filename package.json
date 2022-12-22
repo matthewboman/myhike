@@ -18,7 +18,7 @@
     "gulp-less": "^3.3.0",
     "gulp-minify-css": "^1.2.4",
     "hjs": "^0.0.6",
-    "jsonwebtoken": "^7.2.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^4.7.6",
     "mongoose-unique-validator": "^1.0.4",
     "morgan": "^1.9.1",
